@@ -6,8 +6,11 @@ import { faBell } from '@fortawesome/free-solid-svg-icons' // solid로 대체
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import {faFlag} from "@fortawesome/free-solid-svg-icons";
+import { faInstagram } from '@fortawesome/free-brands-svg-icons'
+import { faYoutube } from '@fortawesome/free-brands-svg-icons'
+
 // 아이콘들을 라이브러리에 추가
-library.add(faBell, faUser, faArrowRightFromBracket, faFlag)
+library.add(faBell, faUser, faArrowRightFromBracket, faFlag, faInstagram, faYoutube)
 
 const app = createApp(App)
 

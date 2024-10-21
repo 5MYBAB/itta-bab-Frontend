@@ -1,4 +1,5 @@
 <script setup>
+import '@/assets/css/resetcss.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 </script>
 <template>
@@ -19,7 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   </header>
 </template>
 <style scoped>
-@import '../../resetcss.css';
+@import '../../assets/css/resetcss.css';
 *{
   color: var(--text-color);
 }
@@ -47,7 +48,7 @@ li {
   align-items: center; /* 세로 가운데 정렬 */
 }
 .user-tap div{
-  font-size: 25px;
+  font-size: 20px;
   margin: 10px;
 }
 #log-out{

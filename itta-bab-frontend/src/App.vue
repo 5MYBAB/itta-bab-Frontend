@@ -1,18 +1,13 @@
 <script setup>
 
 import Header from "@/components/common/Header.vue";
-
-import GroupDetail from "@/views/group/GroupDetail.vue";
-import GroupChat from "@/views/group/GroupChat.vue";
+import Footer from "@/components/common/Footer.vue"
 </script>
 
 <template>
-  <header>
-    <Header/>
-  </header>
-  <main>
-    <GroupDetail/>
-  </main>
+  <Header/>
+
+  <Footer/>
 </template>
 
 

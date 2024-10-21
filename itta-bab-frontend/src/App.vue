@@ -1,12 +1,14 @@
 <script setup>
-
+import '@/assets/css/resetcss.css';
 import Header from "@/components/common/Header.vue";
 import Footer from "@/components/common/Footer.vue"
+import SignUp from "@/views/user/SignUp.vue";
+import Login from "@/views/user/Login.vue";
 </script>
 
 <template>
   <Header/>
-
+  <SignUp/>
   <Footer/>
 </template>
 

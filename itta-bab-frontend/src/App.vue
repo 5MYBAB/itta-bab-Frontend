@@ -2,10 +2,12 @@
 
 import Header from "@/components/common/Header.vue";
 import Footer from "@/components/common/Footer.vue"
+import PostDetail from "@/views/board/PostDetail.vue";
 </script>
 
 <template>
   <Header/>
+  <PostDetail/>
 
   <Footer/>
 </template>

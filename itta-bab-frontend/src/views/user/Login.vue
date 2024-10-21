@@ -6,7 +6,7 @@ import '@/assets/css/resetcss.css';
   <div class="back">
     <div class="container">
       <div class="logo">
-        <img src="/src/asset/login-logo.png" alt="Logo" />
+        <img src="/src/assets/icons/login-logo.svg" alt="Logo" />
       </div>
       <div class="form">
         <input type="text" id="id" placeholder="아이디" />

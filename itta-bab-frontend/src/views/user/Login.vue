@@ -1,5 +1,5 @@
 <script setup>
-import '@/asset/resetcss.css';
+import '@/assets/css/resetcss.css';
 </script>
 
 <template>

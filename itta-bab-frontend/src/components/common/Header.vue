@@ -1,5 +1,5 @@
 <script setup>
-import '@/asset/resetcss.css';
+import '@/assets/css/resetcss.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 </script>
 <template>
@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   </header>
 </template>
 <style scoped>
-@import '../../asset/resetcss.css';
+@import '../../assets/css/resetcss.css';
 *{
   color: var(--text-color);
 }

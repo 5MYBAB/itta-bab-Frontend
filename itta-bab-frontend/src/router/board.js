@@ -1,5 +1,5 @@
 import PostDetail from "@/views/board/PostDetail.vue";
-import PostWrite from "@/views/board/PostWrite.vue";
+import PostCreate from "@/views/board/PostCreate.vue";
 
 export default [
     {
@@ -7,7 +7,7 @@ export default [
         component: PostDetail
     },
     {
-        path: '/board/postwrite',
-        component: PostWrite
+        path: '/board/post/creat',
+        component: PostCreate
     }
 ];

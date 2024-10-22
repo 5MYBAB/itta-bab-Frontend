@@ -1,9 +1,5 @@
 <template>
   <div class="post-detail">
-    <div class="inline-content">
-      <img src="@/assets/icons/itta-bab-logo.svg" alt="밥 이미지" />
-      <h3>한화 시스템 부트캠프</h3>
-    </div>
     <div class="title">
       <h1>게시판</h1>
     </div>

@@ -10,14 +10,14 @@
     </div>
     <br>
     <div class="post-write-container">
-      <h2>게시물 작성</h2>
+      <h2>문의 하기</h2>
       <form>
         <div class="form-group">
-          <label for="title">게시물 제목</label>
+          <label for="title">문의</label>
           <input type="text" id="title" placeholder="제목을 입력하세요" />
         </div>
         <div class="form-group">
-          <label for="content">게시물 내용</label>
+          <label for="content">문의 내용</label>
           <textarea id="content" placeholder="내용을 입력하세요"></textarea>
         </div>
         <button type="submit" class="submit-button">작성 완료</button>
@@ -74,7 +74,7 @@ textarea {
   width: 100%;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--unactive-button);
 }
 
 textarea {
@@ -98,4 +98,11 @@ textarea {
 .submit-button:hover {
   background-color: var(--basic-yellow);
 }
+#title {
+  background-color: var(--unactive-button); /* 회색 배경색 */
+}
+#content {
+  background-color: var(--unactive-button); /* 회색 배경색 */
+}
+
 </style>

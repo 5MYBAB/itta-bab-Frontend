@@ -2,26 +2,20 @@
 import '@/assets/css/resetcss.css';
 import Header from "@/components/common/Header.vue";
 import Footer from "@/components/common/Footer.vue";
-import PostDetail from "@/views/board/PostDetail.vue";
-import List from "@/components/common/List.vue";
-import SearchBarAndSort from "@/components/common/SearchBarAndSort.vue";
-import PageNumAndWritingButton from "@/components/common/PageNumAndWritingButton.vue";
-import StoreRegist from "@/views/store/StoreCreate.vue";
-import PageTitleTop from "@/components/common/PageTitleTop.vue";
-import StoreForm from "@/components/store/StoreForm.vue";
-import StoreUpdate from "@/views/store/StoreUpdate.vue";
-import StoreReviewForm from "@/components/store/ReviewForm.vue";
-import ReviewCreate from "@/views/store/ReviewCreate.vue";
-import ReviewUpdate from "@/views/store/ReviewUpdate.vue";
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <Header/>
-  <PageTitleTop/>
-  <StoreUpdate/>
-<StoreReviewForm/>
-<!--  <ReviewCreate/>-->
-<!--  <ReviewUpdate/>-->
+  <Header>
+    <nav>
+      <RouterLink to="/" active-class="active">Home</RouterLink>
+      <RouterLink to="/login" active-class="active">Login</RouterLink>
+      <RouterLink to="/signup" active-class="active">SignUp</RouterLink>
+    </nav>
+  </Header>
+  <main>
+    <RouterView/>
+  </main>
   <Footer/>
 </template>
 

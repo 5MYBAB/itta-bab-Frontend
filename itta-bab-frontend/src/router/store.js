@@ -1,8 +1,8 @@
-import StoreRegist from "@/views/store/StoreRegist.vue";
+import StoreCreate from "@/views/store/StoreCreate.vue";
 
 export default [
     {
         path: '/store/regist',
-        component: StoreRegist
+        component: StoreCreate
     }
 ];

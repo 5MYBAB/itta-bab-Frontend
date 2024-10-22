@@ -2,13 +2,12 @@
 import '@/assets/css/resetcss.css';
 import Header from "@/components/common/Header.vue";
 import Footer from "@/components/common/Footer.vue"
-import SignUp from "@/views/user/SignUp.vue";
-import Login from "@/views/user/Login.vue";
+import PostDetail from "@/views/board/PostDetail.vue";
 </script>
 
 <template>
   <Header/>
-  <SignUp/>
+  <PostDetail/>
   <Footer/>
 </template>
 

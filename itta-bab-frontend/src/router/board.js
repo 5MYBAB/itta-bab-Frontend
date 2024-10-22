@@ -7,7 +7,7 @@ export default [
         component: PostDetail
     },
     {
-        path: '/board/post/creat',
+        path: '/board/post/create',
         component: PostCreate
     }
 ];

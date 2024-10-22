@@ -2,6 +2,8 @@
 import {computed, defineProps, ref} from 'vue';
 import PageNumAndWritingButton from '@/components/common/PageNumAndWritingButton.vue';
 import SearchBarAndSort from '@/components/common/SearchBarAndSort.vue';
+import Header from "@/App.vue";
+import PageTitleTop from "@/components/common/PageTitleTop.vue";
 
 const jsonData = [
   { title: "댓글 문의", likes: 15, date: "2024-10-11 12:00", answered: false },
@@ -57,11 +59,8 @@ const props = defineProps({
 </script>
 
 <template>
+  <PageTitleTop/>
   <div class="inquiry-detail">
-    <div class="inline-content">
-      <img src="@/assets/icons/itta-bab-logo.svg" alt="밥 이미지" />
-      <h3>한화 시스템 부트캠프</h3>
-    </div>
     <div class="title">
       <h1>문의</h1>
     </div>

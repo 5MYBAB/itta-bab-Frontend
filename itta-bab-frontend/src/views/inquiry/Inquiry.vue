@@ -1,13 +1,12 @@
 <script setup>
 
+import Header from "@/App.vue";
+import PageTitleTop from "@/components/common/PageTitleTop.vue";
 </script>
 
 <template>
+
   <main  class="post-detail">
-    <div class="inline-content">
-      <img src="@/assets/icons/itta-bab-logo.svg" alt="밥 이미지" />
-      <h3>한화 시스템 부트캠프</h3>
-    </div>
     <br>
     <div class="post-write-container">
       <h2>문의 하기</h2>

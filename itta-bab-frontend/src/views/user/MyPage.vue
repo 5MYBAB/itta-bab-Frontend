@@ -1,5 +1,4 @@
 <script setup>
-
 import Header from "@/components/common/Header.vue";
 import UserDetailAndChatList from "@/components/user/UserDetailAndChatList.vue";
 import UserTap from "@/components/user/UserTap.vue";

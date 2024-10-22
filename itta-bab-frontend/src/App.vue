@@ -6,12 +6,22 @@ import PostDetail from "@/views/board/PostDetail.vue";
 import List from "@/components/common/List.vue";
 import SearchBarAndSort from "@/components/common/SearchBarAndSort.vue";
 import PageNumAndWritingButton from "@/components/common/PageNumAndWritingButton.vue";
+import StoreRegist from "@/views/store/StoreCreate.vue";
+import PageTitleTop from "@/components/common/PageTitleTop.vue";
+import StoreForm from "@/components/store/StoreForm.vue";
+import StoreUpdate from "@/views/store/StoreUpdate.vue";
+import StoreReviewForm from "@/components/store/ReviewForm.vue";
+import ReviewCreate from "@/views/store/ReviewCreate.vue";
+import ReviewUpdate from "@/views/store/ReviewUpdate.vue";
 </script>
 
 <template>
   <Header/>
-  <PostDetail/>
-
+  <PageTitleTop/>
+  <StoreUpdate/>
+<StoreReviewForm/>
+<!--  <ReviewCreate/>-->
+<!--  <ReviewUpdate/>-->
   <Footer/>
 </template>
 

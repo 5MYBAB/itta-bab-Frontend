@@ -6,11 +6,11 @@ const currentRoute = useRoute();
 const router = useRouter();
 
 function goToLogin() {
-  router.push('/login')
+  router.push('/user/login')
 }
 
 function goToSignUp() {
-  router.push('/signup')
+  router.push('/user/signup')
 }
 </script>
 

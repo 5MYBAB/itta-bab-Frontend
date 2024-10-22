@@ -1,3 +1,61 @@
+<script setup>
+import {computed, defineProps, ref} from 'vue';
+import PageNumAndWritingButton from '@/components/common/PageNumAndWritingButton.vue';
+import SearchBarAndSort from '@/components/common/SearchBarAndSort.vue';
+
+const jsonData = [
+  { title: "댓글 문의", likes: 15, date: "2024-10-11 12:00", answered: false },
+  { title: "모임 문의", likes: 55, date: "2024-10-08 13:43", answered: false },
+  { title: "게시글 문의", likes: 30, date: "2024-10-05 14:22", answered: false },
+  { title: "채팅 문의", likes: 5, date: "2024-10-04 18:35", answered: true },
+  { title: "회원가입 문의", likes: 45, date: "2024-10-02 09:10", answered: true },
+  { title: "비밀번호 재설정 문의", likes: 20, date: "2024-09-30 10:15", answered: false },
+  { title: "로그인 오류 문의", likes: 60, date: "2024-09-28 16:00", answered: false },
+  { title: "결제 문의", likes: 25, date: "2024-09-25 08:45", answered: false },
+  { title: "서비스 중단 문의", likes: 35, date: "2024-09-23 14:20", answered: true },
+  { title: "프로필 수정 문의", likes: 18, date: "2024-09-21 11:05", answered: true },
+  { title: "이메일 인증 문의", likes: 40, date: "2024-09-18 13:00", answered: true },
+  { title: "공지사항 관련 문의", likes: 50, date: "2024-09-16 09:30", answered: true },
+  { title: "비정상적인 접근 문의", likes: 27, date: "2024-09-15 17:40", answered: true },
+  { title: "데이터 백업 문의", likes: 32, date: "2024-09-12 12:10", answered: true },
+  { title: "계정 복구 문의", likes: 22, date: "2024-09-10 15:25", answered: true }
+];
+
+
+const currentPage = ref(1);
+const itemsPerPage = 10;
+
+const totalPages = computed(() => Math.ceil(jsonData.length / itemsPerPage));
+
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return jsonData.slice(start, end);
+});
+
+function goToPage(page) {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+}
+
+
+function answerInquiry(index) {
+  alert(`${paginatedData.value[index].title}에 답변을 작성합니다.`);
+  // 답변 로직 구현 필요
+}
+
+function viewAnswer(index) {
+  alert(`${paginatedData.value[index].title}의 답변을 확인합니다.`);
+  // 답변 보기 로직 구현 필요
+}
+
+const props = defineProps({
+  currentPage: Number,
+  totalPages: Number,
+});
+</script>
+
 <template>
   <div class="inquiry-detail">
     <div class="inline-content">
@@ -39,73 +97,25 @@
           </button>
         </div>
       </div>
+      <div class="page-named">
+        <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">〈</button>
+        <span
+            v-for="page in totalPages"
+            :key="page"
+            @click="goToPage(page)"
+            :class="{ active: currentPage === page }"
+        >
+     {{ page }}
+   </span>
+        <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">〉</button>
+      </div>
 
-      <PageNumAndWritingButton
-          :currentPage="currentPage"
-          :totalPages="totalPages"
-          @changePage="goToPage"
-          @writePage="goToWritePage"
-      />
+
+
     </div>
     <br>
   </div>
 </template>
-
-<script setup>
-import {computed, ref} from 'vue';
-import PageNumAndWritingButton from '@/components/common/PageNumAndWritingButton.vue';
-import SearchBarAndSort from '@/components/common/SearchBarAndSort.vue';
-
-const jsonData = [
-  { title: "댓글 문의", likes: 15, date: "2024-10-11 12:00", answered: false },
-  { title: "모임 문의", likes: 55, date: "2024-10-08 13:43", answered: false },
-  { title: "게시글 문의", likes: 30, date: "2024-10-05 14:22", answered: false },
-  { title: "채팅 문의", likes: 5, date: "2024-10-04 18:35", answered: false },
-  { title: "회원가입 문의", likes: 45, date: "2024-10-02 09:10", answered: false },
-  { title: "비밀번호 재설정 문의", likes: 20, date: "2024-09-30 10:15", answered: false },
-  { title: "로그인 오류 문의", likes: 60, date: "2024-09-28 16:00", answered: false },
-  { title: "결제 문의", likes: 25, date: "2024-09-25 08:45", answered: false },
-  { title: "서비스 중단 문의", likes: 35, date: "2024-09-23 14:20", answered: true },
-  { title: "프로필 수정 문의", likes: 18, date: "2024-09-21 11:05", answered: true },
-  { title: "이메일 인증 문의", likes: 40, date: "2024-09-18 13:00", answered: true },
-  { title: "공지사항 관련 문의", likes: 50, date: "2024-09-16 09:30", answered: true },
-  { title: "비정상적인 접근 문의", likes: 27, date: "2024-09-15 17:40", answered: true },
-  { title: "데이터 백업 문의", likes: 32, date: "2024-09-12 12:10", answered: true },
-  { title: "계정 복구 문의", likes: 22, date: "2024-09-10 15:25", answered: true }
-];
-
-
-const currentPage = ref(1);
-const itemsPerPage = 10;
-
-const totalPages = computed(() => Math.ceil(jsonData.length / itemsPerPage));
-
-const paginatedData = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  return jsonData.slice(start, end);
-});
-
-function goToPage(page) {
-  if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page;
-  }
-}
-
-function goToWritePage() {
-  window.location.href = '/write'; // '글쓰기' 페이지로 이동
-}
-
-function answerInquiry(index) {
-  alert(`${paginatedData.value[index].title}에 답변을 작성합니다.`);
-  // 답변 로직 구현 필요
-}
-
-function viewAnswer(index) {
-  alert(`${paginatedData.value[index].title}의 답변을 확인합니다.`);
-  // 답변 보기 로직 구현 필요
-}
-</script>
 
 <style scoped>
 .inquiry-detail {
@@ -178,5 +188,24 @@ img {
   padding: 8px 12px;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.page-named {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.page-named span {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid var(--gray-font);
+  background-color: var(--white);
+}
+
+.page-named .active {
+  font-weight: bold;
+  color: black;
 }
 </style>

@@ -2,10 +2,6 @@
 import '@/assets/css/resetcss.css';
 import Header from "@/components/common/Header.vue";
 import Footer from "@/components/common/Footer.vue";
-import PostDetail from "@/views/board/PostDetail.vue";
-import List from "@/components/common/List.vue";
-import SearchBarAndSort from "@/components/common/SearchBarAndSort.vue";
-import PageNumAndWritingButton from "@/components/common/PageNumAndWritingButton.vue";
 import { RouterLink, RouterView } from "vue-router";
 </script>
 

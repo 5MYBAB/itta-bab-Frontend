@@ -55,10 +55,12 @@ input[type="date"]{
 }
 textarea{
   background-color: var(--gray-input);
-  height: 300px;
-  width: 700px;
+  height: 240px;
+  width: 640px;
   border: none;
   border-radius: 10px;
+  padding: 30px;
+  font-size: 20px;
 }
 input[type="button"]{
   border-radius: 25px;
@@ -76,6 +78,6 @@ input[type="button"]{
   border-bottom: 2px var(--gray-font) solid;
   margin-bottom: 30px;
   display: flex;
-  justify-content: space-evenly
+  justify-content: space-evenly;
 }
 </style>

@@ -1,6 +1,44 @@
 <script setup>
+import { ref, nextTick } from 'vue';
 import logo from "@/assets/icons/itta-bab_logo.svg";
+
+const chatMessages = ref([]); // 채팅 메시지를 저장할 ref
+const newMessage = ref(''); // 새 메시지 입력
+
+// 메시지 추가 함수
+const addMessage = () => {
+  if (newMessage.value.trim() !== '') {
+    chatMessages.value.push({
+      text: newMessage.value,
+      isUser: true, // 작성자의 메시지 여부
+    });
+    newMessage.value = ''; // 입력 필드 초기화
+
+    // 채팅 리스트 스크롤을 맨 아래로 이동
+    nextTick(() => {
+      const chatList = document.querySelector('.chat-list');
+      chatList.scrollTop = chatList.scrollHeight; // 스크롤을 맨 아래로 이동
+    });
+  }
+};
+
+// 예시 메시지 추가 (다른 사용자의 메시지)
+const addSampleMessages = () => {
+  chatMessages.value.push(
+      { text: '안녕하세요!', isUser: false },
+      { text: '반갑습니다!', isUser: false }
+  );
+
+  // 초기 로드 시에도 채팅 리스트 스크롤을 맨 아래로 이동
+  nextTick(() => {
+    const chatList = document.querySelector('.chat-list');
+    chatList.scrollTop = chatList.scrollHeight; // 스크롤을 맨 아래로 이동
+  });
+};
+
+addSampleMessages(); // 예시 메시지 추가
 </script>
+
 
 <template>
   <div class="background">
@@ -15,11 +53,16 @@ import logo from "@/assets/icons/itta-bab_logo.svg";
       <!-- 채팅창 진행 구역 -->
       <div class="chat-container">
         <!-- 채팅 내역 -->
-        <div class="chat-list"></div>
+        <div class="chat-list">
+          <div v-for="(message, index) in chatMessages" :key="index"
+               :class="['chat-message', { 'user-message': message.isUser, 'other-message': !message.isUser }]">
+            {{ message.text }}
+          </div>
+        </div>
         <!-- 채팅 입력 구역 -->
         <div class="chat-input-area">
-          <textarea></textarea>
-          <button>전송</button>
+          <textarea v-model="newMessage" placeholder="메시지를 입력하세요..."></textarea>
+          <button @click="addMessage">전송</button>
         </div>
       </div>
 
@@ -89,9 +132,32 @@ import logo from "@/assets/icons/itta-bab_logo.svg";
 
 /* 채팅 내역 */
 .chat-list {
-  min-height: 400px; /* 최소 높이 설정 */
-  width: 70%; /* 전체 너비 사용 */
+  height: 400px; /* 고정된 높이 설정 */
+  width: 100%; /* 전체 너비 사용 */
   border: none; /* 테두리 지우기 */
+  overflow-y: auto; /* 세로 스크롤 추가 */
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+}
+
+/* 채팅 메시지 스타일 */
+.chat-message {
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 2%; /* 위아래는 5px, 좌우는 10px 마진 추가 */
+  max-width: 50%; /* 최대 너비를 50%로 설정하여 길이 줄이기 */
+  align-self: flex-start; /* 기본값은 왼쪽 정렬 */
+}
+
+.user-message {
+  background-color: white; /* 작성자 채팅 배경 */
+  color: black; /* 작성자 채팅 글씨 색상 */
+  align-self: flex-end; /* 오른쪽 정렬 */
+}
+
+.other-message {
+  background-color: green; /* 다른 채팅 배경 */
+  color: white; /* 다른 채팅 글씨 색상 */
 }
 
 /* 채팅 입력 구역 */
@@ -169,7 +235,7 @@ import logo from "@/assets/icons/itta-bab_logo.svg";
 }
 
 /* etc */
-/* 경계선*/
+/* 경계선 */
 .hr {
   border-top: 1px solid gray; /* 경계선 스타일 추가 */
   margin-top: 10px; /* 경계선 위쪽 여백 */

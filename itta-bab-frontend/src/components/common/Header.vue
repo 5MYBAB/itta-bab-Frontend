@@ -29,6 +29,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   height: 100px;
   align-items: center;
   justify-content: space-between;
+  background-color: var(--white);
 }
 #logo{
   font-size: 35px;

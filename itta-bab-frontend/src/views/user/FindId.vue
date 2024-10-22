@@ -1,10 +1,10 @@
 <script setup>
-import FindPasswordForm from "@/components/user/FindPasswordForm.vue";
+import FindIdForm from "@/components/user/FindIdForm.vue";
 </script>
 
 <template>
   <div class="back">
-    <FindPasswordForm/>
+    <FindIdForm/>
   </div>
 </template>
 

@@ -1,11 +1,11 @@
 <script setup>
-import FindPasswordForm from "@/components/user/FindPasswordForm.vue";
+import ResultDetail from "@/components/user/ResultDetail.vue";
 </script>
 
 <template>
   <div class="back">
-    <FindPasswordForm/>
-  </div>
+    <ResultDetail/>
+    </div>
 </template>
 
 <style scoped>

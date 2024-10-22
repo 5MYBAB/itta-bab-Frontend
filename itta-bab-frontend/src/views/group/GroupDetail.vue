@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import logo from '@/resource/itta-bab_logo.png';
+import logo from '@/assets/icons/itta-bab_logo.svg';
 import {nextTick, ref} from 'vue';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 

@@ -98,4 +98,11 @@ textarea {
 .submit-button:hover {
   background-color: var(--basic-yellow);
 }
+
+#title {
+  background-color: var(--unactive-button); /* 회색 배경색 */
+}
+#content {
+  background-color: var(--unactive-button); /* 회색 배경색 */
+}
 </style>

@@ -1,5 +1,6 @@
 import {createApp} from 'vue';
 import App from './App.vue';
+import router from "@/router/index.js";
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import {faArrowRightFromBracket, faBell, faFlag, faUserPlus} from '@fortawesome/free-solid-svg-icons'; // solid로 대체
@@ -20,8 +21,9 @@ library.add(faInstagram, faYoutube);
 library.add(faClock, faReceipt, faFlag, faList, faBan);
 
 const app = createApp(App);
+app.use(router);
 
 // FontAwesomeIcon 컴포넌트를 전역으로 등록
 app.component('font-awesome-icon', FontAwesomeIcon);
-
 app.mount('#app');
+

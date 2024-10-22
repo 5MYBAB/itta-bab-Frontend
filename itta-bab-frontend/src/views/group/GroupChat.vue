@@ -1,215 +1,177 @@
+<script setup>
+import logo from "@/assets/icons/itta-bab_logo.svg";
+</script>
+
 <template>
-  <header class='chat_wrap'>
-    <div class="header">
-      <img src="http://www.tcpschool.com/sample.jpg" alt="Logo" />
-      <h1>한화시스템 부트캠프</h1>
-    </div>
-  </header>
-  <main class="main">
-    <!-- 채팅 화면 -->
-    <div class="chat-container">
-      <div class="chat_wrap">
-        <div class="chat" ref="chat">
-          <ul>
-            <li v-for="(message, index) in messages" :key="index"
-                :class="{'left': message.sender !== 'You', 'right': message.sender === 'You'}">
-              <div class="sender" v-if="message.sender !== 'You'">
-                <span>{{ message.sender }}</span>
-              </div>
-              <div class="message" :class="{'my-message': message.sender === 'You', 'other-message': message.sender !== 'You'}">
-                <span>{{ message.text }}</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="input-div">
-          <textarea v-model="newMessage" placeholder="여기에 내용을 입력하세요."
-                    @keypress.enter.prevent="sendMessage"></textarea>
+  <div class="background">
+    <!-- 헤더 -->
+    <header class="header-container">
+      <img v-bind:src="logo" alt="Logo"/>
+      <h1 class="margin-left">소속 부트캠프명</h1>
+    </header>
+
+    <!-- 바디 -->
+    <div class="body-container">
+      <!-- 채팅창 진행 구역 -->
+      <div class="chat-container">
+        <!-- 채팅 내역 -->
+        <div class="chat-list"></div>
+        <!-- 채팅 입력 구역 -->
+        <div class="chat-input-area">
+          <textarea></textarea>
+          <button>전송</button>
         </div>
       </div>
-      <!-- 참여자 리스트 -->
-      <div class="member-list">
-        <div>채팅방 리스트</div>
-        <hr />
-        <ul>
-          <li class="member-item" v-for="(member, index) in members" :key="index">
-            <span>{{ member.name }}</span>
-            <button @click="removeMember(member)">내보내기</button>
-          </li>
+
+      <!-- 참여 인원 구역 -->
+      <div class="participants-area">
+        <!-- 제목 -->
+        <div class="title-area">
+          <font-awesome-icon v-bind:icon="['fas', 'list']"/>
+          <span>참여 인원</span>
+        </div>
+        <!-- 경계선 -->
+        <div class="hr"/>
+        <!-- 참여 인원 리스트 -->
+        <ul class="user-list-container">
+          <div class="user-item">
+            <li>테스트 1</li>
+            <div class="action-area">
+              <font-awesome-icon v-bind:icon="['fas', 'ban']"/>
+              <button>내보내기</button>
+            </div>
+          </div>
         </ul>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      messages: [
-        { sender: "나", text: "맛있는 거 많이 먹읍시다!!" },
-        { sender: "설빈", text: "맛있는 거 많이 먹읍시다!!" }
-      ],
-      newMessage: '',
-      members: [
-        { name: '설빈1' },
-        { name: '설빈2' },
-        { name: '설빈3' },
-        { name: '설빈4' }
-      ]
-    };
-  },
-  methods: {
-    sendMessage() {
-      if (this.newMessage.trim() !== '') {
-        this.messages.push({sender: 'You', text: this.newMessage});
-        this.newMessage = ''; // 입력 필드 초기화
-        this.$nextTick(() => {
-          const chat = this.$refs.chat;
-          chat.scrollTop = chat.scrollHeight; // 스크롤을 가장 아래로 이동
-        });
-      }
-    },
-    removeMember(member) {
-      this.members = this.members.filter(m => m !== member);
-    }
-  }
-};
-</script>
-
 <style scoped>
-/* 기본 스타일 초기화 */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* 전체 배경 */
+.background {
+  display: flex;
+  background-color: var(--background-color);
+  padding-top: 30px;
+  justify-content: center;
+  flex-direction: column;
 }
 
-body {
-  background-color: rgba(252, 244, 202, 0.5); /* 전체 배경 색상 및 투명도 50% */
-}
-
-.chat_wrap .header {
-  display: flex; /* Flexbox를 사용하여 가로 배치 */
+/* 헤더 */
+.header-container {
+  display: flex;
+  flex-direction: row;
   align-items: center; /* 수직 중앙 정렬 */
-  font-size: 14px;
-  padding: 15px 0;
-  background: rgba(252, 244, 202, 0.5);
-  color: black;
+  margin-left: 2%;
+  margin-bottom: 2%;
 }
 
-.chat_wrap .header img {
-  width: 50px; /* 이미지 크기 조정 */
-  height: auto; /* 비율 유지 */
-  margin-right: 10px; /* 이미지와 텍스트 간 간격 */
+.header-container h1 {
+  font-size: 20px;
+  margin-left: 2%;
 }
 
-/* 메인 레이아웃 */
-.main {
-  display: flex; /* Flexbox를 사용하여 가로 배치 */
-  height: 100vh;
+/* 바디 */
+.body-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%; /* 전체 너비 사용 */
 }
 
 /* 채팅 컨테이너 */
 .chat-container {
-  display: flex; /* 내부 요소도 Flexbox로 가로 배치 */
-  width: 100%;
+  margin-left: 3%;
+  min-width: 60%;
+  min-height: 100px; /* 최소 높이 설정 */
+  background-color: var(--backbackground-color);
+  border-radius: 4%;
 }
 
-.chat_wrap {
-  flex: 1; /* 채팅 영역이 남은 공간을 차지하도록 설정 */
-  padding-right: 10px; /* 간격을 주기 위한 패딩 */
-  background-color: rgba(255, 255, 255, 0.8); /* 채팅창 배경 투명도 설정 */
+/* 채팅 내역 */
+.chat-list {
+  min-height: 400px; /* 최소 높이 설정 */
+  width: 70%; /* 전체 너비 사용 */
+  border: none; /* 테두리 지우기 */
 }
 
-/* 채팅 영역 */
-.chat_wrap .chat {
-  padding-bottom: 80px;
-  max-height: 70vh; /* 최대 높이 설정 */
-  overflow-y: auto; /* 스크롤 가능하도록 설정 */
-}
-
-.chat_wrap .chat ul {
-  width: 100%;
-  list-style: none;
-}
-
-/* 채팅 메시지 정렬 */
-.chat_wrap .chat ul li.left .message {
-  background-color: #D8F5A2; /* 상대방 메시지 배경 색상 */
-  text-align: left;
-}
-
-.chat_wrap .chat ul li.right .message {
-  background-color: #BEE3F8; /* 자신의 메시지 배경 색상 */
-  text-align: right;
-}
-
-/* 채팅 메시지 박스 스타일 */
-.chat_wrap .chat ul li > div {
-  font-size: 13px;
-}
-
-.chat_wrap .chat ul li > div.sender {
-  margin: 10px 20px 0 20px;
-  font-weight: bold;
-}
-
-.chat_wrap .chat ul li .message {
-  display: inline-block;
-  word-break: break-all;
-  margin: 5px 20px;
-  max-width: 75%;
-  border: 1px solid #888;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-/* 입력창 스타일 */
-.chat_wrap .input-div {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: #FFF;
-  text-align: center;
-  border-top: 1px solid rgba(252, 244, 202);
-}
-
-.chat_wrap .input-div > textarea {
-  width: 100%;
-  height: 80px;
-  border: none;
-  padding: 10px;
-  font-size: 16px;
-  outline: none;
-  resize: none; /* 텍스트 에리어 크기 조절 비활성화 */
-}
-
-/* 참여자 리스트 스타일 */
-.member-list {
-  width: 200px; /* 맴버 리스트의 고정 너비 설정 */
-  padding-left: 10px; /* 간격을 주기 위한 패딩 */
-  font-size: 14px;
-  background-color: rgba(255, 255, 255, 0.9); /* 약간 투명한 배경 */
-}
-
-.member-item {
-  display: flex; /* Flexbox를 사용하여 가로 배치 */
-  justify-content: space-between; /* 아이템 사이의 간격을 최대로 설정 */
+/* 채팅 입력 구역 */
+.chat-input-area {
+  display: flex;
+  flex-direction: row;
+  min-height: 170px; /* 최소 높이 설정 */
+  width: 70%; /* 전체 너비 사용 */
   align-items: center; /* 수직 중앙 정렬 */
-  margin: 5px 0; /* 아이템 간 간격 조정 */
+  justify-content: center; /* 가로 중앙 정렬 */
 }
 
-.member-item button {
-  background-color: #FFDD57; /* 버튼 색상 */
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 12px;
+/* 입력 영역 스타일 */
+.chat-input-area textarea {
+  min-width: 100px;
+  margin-left: 2%;
+  margin-right: 2%; /* 버튼과의 간격 */
 }
 
-.format {
-  display: none;
+/* 버튼 스타일 */
+.chat-input-area button {
+  /* 버튼 스타일 추가 */
+}
+
+/* 참여 인원 영역 */
+.participants-area {
+  min-width: 22%;
+  margin-left: 5%;
+  background-color: white;
+  border-radius: 8%;
+  padding: 10px; /* 내부 여백 추가 */
+}
+
+/* 제목 영역 */
+.title-area {
+  margin-top: 8%;
+  margin-left: 8%;
+}
+
+.title-area span {
+  margin-left: 7%;
+  font-size: 18px;
+}
+
+/* 유저 리스트 */
+.user-list-container {
+  margin-top: 10%;
+  margin-left: 5%;
+  padding: 0; /* 기본 패딩 제거 */
+  list-style-type: none; /* 리스트 스타일 제거 */
+}
+
+/* 각 유저 아이템 */
+.user-item {
+  display: flex;
+  justify-content: space-between; /* 아이템 간의 공간 분배 */
+  align-items: center; /* 수직 중앙 정렬 */
+}
+
+.user-list-container li {
+  font-size: 18px;
+}
+
+/* 액션 영역 */
+.action-area {
+  display: flex;
+  align-items: center; /* 수직 중앙 정렬 */
+  margin-left: auto; /* 오른쪽 정렬 */
+}
+
+.action-area button {
+  margin-left: 5%; /* 아이콘과 버튼 사이의 간격 */
+  white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  padding: 5px 10px; /* 버튼 내부 여백 추가 */
+}
+
+/* etc */
+/* 경계선*/
+.hr {
+  border-top: 1px solid gray; /* 경계선 스타일 추가 */
+  margin-top: 10px; /* 경계선 위쪽 여백 */
 }
 </style>

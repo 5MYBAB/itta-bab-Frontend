@@ -12,9 +12,10 @@ Author: Youni
     --white : #FFF; /* 흰색*/
     --background-color : #FCF4CA; /* 배경 노랑*/
     --gray-font : #A3A3A3; /* 회색 글씨*/
+    --gray-input : #F4F4F4; /* 입력 받는 회색 칸*/
 }
 *{
-    margin: auto;
+    margin: 0 auto;
 }
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,

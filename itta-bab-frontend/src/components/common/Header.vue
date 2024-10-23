@@ -1,9 +1,17 @@
 <script setup>
 import '@/assets/css/resetcss.css';
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {useAuthStore} from "@/stores/auth.js";
 import {useRouter} from 'vue-router';
 
+const authStore = useAuthStore();
 const router = useRouter();
+
+const handleLogout = () => {
+  authStore.logout();
+  alert('로그아웃 되었습니다.');
+  window.location.reload();
+}
 
 const goToMainPage = () => {
   router.push('/');
@@ -32,15 +40,9 @@ const goToBoardPage = () => {
         <li v-on:click="goToBoardPage">익명 커뮤니티</li>
       </ul>
       <div class="user-tap">
-        <div id="alarm">
-          <font-awesome-icon :icon="['fas', 'bell']"/>
-        </div>
-        <div id="mypage">
-          <font-awesome-icon :icon="['far', 'user']"/>
-        </div>
-        <div id="log-out">
-          <font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']"/>
-        </div>
+        <div id="alarm"><font-awesome-icon :icon="['fas', 'bell']" /></div>
+        <div id="mypage"><font-awesome-icon :icon="['far', 'user']" /></div>
+        <div @click="handleLogout" id="log-out" class="custom-cursor"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" /></div>
       </div>
     </div>
   </header>
@@ -88,5 +90,8 @@ li {
 
 #log-out {
   margin-right: 50px;
+}
+.custom-cursor{
+  cursor: pointer;
 }
 </style>

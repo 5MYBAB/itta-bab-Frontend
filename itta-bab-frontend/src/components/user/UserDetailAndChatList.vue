@@ -1,6 +1,19 @@
 <script setup>
 import '@/assets/css/resetcss.css';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useRouter } from 'vue-router'; // 라우터 사용
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+const router = useRouter();
+
+// 수정 버튼 클릭 시 호출되는 함수
+const goToUpdate = () => {
+  router.push('/update-user'); // 회원정보 수정 페이지로 이동
+};
+
+// 삭제 버튼 클릭 시 호출되는 함수
+const goToDelete = () => {
+  router.push('/delete-user'); // 회원정보 삭제 확인 페이지로 이동
+};
 </script>
 
 <template>
@@ -11,6 +24,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
     </div>
     <div class="inquiry"><input type="button" value="문의하기"></div>
   </div>
+
   <div class="padding">
     <div class="user-info-container">
       <div class="red-top">회원정보</div>
@@ -32,12 +46,15 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
           <div class="user-content">23</div>
         </div>
         <div class="list-line-button">
-          <div class="user-info-update"><input type="button" value="수정"></div>
-          <div class="user-info-delete"><input type="button" value="삭제"></div>
+          <!-- 수정 버튼 -->
+          <div class="user-info-update"><input type="button" value="수정" @click="goToUpdate"></div>
+          <!-- 삭제 버튼 -->
+          <div class="user-info-delete"><input type="button" value="삭제" @click="goToDelete"></div>
         </div>
       </div>
     </div>
-<!-- chating list -->
+
+    <!-- 참여 중인 모임 -->
     <div class="chat-list-container">
       <div class="yellow">참여중인 모임</div>
       <div class="chat-list">
@@ -63,7 +80,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
     </div>
   </div>
 </template>
-
 <style scoped>
 .chat-list-line{
   display: flex;
@@ -140,7 +156,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 .padding{
   padding: 0px 60px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 80px;
 }
 .user-content{
   font-size: 20px;

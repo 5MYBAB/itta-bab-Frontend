@@ -45,7 +45,7 @@ export default {
 }
 
 #map {
-  width: 80%; /* 화면의 절반 */
+  width: 100%;
   height: 191%;
   border-radius: 20px;
 }

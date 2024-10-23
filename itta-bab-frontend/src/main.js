@@ -4,6 +4,7 @@ import router from "@/router/index.js";
 import BootstrapVue3 from 'bootstrap-vue-3';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
+import {createPinia} from "pinia";
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import {faArrowRightFromBracket, faBell, faFlag, faUserPlus} from '@fortawesome/free-solid-svg-icons'; // solid로 대체
@@ -36,8 +37,11 @@ library.add(faInstagram, faYoutube);
 library.add(faClock, faReceipt, faFlag, faList, faBan);
 
 const app = createApp(App);
+const pinia = createPinia();
+
 app.use(BootstrapVue3)
 app.use(router);
+app.use(pinia);
 
 // FontAwesomeIcon 컴포넌트를 전역으로 등록
 app.component('font-awesome-icon', FontAwesomeIcon);

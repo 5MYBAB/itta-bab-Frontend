@@ -1,23 +1,49 @@
 <script setup>
+import axios from 'axios';
+import {useAuthStore} from "@/stores/auth.js";
+import {ref} from "vue";
+import {useRouter} from "vue-router";
+
+const authStore = useAuthStore();
+const loginId = ref('');
+const pwd = ref('');
+const router = useRouter();
+
+const handleLogin = async () => {
+  try {
+    const response = await axios.post('http://localhost:8003/login', {
+      loginId: loginId.value,
+      pwd: pwd.value
+    });
+
+    if(response.status === 200) {
+      authStore.login(response.headers.token);
+      router.push('/');
+    }
+
+  } catch (error) {
+    console.error('로그인 실패', error);
+  }
+}
 
 </script>
 
 <template>
-  <form class="container" name="login">
+  <div class="container">
     <div class="logo">
       <img src="/src/assets/icons/login-logo.svg" alt="Logo"/>
     </div>
-    <div class="form">
-      <input type="text" id="id" placeholder="아이디"/>
-      <input type="password" id="passwd" placeholder="비밀번호"/>
-      <button>로그인</button>
-    </div>
+    <form class="form" @submit.prevent="handleLogin">
+      <input v-model="loginId" id="id" placeholder="아이디" required />
+      <input v-model="pwd" id="passwd" placeholder="비밀번호" required />
+      <button type="submit">로그인</button>
+    </form>
     <div class="service-link">
       <div>아이디 찾기</div>
       <div>비밀번호 찾기</div>
       <div>아이디 찾기</div>
     </div>
-  </form>
+  </div>
 </template>
 
 <style scoped>

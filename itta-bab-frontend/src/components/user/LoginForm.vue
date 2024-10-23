@@ -1,8 +1,10 @@
 <script setup>
 import axios from 'axios';
+import {useAuthStore} from "@/stores/auth.js";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 
+const authStore = useAuthStore();
 const loginId = ref('');
 const pwd = ref('');
 const router = useRouter();
@@ -15,8 +17,7 @@ const handleLogin = async () => {
     });
 
     if(response.status === 200) {
-      console.log(response.headers.token);
-      // authStore.login(response.headers.token);
+      authStore.login(response.headers.token);
       router.push('/');
     }
 

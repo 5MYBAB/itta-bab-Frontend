@@ -6,10 +6,10 @@ import FriendsList from "@/components/user/FriendsList.vue";
 import InquiryList from "@/components/user/InquiryList.vue";
 import WrittenPostsList from "@/components/user/WrittenPostsList.vue";
 import BookmarksList from "@/components/user/BookmarksList.vue";
-/*// import ReportsList from "@/components/user/ReportsList.vue";
-// import ReviewsList from "@/components/user/ReviewsList.vue";
-// import CommentsList from "@/components/user/CommentsList.vue";
-// import NotificationsList from "@/components/user/NotificationsList.vue";*/
+import ReportsList from "@/components/user/ReportsList.vue";
+import ReviewsList from "@/components/user/ReviewsList.vue";
+import CommentsList from "@/components/user/CommentsList.vue";
+import NotificationsList from "@/components/user/NotificationsList.vue";
 
 // 현재 선택된 메뉴를 추적하는 상태 변수
 const selectedMenu = ref('friends');

@@ -216,19 +216,27 @@ function goToWRegisterPage() {
 </script>
 
 <template>
-  <div class="board-container">
-    <div class="header-row">
-      <div class="header-item">모임종류</div>
-      <div class="header-item">제목</div>
-      <div class="header-item">모집인원</div>
-      <div class="header-item">마감시간</div>
-    </div>
+  <div class="background">
+    <div class="total-container">
+      <div class="header-row">
+        <div class="header-item">모임종류</div>
+        <div class="header-item">제목</div>
+        <div class="header-item">모집인원</div>
+        <div class="header-item">마감시간</div>
+      </div>
 
-    <div v-for="item in paginatedDate" :key="item.group_id" class="data-row">
-      <div class="data-item">{{ getCategoryName(item.group_category_id) }}</div> <!-- 카테고리 이름 표시 -->
-      <div class="data-item">{{ item.group_title }}</div>
-      <div class="data-item">{{ item.user_counting }}</div>
-      <div class="data-item">{{ formatDate(item.end_date) }}</div>
+      <div class="list-style">
+        <div
+            v-for="item in paginatedDate"
+            :key="item.group_id"
+            class="data-row"
+        >
+          <div class="data-item">{{ getCategoryName(item.group_category_id) }}</div>
+          <div class="data-item">{{ item.group_title }}</div>
+          <div class="data-item">{{ item.user_counting }}</div>
+          <div class="data-item">{{ formatDate(item.end_date) }}</div>
+        </div>
+      </div>
     </div>
 
     <PageNumAndWritingButton
@@ -240,14 +248,20 @@ function goToWRegisterPage() {
   </div>
 </template>
 
+
 <style scoped>
-/* List.vue CSS */
-.board-container {
+
+.background {
+  display: flex; /* Flexbox 사용 */
+  flex-direction: column; /* 세로 방향으로 정렬 */
+  justify-content: center; /* 수직 가운데 정렬 */
+  align-items: center; /* 수평 가운데 정렬 */
   width: 100%;
-  background-color: var(--white); /* 전체 배경색 */
+  background-color: var(--background-color); /* 전체 배경색 */
   padding: 20px;
   border-radius: 10px; /* 모서리 둥글게 */
 }
+
 
 .header-row {
   display: flex;
@@ -285,4 +299,14 @@ function goToWRegisterPage() {
   font-weight: bold;
   color: black;
 }
+
+.list-style {
+  background-color: white;
+  border-radius: 0 0 10px 10px; /* 윗부분만 둥글게 */
+}
+
+.total-container{
+  width: 80%;
+}
+
 </style>

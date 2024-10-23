@@ -18,9 +18,11 @@
 <script>
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import Calendar from "@/components/common/Calendar.vue";
 
 export default {
   components: {
+    Calendar,
     FullCalendar // make the <FullCalendar> tag available
   },
   data: function() {
@@ -47,8 +49,7 @@ export default {
 <!--</template>-->
 
 <template>
-  <h1>Demo App</h1>
-  <FullCalendar :options='calendarOptions' />
+  <Calendar/>
 </template>
 
 <!--

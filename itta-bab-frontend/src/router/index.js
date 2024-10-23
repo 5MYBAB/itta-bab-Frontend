@@ -8,11 +8,13 @@ import storeRoutes from './store.js';
 import inquiryRoutes from './inquiry.js';
 
 import HomeView from "@/views/Home.vue";
+import {useAuthStore} from "@/stores/auth.js";
 
 const routes = [
     {
         path: '/',
-        component: HomeView
+        component: HomeView,
+        meta: { requiresAuth: true }
     },
     ...userRoutes,
     ...boardRoutes,
@@ -25,6 +27,19 @@ const routes = [
 const router = createRouter({
    history: createWebHistory(),
    routes
+});
+
+router.beforeEach((to, from, next) => {
+    const authStore = useAuthStore();
+
+    if (to.meta.requiresAuth && !authStore.accessToken) {
+        next({ path: '/user/login' });
+    }
+    else if (authStore.accessToken && (to.path === '/user/login')) {
+        next({ path: '/' });
+    } else {
+        next(); // 나머지 경우는 계속 진행
+    }
 });
 
 export default router;

@@ -1,6 +1,14 @@
 <script setup>
 import '@/assets/css/resetcss.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {useAuthStore} from "@/stores/auth.js";
+
+const authStore = useAuthStore();
+
+const handleLogout = () => {
+  authStore.logout();
+  alert('로그아웃 되었습니다.');
+}
 </script>
 <template>
   <header>
@@ -14,7 +22,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
       <div class="user-tap">
         <div id="alarm"><font-awesome-icon :icon="['fas', 'bell']" /></div>
         <div id="mypage"><font-awesome-icon :icon="['far', 'user']" /></div>
-        <div id="log-out"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" /></div>
+        <div @click="handleLogout" id="log-out" class="custom-cursor"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" /></div>
       </div>
     </div>
   </header>
@@ -54,5 +62,8 @@ li {
 }
 #log-out{
   margin-right: 50px;
+}
+.custom-cursor{
+  cursor: pointer;
 }
 </style>

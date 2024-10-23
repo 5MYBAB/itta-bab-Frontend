@@ -19,11 +19,7 @@ import SearchBar from "@/components/common/SearchBar.vue"
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-}
-
-.total-container input{
-  justify-content: flex-start;
+  width: 100% !important;
 }
 
 .sort-dropdown {

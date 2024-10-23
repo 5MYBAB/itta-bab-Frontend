@@ -3,7 +3,7 @@ import App from './App.vue';
 import router from "@/router/index.js";
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import {faArrowRightFromBracket, faBell, faFlag, faUserPlus} from '@fortawesome/free-solid-svg-icons'; // solid로 대체
+import {faArrowRightFromBracket, faBell, faFlag} from '@fortawesome/free-solid-svg-icons'; // solid로 대체
 import {faUser} from '@fortawesome/free-regular-svg-icons'
 import {faInstagram, faYoutube} from '@fortawesome/free-brands-svg-icons';
 import {faClock} from "@fortawesome/free-regular-svg-icons/faClock";
@@ -21,9 +21,11 @@ import {faClipboard} from "@fortawesome/free-regular-svg-icons/faClipboard";
 import {faComment} from "@fortawesome/free-regular-svg-icons/faComment";
 import {faList} from "@fortawesome/free-solid-svg-icons/faList";
 import {faBan} from "@fortawesome/free-solid-svg-icons/faBan";
+import {faArrowTurnUp} from "@fortawesome/free-solid-svg-icons/faArrowTurnUp";
 
 // 아이콘들을 라이브러리에 추가
-library.add(faBell, faUser, faArrowRightFromBracket, faUserPlus, faSmile ,faMap, faMobileScreen,faUserGroup,faListUl,faPenToSquare, faBookmark,faTriangleExclamation,faClipboard, faComment);
+library.add(faBell, faUser, faArrowRightFromBracket, faUserPlus, faSmile ,faMap, faMobileScreen,faUserGroup,faListUl,faPenToSquare, faBookmark,faTriangleExclamation,faClipboard, faComment,
+    faArrowTurnUp);
 
 // SNS 아이콘
 library.add(faInstagram, faYoutube);

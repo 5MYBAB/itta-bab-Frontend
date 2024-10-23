@@ -65,7 +65,9 @@ const props = defineProps({
       <h1>문의</h1>
     </div>
     <br>
-    <SearchBarAndSort/>
+    <div class="parent-container">
+      <SearchBarAndSort/>
+    </div>
     <br>
 
     <div class="board-container">
@@ -122,11 +124,11 @@ const props = defineProps({
   min-height: 100vh;
   width: 100%;
 }
-
-.inline-content {
+.parent-container {
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
+
 
 .title {
   text-align: center;
@@ -144,12 +146,14 @@ img {
 .board-container {
   width: 100%;
   background-color: var(--white);
-  padding: 20px;
+  padding: 0 20px;
   border-radius: 10px;
 }
 
 .header-row {
   display: flex;
+  width: calc(100% + 40px); /* Compensate for the left and right padding */
+  margin-left: -20px;
   background-color: var(--basic-yellow);
   padding: 15px;
   border-radius: 10px 10px 0 0;

@@ -64,6 +64,6 @@ const props = defineProps({
 }
 
 .write-button:hover {
-  background-color: #EBC823;
+  background-color: var(--basic-yellow);
 }
 </style>

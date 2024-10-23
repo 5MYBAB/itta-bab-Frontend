@@ -24,9 +24,10 @@ import {faClipboard} from "@fortawesome/free-regular-svg-icons/faClipboard";
 import {faComment} from "@fortawesome/free-regular-svg-icons/faComment";
 import {faList} from "@fortawesome/free-solid-svg-icons/faList";
 import {faBan} from "@fortawesome/free-solid-svg-icons/faBan";
+import {faCircleArrowRight} from "@fortawesome/free-solid-svg-icons/faCircleArrowRight";
 
 // 아이콘들을 라이브러리에 추가
-library.add(faBell, faUser, faArrowRightFromBracket, faUserPlus, faSmile ,faMap, faMobileScreen,faUserGroup,faListUl,faPenToSquare, faBookmark,faTriangleExclamation,faClipboard, faComment);
+library.add(faBell, faUser, faArrowRightFromBracket, faUserPlus, faSmile ,faMap, faMobileScreen,faUserGroup,faListUl,faPenToSquare, faBookmark,faTriangleExclamation,faClipboard, faComment, faCircleArrowRight);
 
 // SNS 아이콘
 library.add(faInstagram, faYoutube);

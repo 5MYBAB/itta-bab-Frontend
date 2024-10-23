@@ -14,7 +14,12 @@
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/vue-fontawesome": "^3.0.8",
-    "v-calendar": "^3.1.2",
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/vue3": "^6.1.15",
+    "bootstrap": "^5.3.3",
+    "bootstrap-vue-3": "^0.5.1",
     "vue": "^3.5.12",
     "vue-router": "^4.0.13"
   },

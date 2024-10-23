@@ -1,59 +1,92 @@
 <script setup>
 import '@/assets/css/resetcss.css';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import {RouterLink} from "vue-router";
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import {useRouter} from 'vue-router';
+
+const router = useRouter();
+
+const goToMainPage = () => {
+  router.push('/');
+}
+
+const goToStoreListPage = () => {
+  router.push("/store");
+}
+
+const goToGroupPage = () => {
+  router.push('/group');
+}
+
+const goToBoardPage = () => {
+  router.push('/board/post');
+}
+
 </script>
 <template>
   <header>
     <div class="headerWrap">
-      <div id="logo"><RouterLink to="/" active-class="active">itta-bab</RouterLink></div>
+      <div id="logo" v-on:click="goToMainPage">itta-bab</div>
       <ul class="header-list">
-        <li>맛집 리스트</li>
-        <li>모임 참여</li>
-        <li>익명 커뮤니티</li>
+        <li v-on:click="goToStoreListPage">맛집 리스트</li>
+        <li v-on:click="goToGroupPage">모임 참여</li>
+        <li v-on:click="goToBoardPage">익명 커뮤니티</li>
       </ul>
       <div class="user-tap">
-        <div id="alarm"><font-awesome-icon :icon="['fas', 'bell']" /></div>
-        <div id="mypage"><RouterLink to="/mypage" active-class="active"><font-awesome-icon :icon="['far', 'user']" /></RouterLink></div>
-        <div id="log-out"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" /></div>
+        <div id="alarm">
+          <font-awesome-icon :icon="['fas', 'bell']"/>
+        </div>
+        <div id="mypage">
+          <font-awesome-icon :icon="['far', 'user']"/>
+        </div>
+        <div id="log-out">
+          <font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']"/>
+        </div>
       </div>
     </div>
   </header>
 </template>
 <style scoped>
 @import '../../assets/css/resetcss.css';
-*{
+
+* {
   color: var(--text-color);
 }
-.headerWrap{
+
+.headerWrap {
   display: flex;
   height: 100px;
   align-items: center;
   justify-content: space-between;
   background-color: var(--white);
 }
-#logo{
+
+#logo {
   font-size: 35px;
   margin-left: 50px;
   font-weight: 600;
 }
-.header-list{
+
+.header-list {
   font-size: 20px;
 }
+
 li {
   display: inline;
-  margin:25px;
+  margin: 25px;
 }
-.user-tap{
+
+.user-tap {
   display: flex;
   height: 100px;
   align-items: center; /* 세로 가운데 정렬 */
 }
-.user-tap div{
+
+.user-tap div {
   font-size: 20px;
   margin: 10px;
 }
-#log-out{
+
+#log-out {
   margin-right: 50px;
 }
 </style>

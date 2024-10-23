@@ -1,4 +1,5 @@
 <template>
+  <PageTitleTop/>
   <div class="post-detail">
     <!-- 게시글 부분 -->
     <div class="post-content-wrapper">
@@ -20,14 +21,14 @@
     <!-- 댓글부분 -->
     <div class="comments-section">
       <div class="comments-header">
-        <h2>댓글 {{ comments.length }}</h2>
+        <h5>댓글 {{ comments.length }}</h5>
       </div>
       <hr />
       <div v-for="(comment, index) in comments" :key="index" class="comment">
         <div class = "comment-container">
           <div class="comment-content">
-            <p class="comment-author">{{ comment.author }}</p>
-            <p class="comment-text">{{ comment.text }}</p>
+            <p class="comment-author inline-text " >{{ comment.author }}</p>
+            <p class="comment-text inline-text">{{ comment.text }}</p>
           </div>
           <div class="comment-actions">
             <button class="reply-button" @click="replyToComment(index)">대댓글 작성</button>
@@ -46,6 +47,7 @@
         <!-- 대댓글 부분 -->
         <div v-for="(reply, replyIndex) in comment.replies" :key="replyIndex" class="reply">
           <div class="reply-content">
+            <div class="arrow"><font-awesome-icon :icon="['fas', 'arrow-turn-up']" rotation=90 /></div>
             <p class="reply-author">{{ reply.author }}</p>
             <p class="reply-text">{{ reply.text }}</p>
           </div>
@@ -57,7 +59,7 @@
         <input type="text"
                placeholder="댓글을 작성하세요."
                v-model="newCommentText"
-               @keydown.enter="addComment" />
+               @keydown.enter.prevent="addComment" />
         <button @click="addComment">등록</button>
       </div>
     </div>
@@ -66,6 +68,8 @@
 
 <script setup>
 import { ref } from 'vue';
+import PageTitleTop from "@/components/common/PageTitleTop.vue";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 // Post Data
 const postTitle = '맘에 드는 사람이 있어요';
@@ -97,7 +101,9 @@ function togglePostLike() {
 const comments = ref([
   {author: '익명1', text: '나 이 사람 누군지 알듯 ㄷㄷ', liked: false, replies: []},
   {author: '익명2', text: 'ㄹㅇㅋㅋ', liked: false, replies: []},
-  {author: '익명3', text: '이제 누가 공지해주나', liked: false, replies: []}
+  {author: '익명3', text: '이제 누가 공지해주나', liked: false, replies: []},
+  {author: '익명4', text: '꿀잼', liked: false, replies: []}
+
 ]);
 
 // New Comment Logic
@@ -169,6 +175,13 @@ function likeComment(index) {
   padding: 10px 0;
   /*border-bottom: 1px solid var(--unactive-button)*/; /* 회색 줄 보다는 흰색 추가 */
 }
+.inline-text {
+  display: inline;
+  margin-right: 10px;
+}
+.arrow{
+  margin-bottom: 15px;
+}
 
 
 .liked {
@@ -204,7 +217,7 @@ function likeComment(index) {
 }
 
 .comment-content {
-flex:1;
+  flex:1;
 }
 
 .comment-actions {

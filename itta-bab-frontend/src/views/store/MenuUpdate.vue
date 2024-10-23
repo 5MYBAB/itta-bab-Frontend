@@ -1,17 +1,17 @@
 <script setup>
 import '@/assets/css/resetcss.css';
-import CreateMenuForm from "@/components/store/CreateMenuForm.vue";
+import UpdateMenuForm from "@/components/store/UpdateMenuForm.vue";
 
 </script>
 
 <template>
   <div class="page-container">
-    <div class="page-top-title">메뉴 등록</div>
+    <div class="page-top-title">메뉴 수정</div>
   </div>
-  <CreateMenuForm/>
+  <UpdateMenuForm/>
   <div class="submit-background">
     <div class="submit-container">
-      <input type="button" value="메뉴 등록" id="submit-button">
+      <input type="button" value="메뉴 수정" id="submit-button">
       <input type="button" value="뒤로 가기" id="back-button">
     </div>
   </div>

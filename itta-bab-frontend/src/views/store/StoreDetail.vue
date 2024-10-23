@@ -18,7 +18,7 @@
   background-color: var(--white);
   max-width: 1000px;
   width: 100%;
-  padding: 65px 150px;
+  padding: 65px 100px;
   margin: 0 auto;
 }
 

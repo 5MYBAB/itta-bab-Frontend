@@ -73,7 +73,7 @@ input[type="button"] {
 }
 
 .store-container {
-  width: 70%; /* 가로 크기를 절반으로 줄임 */
+  width: 100%; /* 가로 크기를 절반으로 줄임 */
   float: right; /* 우측에 배치 */
   padding: 15px;
   background-color: var(--white);
@@ -93,7 +93,7 @@ input[type="button"] {
   font-weight: bold;
   justify-content: space-between;
   margin-bottom: 15px;
-  margin-right: 50px;
+  margin-right: 20px;
   margin-left: 50px;
 }
 

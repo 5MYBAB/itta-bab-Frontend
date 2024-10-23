@@ -45,13 +45,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 <style scoped>
 .borderline{
-  margin:  10px 0px;
   background-color: var(--gray-font);
   height: 2px;
   width: 80%;
 }
 .line{
-  margin:  10px 0px;
   background-color: var(--gray-font);
   height: 1px;
   width: 80%;
@@ -68,6 +66,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   border-radius: 10px;
   padding: 30px 10px;
   display: flex;
+  margin-bottom: 15px;
 }
 .yellow{
   width:100%;
@@ -98,7 +97,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   width: 80%;
   display: flex;
   justify-content: space-between;
-  padding: 10px 0px;
+  padding: 15px 0px;
 }
 .list-container{
   width: 100%;

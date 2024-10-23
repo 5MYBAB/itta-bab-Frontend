@@ -38,6 +38,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   justify-content: space-between;
   align-items: center;
   width: 75%;
+  margin: 15px 0px;
 }
 .text{
   font-size: 20px;
@@ -63,13 +64,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   margin-left: 10px;
 }
 .borderline{
-  margin:  10px 0px;
   background-color: var(--gray-font);
   height: 2px;
   width: 80%;
 }
 .line{
-  margin:  10px 0px;
   background-color: var(--gray-font);
   height: 1px;
   width: 80%;

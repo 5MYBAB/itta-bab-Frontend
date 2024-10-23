@@ -11,10 +11,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
     </div>
   </div>
     <div class="list-container">
+      <div class="borderline"></div>
       <div class="list-content">
         <div class="contents">
           <div class="text">1</div>
-          <div class="text">가나다</div>
+          <div class="text">가나다가나다가나다</div>
           <div class="delete">삭제</div>
         </div>
       </div>
@@ -30,15 +31,20 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 </template>
 
 <style scoped>
+.borderline{
+  background-color: var(--gray-font);
+  height: 2px;
+  width: 80%;
+}
 .delete{
   color: var(--gray-font);
   font-size: 15px;
 }
 .contents{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 230px;
-  margin: 20px 0px;
+  margin: 15px 30px;
 }
 .text{
   font-size: 20px;
@@ -52,7 +58,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 }
 .list-content{
   width: 80%;
-  border-bottom: 2px var(--gray-font) solid;
+  border-bottom: 1px var(--gray-font) solid;
 }
 .display{
   margin-top: 50px;

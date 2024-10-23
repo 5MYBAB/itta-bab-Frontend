@@ -5,6 +5,7 @@ import boardRoutes from './board.js';
 import groupRoutes from './group.js';
 import scheduleRoutes from './schedule.js';
 import storeRoutes from './store.js';
+import inquiryRoutes from './inquiry.js';
 
 import HomeView from "@/views/Home.vue";
 
@@ -18,6 +19,7 @@ const routes = [
     ...groupRoutes,
     ...scheduleRoutes,
     ...storeRoutes,
+    ...inquiryRoutes
 ];
 
 const router = createRouter({

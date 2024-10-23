@@ -16,6 +16,7 @@
       <button class="write-button" @click="$emit('writePage')">글쓰기</button>
     </div>
   </div>
+  <br>
 </template>
 
 <script setup>

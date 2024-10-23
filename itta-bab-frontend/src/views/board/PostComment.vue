@@ -146,7 +146,7 @@ function likeComment(index) {
 .post-content-wrapper {
   background-color: var(--white);
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 20px;
   margin-bottom: 20px;
 }
 .comment-author,.reply-author {
@@ -184,10 +184,6 @@ function likeComment(index) {
 }
 
 
-.liked {
-  color: red;
-}
-
 /* Post Content */
 .post-date {
   color: var(--unactive-button);
@@ -201,7 +197,7 @@ function likeComment(index) {
 .comments-section {
   background: var(--white);
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 .comments-header {
@@ -275,3 +271,9 @@ function likeComment(index) {
   color: var(--gray-font); /* 버튼 색상 설정 */
 }
 </style>
+
+
+정렬하는거 게시판에서 검색 -라우터 가서 모임 리스트 검색 후 동일하게 적용
+페이지 연동하기
+스프링 시큐리티 공부
+api 연동 해서 실제 백 정보 불러오는지 확인- 일단 전역적으로 처리해서 되는지 확인

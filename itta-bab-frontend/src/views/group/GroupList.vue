@@ -1,6 +1,7 @@
 <script setup>
 import {computed, ref} from "vue";
-import PageNumAndWritingButton from "@/components/common/PageNumAndWritingButton.vue";
+import BottomPageButton from "@/components/common/BottomPageButton.vue"
+import SearchBarAndSort from "@/components/group/SearchBarAndSort.vue";
 
 /* 테스트 데이터 */
 const jsonData = [
@@ -217,6 +218,9 @@ function goToWRegisterPage() {
 
 <template>
   <div class="background">
+    <div class="search-container">
+      <SearchBarAndSort/>
+    </div>
     <div class="total-container">
       <div class="header-row">
         <div class="header-item">모임종류</div>
@@ -239,15 +243,16 @@ function goToWRegisterPage() {
       </div>
     </div>
 
-    <PageNumAndWritingButton
-        :currentPage="currentPage"
-        :totalPages="totalPages"
-        @changePage="goToPage"
-        @writePage="goToWRegisterPage"
-    />
+    <div class="bottom-container">
+      <BottomPageButton
+          :currentPage="currentPage"
+          :totalPages="totalPages"
+          @changePage="goToPage"
+          @writePage="goToWRegisterPage"
+      />
+    </div>
   </div>
 </template>
-
 
 <style scoped>
 
@@ -262,6 +267,10 @@ function goToWRegisterPage() {
   border-radius: 10px; /* 모서리 둥글게 */
 }
 
+.search-container {
+  width: 80%;
+  margin-bottom: 12px;
+}
 
 .header-row {
   display: flex;
@@ -307,6 +316,18 @@ function goToWRegisterPage() {
 
 .total-container{
   width: 80%;
+}
+
+.bottom-container {
+  display: flex;
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center; /* 세로 방향 가운데 정렬 */
+  margin-top: 20px; /* 필요한 경우 여백 추가 */
+  width: 80%; /* 너비를 설정하여 부모와 맞춤 */
+}
+
+.bottom-container button{
+  justify-content: flex-end; /* 글쓰기 버튼을 오른쪽 끝 정렬 */
 }
 
 </style>

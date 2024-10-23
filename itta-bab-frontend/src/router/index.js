@@ -6,6 +6,7 @@ import groupRoutes from './group.js';
 import scheduleRoutes from './schedule.js';
 import storeRoutes from './store.js';
 import inquiryRoutes from './inquiry.js';
+import reportRoutes from "@/router/report.js";
 
 import HomeView from "@/views/Home.vue";
 
@@ -19,7 +20,8 @@ const routes = [
     ...groupRoutes,
     ...scheduleRoutes,
     ...storeRoutes,
-    ...inquiryRoutes
+    ...inquiryRoutes,
+    ...reportRoutes
 ];
 
 const router = createRouter({

@@ -1,39 +1,40 @@
 <script setup>
-import {useRoute, useRouter} from "vue-router";
-
-const currentRoute = useRoute();
-
-const router = useRouter();
-
-function goToLogin() {
-  router.push('/user/login')
-}
-
-function goToSignUp() {
-  router.push('/user/signup')
-}
+import Calendar from "@/components/common/Calendar.vue";
+import GroupList from "@/components/user/GroupList.vue";
+import StoreList from "@/components/user/StoreList.vue";
+import PostList from "@/components/user/PostList.vue";
 </script>
 
 <template>
-  <div>
-    <h1>Home 화면 입니다.</h1>
-    <button @click="goToLogin">로그인</button>
-    <button @click="goToSignUp">회원가입</button>
+  <div class="back">
+      <div class="calendar">
+        <Calendar/>
+      </div>
+      <div class="menu-list">
+        <GroupList/>
+        <StoreList/>
+        <PostList/>
+      </div>
   </div>
 </template>
 
 <style scoped>
-div{
+.back {
+  padding-top: 30px;
+  background-color: var(--background-color);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  gap: 54px;
 }
-h1{
-  font-size: 50px;
-  margin: 20px;
+.calendar {
+  width: 825px;
+  height: 657px;
 }
-button {
-  font-size: 40px;
+.menu-list {
+  gap: 45px;
+  display: flex;
+  justify-content: center;
 }
 </style>

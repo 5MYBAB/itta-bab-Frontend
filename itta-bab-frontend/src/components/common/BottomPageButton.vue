@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="total-container">
     <div class="page-named">
       <button @click="$emit('changePage', currentPage - 1)" :disabled="currentPage === 1">〈</button>
       <span
@@ -12,6 +12,7 @@
       </span>
       <button @click="$emit('changePage', currentPage + 1)" :disabled="currentPage === totalPages">〉</button>
     </div>
+
     <div class="button-container">
       <button class="write-button" @click="$emit('writePage')">글쓰기</button>
     </div>
@@ -29,9 +30,18 @@ const props = defineProps({
 </script>
 
 <style scoped>
+.total-container {
+  width: 100%;
+  justify-content: center;
+}
+
+.total-container button {
+  justify-content: flex-end;
+}
+
 .page-named {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* 페이지 번호를 가운데 정렬 */
   gap: 5px;
   margin-top: 20px;
 }
@@ -50,9 +60,9 @@ const props = defineProps({
 
 .button-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-end; /* 글쓰기 버튼을 오른쪽 끝 정렬 */
   margin-top: 20px;
-  width: 100%;
+  width: 100%; /* 전체 너비를 차지하도록 설정 */
 }
 
 .write-button {
@@ -64,6 +74,6 @@ const props = defineProps({
 }
 
 .write-button:hover {
-  background-color: var(--basic-yellow);
+  background-color: #EBC823;
 }
 </style>

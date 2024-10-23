@@ -6,21 +6,21 @@ import Header from "@/App.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
 
 const jsonData = [
-  { title: "댓글 문의", likes: 15, date: "2024-10-11 12:00", answered: false },
-  { title: "모임 문의", likes: 55, date: "2024-10-08 13:43", answered: false },
-  { title: "게시글 문의", likes: 30, date: "2024-10-05 14:22", answered: false },
-  { title: "채팅 문의", likes: 5, date: "2024-10-04 18:35", answered: true },
-  { title: "회원가입 문의", likes: 45, date: "2024-10-02 09:10", answered: true },
-  { title: "비밀번호 재설정 문의", likes: 20, date: "2024-09-30 10:15", answered: false },
-  { title: "로그인 오류 문의", likes: 60, date: "2024-09-28 16:00", answered: false },
-  { title: "결제 문의", likes: 25, date: "2024-09-25 08:45", answered: false },
-  { title: "서비스 중단 문의", likes: 35, date: "2024-09-23 14:20", answered: true },
-  { title: "프로필 수정 문의", likes: 18, date: "2024-09-21 11:05", answered: true },
-  { title: "이메일 인증 문의", likes: 40, date: "2024-09-18 13:00", answered: true },
-  { title: "공지사항 관련 문의", likes: 50, date: "2024-09-16 09:30", answered: true },
-  { title: "비정상적인 접근 문의", likes: 27, date: "2024-09-15 17:40", answered: true },
-  { title: "데이터 백업 문의", likes: 32, date: "2024-09-12 12:10", answered: true },
-  { title: "계정 복구 문의", likes: 22, date: "2024-09-10 15:25", answered: true }
+  { title: "신고1", likes: 15, target: "회원", answered: false },
+  { title: "신고2", likes: 55, target: "모임", answered: false },
+  { title: "신고3", likes: 30, target: "댓글", answered: false },
+  { title: "신고4", likes: 5, target: "게시판", answered: true },
+  { title: "신고5", likes: 45, target: "모임", answered: true },
+  { title: "신고6", likes: 20, target: "댓글", answered: false },
+  { title: "신고7", likes: 60, target: "댓글", answered: false },
+  { title: "신고8", likes: 25, target: "댓글", answered: false },
+  { title: "신고9", likes: 35, target: "게시판", answered: true },
+  { title: "신고10", likes: 18, target: "모임", answered: true },
+  { title: "신고11", likes: 40, target: "모임", answered: true },
+  { title: "신고12", likes: 50, target: "게시판", answered: true },
+  { title: "신고13", likes: 27, target: "모임", answered: true },
+  { title: "신고14", likes: 32, target: "게시판", answered: true },
+  { title: "신고15", likes: 22, target: "게시판", answered: true }
 ];
 
 
@@ -62,7 +62,7 @@ const props = defineProps({
   <PageTitleTop/>
   <div class="inquiry-detail">
     <div class="title">
-      <h1>문의</h1>
+      <h1>신고 목록</h1>
     </div>
     <br>
     <div class="parent-container">
@@ -72,29 +72,29 @@ const props = defineProps({
 
     <div class="board-container">
       <div class="header-row">
-        <div class="header-item">번호</div>
+        <div class="header-item">신고 번호</div>
         <div class="header-item">제목</div>
-        <div class="header-item">작성시간</div>
-        <div class="header-item">답변</div>
+        <div class="header-item">신고 대상</div>
+        <div class="header-item">처리 상태</div>
       </div>
       <div v-for="(item, index) in paginatedData" :key="index" class="data-row">
         <div class="data-item">{{ index + 1 }}</div>
         <div class="data-item">{{ item.title }}</div>
-        <div class="data-item">{{ item.date }}</div>
+        <div class="data-item">{{ item.target }}</div>
         <div class="data-item">
           <button
               v-if="!item.answered"
               class="answer-button"
               @click="answerInquiry(index)"
           >
-            답변하기
+            대기
           </button>
           <button
               v-else
               class="view-answer-button"
               @click="viewAnswer(index)"
           >
-            답변보기
+            처리
           </button>
         </div>
       </div>

@@ -1,11 +1,12 @@
 <script setup>
 import '@/assets/css/resetcss.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {RouterLink} from "vue-router";
 </script>
 <template>
   <header>
     <div class="headerWrap">
-      <div id="logo">itta-bab</div>
+      <div id="logo"><RouterLink to="/" active-class="active">itta-bab</RouterLink></div>
       <ul class="header-list">
         <li>맛집 리스트</li>
         <li>모임 참여</li>
@@ -13,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
       </ul>
       <div class="user-tap">
         <div id="alarm"><font-awesome-icon :icon="['fas', 'bell']" /></div>
-        <div id="mypage"><font-awesome-icon :icon="['far', 'user']" /></div>
+        <div id="mypage"><RouterLink to="/mypage" active-class="active"><font-awesome-icon :icon="['far', 'user']" /></RouterLink></div>
         <div id="log-out"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" /></div>
       </div>
     </div>

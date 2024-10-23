@@ -6,27 +6,28 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 <template>
   <div class="display">
     <div class="title">
-      <font-awesome-icon :icon="['fas', 'user-group']" size="2x" />
-      <div>친구 목록</div>
+      <font-awesome-icon :icon="['fas', 'triangle-exclamation']" size="2x" />
+      <div>신고 목록</div>
     </div>
   </div>
-    <div class="list-container">
-      <div class="borderline"></div>
-      <div class="list-content">
-        <div class="contents">
-          <div class="text">1</div>
-          <div class="text">가나다가나다가나다</div>
-          <div class="delete">삭제</div>
-        </div>
-      </div>
-      <div class="list-content">
-        <div class="contents">
-          <div class="text">1</div>
-          <div class="text">가나다</div>
-          <div class="delete">삭제</div>
-        </div>
+  <div class="list-container">
+    <div class="borderline"></div>
+    <div class="list-content">
+      <div class="contents">
+        <div class="text">1</div>
+        <div class="text">가나다가나다</div>
+        <div class="ctg">게시판</div>
       </div>
     </div>
+    <div class="list-content">
+      <div class="contents">
+        <div class="text">1</div>
+        <div class="text">가나다</div>
+        <div class="ctg">댓글</div>
+      </div>
+    </div>
+
+  </div>
 
 </template>
 
@@ -36,15 +37,23 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   height: 2px;
   width: 80%;
 }
-.delete{
-  color: var(--gray-font);
-  font-size: 15px;
+.ctg{
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 20px;
+  width: 87px;
+  height: 42px;
+  background-color: var(--active-green);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .contents{
   display: flex;
   justify-content: space-between;
   gap: 230px;
   margin: 15px 30px;
+  align-items: center
 }
 .text{
   font-size: 20px;

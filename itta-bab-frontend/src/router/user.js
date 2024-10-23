@@ -23,5 +23,5 @@ export default [
     {
         path: '/delete-user',
         component: DeleteUser
-    },
+    }
 ];

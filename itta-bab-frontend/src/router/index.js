@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 
-import userRoutes from './user';
+import userRoutes from './user.js';
 import boardRoutes from './board.js';
 import groupRoutes from './group.js';
 import scheduleRoutes from './schedule.js';

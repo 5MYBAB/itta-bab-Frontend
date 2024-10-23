@@ -2,23 +2,42 @@
 import '@/assets/css/resetcss.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {useAuthStore} from "@/stores/auth.js";
+import {useRouter} from 'vue-router';
 
 const authStore = useAuthStore();
+const router = useRouter();
 
 const handleLogout = () => {
   authStore.logout();
   alert('로그아웃 되었습니다.');
   window.location.reload();
 }
+
+const goToMainPage = () => {
+  router.push('/');
+}
+
+const goToStoreListPage = () => {
+  router.push("/store");
+}
+
+const goToGroupPage = () => {
+  router.push('/group');
+}
+
+const goToBoardPage = () => {
+  router.push('/board/post');
+}
+
 </script>
 <template>
   <header>
     <div class="headerWrap">
-      <div id="logo">itta-bab</div>
+      <div id="logo" v-on:click="goToMainPage">itta-bab</div>
       <ul class="header-list">
-        <li>맛집 리스트</li>
-        <li>모임 참여</li>
-        <li>익명 커뮤니티</li>
+        <li v-on:click="goToStoreListPage">맛집 리스트</li>
+        <li v-on:click="goToGroupPage">모임 참여</li>
+        <li v-on:click="goToBoardPage">익명 커뮤니티</li>
       </ul>
       <div class="user-tap">
         <div id="alarm"><font-awesome-icon :icon="['fas', 'bell']" /></div>
@@ -30,38 +49,46 @@ const handleLogout = () => {
 </template>
 <style scoped>
 @import '../../assets/css/resetcss.css';
-*{
+
+* {
   color: var(--text-color);
 }
-.headerWrap{
+
+.headerWrap {
   display: flex;
   height: 100px;
   align-items: center;
   justify-content: space-between;
   background-color: var(--white);
 }
-#logo{
+
+#logo {
   font-size: 35px;
   margin-left: 50px;
   font-weight: 600;
 }
-.header-list{
+
+.header-list {
   font-size: 20px;
 }
+
 li {
   display: inline;
-  margin:25px;
+  margin: 25px;
 }
-.user-tap{
+
+.user-tap {
   display: flex;
   height: 100px;
   align-items: center; /* 세로 가운데 정렬 */
 }
-.user-tap div{
+
+.user-tap div {
   font-size: 20px;
   margin: 10px;
 }
-#log-out{
+
+#log-out {
   margin-right: 50px;
 }
 .custom-cursor{

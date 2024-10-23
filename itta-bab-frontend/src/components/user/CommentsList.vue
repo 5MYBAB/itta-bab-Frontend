@@ -6,27 +6,27 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 <template>
   <div class="display">
     <div class="title">
-      <font-awesome-icon :icon="['fas', 'user-group']" size="2x" />
-      <div>친구 목록</div>
+      <font-awesome-icon :icon="['far', 'comment']" size="2x"/>
+      <div>작성 댓글 목록</div>
     </div>
   </div>
-    <div class="list-container">
-      <div class="borderline"></div>
-      <div class="list-content">
-        <div class="contents">
-          <div class="text">1</div>
-          <div class="text">가나다가나다가나다</div>
-          <div class="delete">삭제</div>
-        </div>
-      </div>
-      <div class="list-content">
-        <div class="contents">
-          <div class="text">1</div>
-          <div class="text">가나다</div>
-          <div class="delete">삭제</div>
-        </div>
+  <div class="list-container">
+    <div class="borderline"></div>
+    <div class="list-content">
+      <div class="contents">
+        <div class="num">1</div>
+        <div class="text">가나다가나다가나다가나다가나다가나다가나다가나다가나다가나다가나다가나다가나다가나다가나다가나다가나다가나다</div>
+        <div class="delete">2024-09-24 11:59</div>
       </div>
     </div>
+    <div class="list-content">
+      <div class="contents">
+        <div class="num">1</div>
+        <div class="text">가나다</div>
+        <div class="delete">2024-09-24 11:59</div>
+      </div>
+    </div>
+  </div>
 
 </template>
 
@@ -43,12 +43,18 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 .contents{
   display: flex;
   justify-content: space-between;
-  gap: 230px;
   margin: 15px 30px;
 }
-.text{
+.num{
   font-size: 20px;
   font-weight: 400;
+}
+.text{
+  white-space: nowrap;        /* 한 줄로 표시되도록 */
+  overflow: hidden;           /* 넘치는 텍스트는 숨김 처리 */
+  text-overflow: ellipsis;
+  width: 400px;
+  font-size: 20px;
 }
 .list-container{
   width: 100%;

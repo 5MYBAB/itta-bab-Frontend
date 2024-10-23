@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed, provide, ref} from "vue";
 import BottomPageButton from "@/components/common/BottomPageButton.vue"
 import SearchBarAndSort from "@/components/group/SearchBarAndSort.vue";
 
@@ -173,18 +173,19 @@ const groupCategories = [
   }
 ];
 
+const filteredData = ref(jsonData); // 필터링된 데이터를 저장할 ref
 const currentPage = ref(1);
 const itemsPage = 10;
 
 const totalPages = computed(() => {
-  return Math.ceil(jsonData.length / itemsPage);
+  return Math.ceil(filteredData.value.length / itemsPage);
 });
 
 const paginatedDate = computed(() => {
   const start = (currentPage.value - 1) * itemsPage;
   const end = start + itemsPage;
 
-  return jsonData.slice(start, end);
+  return filteredData.value.slice(start, end);
 });
 
 // 날짜 형식화 함수
@@ -214,6 +215,21 @@ function goToPage(page) {
 function goToWRegisterPage() {
   window.location.href = '/register';
 }
+
+const filter = (searchTerm) => {
+  if (searchTerm.trim() === "") { // 빈칸인지 확인
+    filteredData.value = jsonData; // 검색어가 빈칸이면 전체 데이터를 보여줌
+    return;
+  }
+
+  // 검색어가 포함된 항목만 필터링
+  filteredData.value = jsonData.filter(item =>
+      item.group_title.includes(searchTerm)
+  );
+};
+
+// filter를 제공
+provide("filter", filter);
 </script>
 
 <template>
@@ -314,7 +330,7 @@ function goToWRegisterPage() {
   border-radius: 0 0 10px 10px; /* 윗부분만 둥글게 */
 }
 
-.total-container{
+.total-container {
   width: 80%;
 }
 
@@ -322,11 +338,10 @@ function goToWRegisterPage() {
   display: flex;
   justify-content: center; /* 가운데 정렬 */
   align-items: center; /* 세로 방향 가운데 정렬 */
-  margin-top: 20px; /* 필요한 경우 여백 추가 */
   width: 80%; /* 너비를 설정하여 부모와 맞춤 */
 }
 
-.bottom-container button{
+.bottom-container button {
   justify-content: flex-end; /* 글쓰기 버튼을 오른쪽 끝 정렬 */
 }
 

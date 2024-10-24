@@ -39,14 +39,15 @@ function goToWRegisterPage() {
 }
 
 const filter = (searchTerm) => {
-  if (searchTerm.trim() === "") { // 빈칸인지 확인
-    filteredData.value = jsonData; // 검색어가 빈칸이면 전체 데이터를 보여줌
+  if (searchTerm.trim() === "") {
+    filteredData.value = jsonData;
+    currentPage.value = 1; // 페이지를 초기화
     return;
   }
-  // 검색어가 포함된 항목만 필터링
   filteredData.value = jsonData.filter(item =>
       item.group_category_name.includes(searchTerm)
   );
+  currentPage.value = 1; // 검색 후 페이지를 1로 초기화
 };
 
 // filter를 제공

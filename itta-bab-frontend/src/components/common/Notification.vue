@@ -1,8 +1,14 @@
 <script setup>
 
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {ref} from "vue";
 
+const isDropdownVisible = ref(false);
 const redDotStates = ref([false, false, false]);
+
+const toggleDropdown = () => {
+  isDropdownVisible.value = !isDropdownVisible.value;
+};
 
 const handleLineClick = (index) => {
   redDotStates.value[index] = true;
@@ -11,41 +17,52 @@ const handleLineClick = (index) => {
 </script>
 
 <template>
-  <div class="container">
-    <div class="yellow">
-      <div class="text-container">
-        알림
-      </div>
+  <div class="notification-dropdown">
+    <div @click="toggleDropdown" id="notification-button" class="custom-cursor">
+      <font-awesome-icon :icon="['fas', 'bell']"/>
     </div>
-    <div class="list">
-      <div id="line" @click="handleLineClick(0)" class="custom-cursor">
-        <div class="icon">
-          <img src="@/assets/icons/alarm-review-gray.svg">
-        </div>
-        <div class="info">
-          <div class="title">리뷰<div id="red-dot" :class="{ inactive: redDotStates[0] }"></div></div>
-          <div class="content">리뷰가 등록되었습니다: 버거킹 신대방삼거리점</div>
-          <div class="time">10/24 12:19</div>
+    <div v-if="isDropdownVisible" class="container">
+      <div class="yellow">
+        <div class="text-container">
+          알림
         </div>
       </div>
-      <div id="line" @click="handleLineClick(1)" class="custom-cursor">
-        <div class="icon">
-          <img src="@/assets/icons/alarm-post-gray.svg">
+      <div class="list">
+        <div id="line" @click="handleLineClick(0)" class="custom-cursor">
+          <div class="icon">
+            <img src="@/assets/icons/alarm-review-gray.svg">
+          </div>
+          <div class="info">
+            <div class="title">리뷰
+              <div id="red-dot" :class="{ inactive: redDotStates[0] }"></div>
+            </div>
+            <div class="content">리뷰가 등록되었습니다: 버거킹 신대방삼거리점</div>
+            <div class="time">10/24 12:19</div>
+          </div>
         </div>
-        <div class="info">
-          <div class="title">익명 게시판<div id="red-dot" :class="{ inactive: redDotStates[1] }"></div></div>
-          <div class="content">글이 등록되었습니다: 소통해요!</div>
-          <div class="time">10/02 17:34</div>
+        <div id="line" @click="handleLineClick(1)" class="custom-cursor">
+          <div class="icon">
+            <img src="@/assets/icons/alarm-post-gray.svg">
+          </div>
+          <div class="info">
+            <div class="title">익명 게시판
+              <div id="red-dot" :class="{ inactive: redDotStates[1] }"></div>
+            </div>
+            <div class="content">글이 등록되었습니다: 소통해요!</div>
+            <div class="time">10/02 17:34</div>
+          </div>
         </div>
-      </div>
-      <div id="line" @click="handleLineClick(2)" class="custom-cursor">
-        <div class="icon">
-          <img src="@/assets/icons/alarm-group-gray.svg">
-        </div>
-        <div class="info">
-          <div class="title">모임<div id="red-dot" :class="{ inactive: redDotStates[2] }"></div></div>
-          <div class="content">임광택(pangtaek)님의 모임이 등록되었습니다: 저랑 컵밥 시키실 분</div>
-          <div class="time">09/22 13:01</div>
+        <div id="line" @click="handleLineClick(2)" class="custom-cursor">
+          <div class="icon">
+            <img src="@/assets/icons/alarm-group-gray.svg">
+          </div>
+          <div class="info">
+            <div class="title">모임
+              <div id="red-dot" :class="{ inactive: redDotStates[2] }"></div>
+            </div>
+            <div class="content">임광택(pangtaek)님의 모임이 등록되었습니다: 저랑 컵밥 시키실 분</div>
+            <div class="time">09/22 13:01</div>
+          </div>
         </div>
       </div>
     </div>
@@ -53,6 +70,17 @@ const handleLineClick = (index) => {
 </template>
 
 <style scoped>
+.notification-dropdown {
+  position: relative;
+}
+
+.container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform: translateX(-414px);
+  z-index: 10;
+}
 
 .yellow {
   border-radius: 20px 20px 0px 0px;
@@ -82,13 +110,13 @@ const handleLineClick = (index) => {
   border-radius: 0px 0px 20px 20px;
   height: 513px;
   width: 414px;
-  padding: 32px 0px;
+  padding: 15px 0px;
   display: flex;
   flex-direction: column;
 }
 
 #line {
-  margin: 10px 42px;
+  margin: 10px 35px;
   border-bottom: 2px var(--gray-font) solid;
   padding-bottom: 4px;
   display: flex;
@@ -117,7 +145,7 @@ const handleLineClick = (index) => {
   gap: 4px;
 }
 
-#red-dot{
+#red-dot {
   width: 7px;
   height: 7px;
   background-color: var(--real-red);
@@ -137,7 +165,8 @@ const handleLineClick = (index) => {
   font-size: 10px;
   font-weight: 400;
 }
-.custom-cursor{
+
+.custom-cursor {
   cursor: pointer;
 }
 </style>

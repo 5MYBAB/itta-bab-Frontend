@@ -3,6 +3,7 @@ import '@/assets/css/resetcss.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {useAuthStore} from "@/stores/auth.js";
 import {useRouter} from 'vue-router';
+import Notification from "@/components/common/Notification.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -40,7 +41,7 @@ const goToBoardPage = () => {
         <li v-on:click="goToBoardPage" class="custom-cursor">익명 커뮤니티</li>
       </ul>
       <div class="user-tap">
-        <div id="alarm"><font-awesome-icon :icon="['fas', 'bell']" /></div>
+        <Notification/>
         <div id="mypage"><font-awesome-icon :icon="['far', 'user']" /></div>
         <div @click="handleLogout" id="log-out" class="custom-cursor"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" /></div>
       </div>

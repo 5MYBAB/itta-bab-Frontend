@@ -1,6 +1,6 @@
 <template>
   <div class="map-container">
-    <div id="map" @dblclick="goToNaverMap"></div>
+    <div id="map"></div> <!-- @dblclick 제거 -->
   </div>
 </template>
 
@@ -22,10 +22,13 @@ export default {
     script.onload = () => {
       nextTick(() => {
         // 네이버 지도 생성
-        new window.naver.maps.Map("map", {
+        const map = new window.naver.maps.Map("map", {
           center: new window.naver.maps.LatLng(37.499677, 126.928061), // 신대방삼거리 좌표
           zoom: 18
         });
+
+        // 맵 더블클릭 이벤트 핸들러 추가
+        window.naver.maps.Event.addListener(map, 'dblclick', this.goToNaverMap);
       });
     };
   },
@@ -49,5 +52,4 @@ export default {
   height: 191%;
   border-radius: 20px;
 }
-
 </style>

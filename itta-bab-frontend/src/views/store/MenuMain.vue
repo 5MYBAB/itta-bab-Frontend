@@ -8,6 +8,15 @@ import MenuList from "@/components/store/MenuList.vue";
 
 <template>
   <div class="background">
+    <div class="page-container">
+      <div class="page-top-title">가게 메뉴</div>
+
+        <div class="submit-container">
+          <input type="button" value="메뉴 등록" id="submit-button">
+          <input type="button" value="메뉴 수정" id="submit-button">
+        </div>
+
+    </div>
     <div class="total-container">
       <div class="header-row">
         <div class="header-item">우리 할매 국밥</div>
@@ -19,6 +28,21 @@ import MenuList from "@/components/store/MenuList.vue";
 
 
 <style scoped>
+
+.page-container{
+  padding-top:130px;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+.page-top-title{
+  padding-left: 100px;
+  padding-bottom: 30px;
+  font-size: 40px;
+  font-weight: 600;
+  width: 1130px;
+
+}
 
 
 .background {
@@ -63,16 +87,26 @@ import MenuList from "@/components/store/MenuList.vue";
   width: 80%;
 }
 
-.bottom-container {
-  display: flex;
-  justify-content: center; /* 가운데 정렬 */
-  align-items: center; /* 세로 방향 가운데 정렬 */
-  margin-top: 20px; /* 필요한 경우 여백 추가 */
-  width: 80%; /* 너비를 설정하여 부모와 맞춤 */
-}
-
 .bottom-container button{
   justify-content: flex-end; /* 글쓰기 버튼을 오른쪽 끝 정렬 */
+}
+
+.submit-container {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 30%;
+
+}
+#submit-button {
+  width: 160px;
+  height: 44px;
+  background-color: var(--basic-yellow);
+  border-radius: 52px;
+  border: none;
+  font-weight: 600;
+  text-align: center;
 }
 
 

@@ -3,6 +3,8 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import {BModal} from "bootstrap-vue-3";
+import {useAuthStore} from "@/stores/auth.js";
+import axios from "axios";
 
 export default {
   components: {
@@ -11,6 +13,7 @@ export default {
   },
   data() {
     return {
+      authStore: useAuthStore(),
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin],
         initialView: 'dayGridMonth',
@@ -27,7 +30,7 @@ export default {
         title: '',
         start: '',
         description: ''
-      }
+      },
     }
   },
   methods: {
@@ -52,6 +55,27 @@ export default {
           calendar.addEvent(eventData);
           this.showModal = false;
           this.newEvent = {title: '', start: '', description: ''};
+
+          const saveEventDB = async () => {
+            const token = this.authStore.accessToken;
+            await axios.post('http://localhost:8003/schedule',
+                {
+                  scheduleTitle : eventData.title,
+                  scheduleContent : eventData.description,
+                  scheduleDate : eventData.start
+                },{
+
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                   }
+                }
+            )
+                .catch(error => {
+                  console.error('Error fetching data:', error);
+                });
+          }
+          saveEventDB();
         }
       }
     }
@@ -87,6 +111,7 @@ export default {
   padding: 5px; /* 패딩 추가하여 크기 증가 */
   font-size: 1.2em; /* 글자 크기 증가 */
 }
+
 .container {
   background-color: #FFFFFF;
 }

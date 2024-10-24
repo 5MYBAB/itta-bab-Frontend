@@ -5,6 +5,7 @@ import UpdateUserInfo from "@/views/user/UpdateUserInfo.vue";
 import DeleteUser from "@/views/user/DeleteUser.vue";
 import DeleteUserResult from "@/views/user/DeleteUserResult.vue";
 import FindId from "@/views/user/FindId.vue";
+import FindPassword from "@/views/user/FindPassword.vue";
 
 export default [
     {
@@ -18,6 +19,10 @@ export default [
     {
         path: '/findId',
         component: FindId
+    },
+    {
+        path: '/findPwd',
+        component: FindPassword
     },
     {
         path: '/mypage',

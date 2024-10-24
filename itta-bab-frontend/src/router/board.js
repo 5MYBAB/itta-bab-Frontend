@@ -2,6 +2,7 @@
 import PostCreate from "@/views/board/PostCreate.vue";
 import PostComment from "@/views/board/PostComment.vue";
  import MenuCategoryList from "@/views/store/MenuCategoryList.vue";
+ import StoreList from "@/views/store/StoreList.vue";
 
 export default [
     {
@@ -18,5 +19,8 @@ export default [
     }, {
         path: "/admin/menuCategory",
         component: MenuCategoryList
+    }, {
+        path: "/admin/store",
+        component: StoreList
     }
 ];

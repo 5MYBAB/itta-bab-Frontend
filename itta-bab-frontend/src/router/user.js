@@ -7,11 +7,11 @@ import DeleteUserResult from "@/views/user/DeleteUserResult.vue";
 
 export default [
     {
-        path: '/user/login',
+        path: '/login',
         component: LoginView
     },
     {
-        path: '/user/signup',
+        path: '/signup',
         component: SignUpView
     },
     {

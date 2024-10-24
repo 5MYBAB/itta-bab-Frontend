@@ -3,6 +3,7 @@ import '@/assets/css/resetcss.css';
 import Header from "@/components/common/Header.vue";
 import Footer from "@/components/common/Footer.vue";
 import { RouterLink, RouterView } from "vue-router";
+import StoreDetail from "@/views/store/StoreDetail.vue";
 </script>
 
 <template>
@@ -16,7 +17,6 @@ import { RouterLink, RouterView } from "vue-router";
   <main>
     <RouterView/>
   </main>
-  <Footer/>
 </template>
 
 <style scoped>

@@ -6,33 +6,38 @@ import BottomPageButton from "@/components/common/BottomPageButton.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
 
-// 카테고리 정보
-const groupCategories = [
-  {"group_category_id": 1, "group_category_name": "아침"},
-  {"group_category_id": 2, "group_category_name": "점심"},
-  {"group_category_id": 3, "group_category_name": "저녁"},
-  {"group_category_id": 4, "group_category_name": "오락"},
-  {"group_category_id": 5, "group_category_name": "음주"}
-];
+// 보안
+const authStore = useAuthStore();       // 로그인 토큰
 
-const authStore = useAuthStore();
-const filteredData = ref([]); // 필터링된 데이터를 저장할 ref
-const currentPage = ref(1);
-const itemsPage = 10;
+// DB 데이터
+const groupData = ref([]);        // DB 모임 데이터
+const groupCategoryData = ref([]);  // DB 모임 카테고리 데이터
 
+// 페이지 관련
+const currentPage = ref(1);       // 현재 페이지
+const itemsPage = 10;                   // 페이지 당 보여줄 데이터
+
+// REST API 호출 함수
 const fetchData = async () => {
   try {
-    const groupResponse = await axios.get("http://localhost:8003/group/list", {
+    const response1 = await axios.get("http://localhost:8003/group/list", {
       headers: {
-        Authorization: `Bearer ${authStore.accessToken}`,
+        Authorization: `Bearer ${authStore.accessToken}`
       }
     });
-    filteredData.value = groupResponse.data; // 데이터를 필터링된 데이터에 저장
-    console.log(filteredData);
+    groupData.value = response1.data;
+    console.log(groupData);
 
-    // const groupCategoryResponse = await axios.get("http://localhost:8003/groupCategory")
+    const response2 = await axios.get("http://localhost:8003/groupCategory", {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+    groupCategoryData.value = response2.data;
+    console.log(groupCategoryData);
+
   } catch (error) {
-    console.error("어라라?", error);
+    console.error("어라라...?\n", error);
   }
 };
 
@@ -42,13 +47,13 @@ onMounted(() => {
 });
 
 const totalPages = computed(() => {
-  return Math.ceil(filteredData.value.length / itemsPage);
+  return Math.ceil(groupData.value.length / itemsPage);
 });
 
 const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * itemsPage;
   const end = start + itemsPage;
-  return filteredData.value.slice(start, end); // 필터링된 데이터에서 페이지네이션
+  return groupData.value.slice(start, end); // 필터링된 데이터에서 페이지네이션
 });
 
 // 날짜 형식화 함수
@@ -64,8 +69,9 @@ function formatDate(dateString) {
 
 // 카테고리 이름 반환 함수
 function getCategoryName(categoryId) {
-  const category = groupCategories.find(cat => cat.group_category_id === categoryId);
-  return category ? category.group_category_name : "기타";
+  const category = groupCategoryData.value.find(item => item.groupCategoryId === categoryId);
+
+  return category ? category.groupCategoryName : "기타";
 }
 
 function goToPage(page) {
@@ -86,7 +92,7 @@ const filter = (searchTerm) => {
   }
 
   // 검색어가 포함된 항목만 필터링
-  filteredData.value = filteredData.value.filter(item =>
+  groupData.value = groupData.value.filter(item =>
       item.group_title.includes(searchTerm)
   );
 
@@ -94,7 +100,6 @@ const filter = (searchTerm) => {
   currentPage.value = 1;
 };
 
-// filter를 제공
 provide("filter", filter);
 </script>
 

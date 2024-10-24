@@ -23,7 +23,7 @@ const cl = () => {
   align-items: center; /* 세로 중앙 정렬 */
   justify-content: center; /* 수평 중앙 정렬 */
   height: 100%; /* 필요에 따라 높이 설정 */
-  border-bottom: 2px solid #212020;
+  border-bottom: 1px solid #A3A3A3;
 }
 
 .icon {

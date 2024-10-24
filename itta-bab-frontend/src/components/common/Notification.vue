@@ -54,6 +54,7 @@ const handleLineClick = (index) => {
 const router = useRouter();
 
 const goToMypage = () => {
+  isDropdownVisible.value = false;
   router.push('/mypage');
 }
 
@@ -197,6 +198,7 @@ const goToMypage = () => {
 
 #show-more-button {
   color: var(--gray-font);
+  margin-top: 8px;
   display: flex;
   justify-content: center;
   align-items: center;

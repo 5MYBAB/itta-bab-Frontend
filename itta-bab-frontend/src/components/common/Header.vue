@@ -12,11 +12,7 @@ const isLogin = ref(null);
 
 onMounted(() => {
   const token = authStore.accessToken;
-  if(token) {
-    isLogin.value = true;
-  } else {
-    isLogin.value = false;
-  }
+  isLogin.value = !!token;
 });
 
 const handleLogout = () => {

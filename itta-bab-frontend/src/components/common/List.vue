@@ -78,6 +78,8 @@ function goToWritePage() {
 }
 
 .header-row {
+
+  width: 100px;
   display: flex;
   width: calc(100% + 40px); /* Compensate for the left and right padding */
   margin-left: -20px;
@@ -85,6 +87,7 @@ function goToWritePage() {
   padding: 15px;
   border-radius: 10px 10px 0 0;
   font-weight: bold;
+
 }
 
 

@@ -99,8 +99,8 @@ const registerReply = async () => {
 
 .question-details div {
   margin-bottom: 10px;
-/*  margin-top: 10px;
-  padding-top: 10px;*/
+  /*  margin-top: 10px;
+    padding-top: 10px;*/
 }
 .section-title {
   text-align: center; /* 중앙 정렬 */

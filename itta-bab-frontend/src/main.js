@@ -30,6 +30,7 @@ import {faList} from "@fortawesome/free-solid-svg-icons/faList";
 import {faBan} from "@fortawesome/free-solid-svg-icons/faBan";
 import {faArrowTurnUp} from "@fortawesome/free-solid-svg-icons/faArrowTurnUp";
 import {faCircleArrowRight} from "@fortawesome/free-solid-svg-icons/faCircleArrowRight";
+import {faBowlFood} from "@fortawesome/free-solid-svg-icons/faBowlFood";
 
 // 아이콘들을 라이브러리에 추가
 library.add(faBell, faUser, faArrowRightFromBracket, faUserPlus, faSmile ,faMap, faMobileScreen,faUserGroup,faListUl,faPenToSquare, faBookmark,faTriangleExclamation,faClipboard, faComment,
@@ -39,7 +40,7 @@ library.add(faBell, faUser, faArrowRightFromBracket, faUserPlus, faSmile ,faMap,
 library.add(faInstagram, faYoutube);
 
 // 임광택
-library.add(faClock, faReceipt, faFlag, faList, faBan);
+library.add(faClock, faReceipt, faFlag, faList, faBan, faBowlFood);
 
 const app = createApp(App);
 const pinia = createPinia();

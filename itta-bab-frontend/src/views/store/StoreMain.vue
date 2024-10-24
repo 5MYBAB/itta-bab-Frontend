@@ -2,7 +2,7 @@
 import StoreMapApi from "@/components/common/StoreMapApi.vue";
 import StoreSearchBarAndSort from "@/components/common/StoreSearchBarAndSort.vue";
 import {computed, provide ,ref} from "vue";
-import BottomPageButton from "@/components/common/BottomPageButton.vue";
+import Page from "@/components/common/Page.vue";
 
 /* 테스트 데이터 */
 const jsonData = [
@@ -82,13 +82,11 @@ provide("filter", filter);
           </div>
         </div>
 
-        <BottomPageButton
+        <Page
             :currentPage="currentPage"
             :totalPages="totalPages"
             @changePage="goToPage"
-            @writePage="goToWritePage"
-        >가게 등록
-        </BottomPageButton>
+        />
       </div>
 
     </div>

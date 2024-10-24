@@ -1,8 +1,20 @@
-<!-- SearchBarAndSort.vue -->
+<script setup>
+import { ref, defineEmits } from 'vue';
+// emit 함수 정의
+const emit = defineEmits(['search']);
+const onSearch = (event) => {
+  // 부모 컴포넌트로 검색어를 emit
+  const searchTerm = event.target.value;
+  emit('search', searchTerm);
+};
+</script>
+
 <template>
   <div class="search-sort-container">
     <div class="search-bar">
-      <input type="text" placeholder="가게명으로 검색하세요." />
+      <input type="text" placeholder="가게명으로 검색하세요."
+             @input="onSearch"
+      />
     </div>
     <div class="sort-dropdown">
       <select>

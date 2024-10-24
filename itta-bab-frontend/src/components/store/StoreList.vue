@@ -3,15 +3,16 @@ import { ref, computed } from 'vue';
 import PageNumAndWritingButton from '@/components/common/PageNumAndWritingButton.vue';
 
 const jsonData = [
-  { id: 1, name: "서울 중앙 도서관", location: "서울시 종로구", open_time: "09:00", end_time: "18:00", week: "월, 화. 수, 목", status: "open" },
-  { id: 2, name: "부산 남구 도서관", location: "부산시 남구", open_time: "10:00", end_time: "19:00", week: "월, 화. 수, 목", status: "open" },
-  { id: 3, name: "대구 북구 도서관", location: "대구시 북구", open_time: "09:30", end_time: "18:30", week: "월, 화. 수, 목", status: "open" },
-  { id: 4, name: "광주 서구 도서관", location: "광주시 서구", open_time: "08:00", end_time: "17:00", week: "월, 화. 수, 목", status: "open" },
-  { id: 5, name: "대전 동구 도서관", location: "대전시 동구", open_time: "09:00", end_time: "18:00", week: "월, 화. 수, 목" , status: "open"},
-  { id: 6, name: "대전 동구 도서관", location: "대전시 동구", open_time: "09:00", end_time: "18:00", week: "월, 화. 수, 목" ,status: "close"},
-  { id: 7, name: "대전 동구 도서관", location: "대전시 동구", open_time: "09:00", end_time: "18:00", week: "월, 화. 수, 목",status: "close" },
-  { id: 8, name: "대전 동구 도서관", location: "대전시 동구", open_time: "09:00", end_time: "18:00", week: "월, 화. 수, 목",status: "close" },
+  { menu_id: 1, menu_name: "서울 중앙 도서관", menu_price: 8000 },
+  { menu_id: 2, menu_name: "부산 남구 도서관", menu_price: 10000 },
+  { menu_id: 3, menu_name: "대구 북구 도서관", menu_price: 9000 },
+  { menu_id: 4, menu_name: "광주 서구 도서관", menu_price: 8500 },
+  { menu_id: 5, menu_name: "대전 동구 도서관", menu_price: 9500 },
+  { menu_id: 6, menu_name: "대전 동구 도서관", menu_price: 9500 },
+  { menu_id: 7, menu_name: "대전 동구 도서관", menu_price: 9500 },
+  { menu_id: 8, menu_name: "대전 동구 도서관", menu_price: 9500 },
 ];
+
 
 const currentPage = ref(1);
 const itemsPerPage = 5;
@@ -37,6 +38,9 @@ function goToWritePage() {
 
 <template>
   <div class="store-container">
+    <div class="header-row">
+      <div class="header-item">가게 이름</div>
+    </div>
     <div v-for="(item, index) in paginatedData" :key="index" class="store-item">
       <div class="store-name">
         <span class="name">{{ item.name }}</span>
@@ -63,6 +67,13 @@ function goToWritePage() {
 </template>
 
 <style scoped>
+.header-row {
+  display: flex;
+  background-color: var(--basic-yellow); /* 노란색 배경 */
+  padding: 15px;
+  border-radius: 10px 10px 0 0; /* 윗부분만 둥글게 */
+  font-weight: bold;
+}
 
 input[type="button"] {
   border: none; /* 기본 테두리 제거 */

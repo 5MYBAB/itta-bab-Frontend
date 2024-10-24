@@ -76,11 +76,14 @@ function goToWritePage() {
 }
 
 .header-row {
+
+  width: 100px;
   display: flex;
   background-color: var(--basic-yellow); /* 노란색 배경 */
   padding: 15px;
   border-radius: 10px 10px 0 0; /* 윗부분만 둥글게 */
   font-weight: bold;
+
 }
 
 .header-item {

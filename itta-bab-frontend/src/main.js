@@ -30,10 +30,11 @@ import {faList} from "@fortawesome/free-solid-svg-icons/faList";
 import {faBan} from "@fortawesome/free-solid-svg-icons/faBan";
 import {faArrowTurnUp} from "@fortawesome/free-solid-svg-icons/faArrowTurnUp";
 import {faCircleArrowRight} from "@fortawesome/free-solid-svg-icons/faCircleArrowRight";
+import {faAngleRight} from "@fortawesome/free-solid-svg-icons/faAngleRight";
 
 // 아이콘들을 라이브러리에 추가
 library.add(faBell, faUser, faArrowRightFromBracket, faUserPlus, faSmile ,faMap, faMobileScreen,faUserGroup,faListUl,faPenToSquare, faBookmark,faTriangleExclamation,faClipboard, faComment,
-    faArrowTurnUp, faCircleArrowRight,solidHeart, regularHeart);
+    faArrowTurnUp, faCircleArrowRight,solidHeart, regularHeart, faAngleRight);
 
 // SNS 아이콘
 library.add(faInstagram, faYoutube);

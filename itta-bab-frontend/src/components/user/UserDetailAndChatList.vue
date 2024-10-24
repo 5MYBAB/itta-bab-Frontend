@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios from "axios";
 import {useAuthStore} from "@/stores/auth.js";
 import {onMounted, ref} from "vue";
-import user from "@/router/user.js";
 
 const authStore = useAuthStore();
 const userData = ref(null);
@@ -16,18 +15,24 @@ const phone = ref(null);
 
 const fetchUserData = async () => {
   try {
-    const token = authStore.accessToken;
-    const response = await axios.get('http://localhost:8003/user/mypage', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    userData.value = response.data;
-    username.value = userData.value.username;
-    phone.value = formatPhoneNumber(userData.value.phone);
+    if(authStore.isAuthorized('USER')) {
+      const token = authStore.accessToken;
+      const response = await axios.get('http://localhost:8003/user/mypage', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      userData.value = response.data;
+      username.value = userData.value.username;
+      phone.value = formatPhoneNumber(userData.value.phone);
+    } else {
+      alert(`권한이 없습니다.`);
+      router.push('/');
+    }
   } catch (error) {
     console.error('사용자 정보 가져오기 실패', error);
   }
+
 };
 
 onMounted(() => {

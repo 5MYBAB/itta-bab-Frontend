@@ -3,6 +3,7 @@ import '@/assets/css/resetcss.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {useAuthStore} from "@/stores/auth.js";
 import {useRouter} from 'vue-router';
+import Notification from "@/components/common/Notification.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -33,14 +34,14 @@ const goToBoardPage = () => {
 <template>
   <header>
     <div class="headerWrap">
-      <div id="logo" v-on:click="goToMainPage">itta-bab</div>
+      <div id="logo" v-on:click="goToMainPage" class="custom-cursor">itta-bab</div>
       <ul class="header-list">
-        <li v-on:click="goToStoreListPage">맛집 리스트</li>
-        <li v-on:click="goToGroupPage">모임 참여</li>
-        <li v-on:click="goToBoardPage">익명 커뮤니티</li>
+        <li v-on:click="goToStoreListPage" class="custom-cursor">맛집 리스트</li>
+        <li v-on:click="goToGroupPage" class="custom-cursor">모임 참여</li>
+        <li v-on:click="goToBoardPage" class="custom-cursor">익명 커뮤니티</li>
       </ul>
       <div class="user-tap">
-        <div id="alarm"><font-awesome-icon :icon="['fas', 'bell']" /></div>
+        <Notification/>
         <div id="mypage"><font-awesome-icon :icon="['far', 'user']" /></div>
         <div @click="handleLogout" id="log-out" class="custom-cursor"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" /></div>
       </div>

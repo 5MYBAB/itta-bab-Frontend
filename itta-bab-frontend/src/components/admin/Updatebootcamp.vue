@@ -4,27 +4,31 @@ import '@/assets/css/resetcss.css';
 
 <template>
   <div class="back">
+    <div class="form-header">
+      <img src="@/assets/icons/itta-bab-logo.svg" class="icons" alt="훈련 기관 아이콘" />
+      <h1>훈련 기관 등록</h1>
+    </div>
+
     <div class="white-box">
       <div class="form-container">
         <div class="flex-box">
-          <div class="title">가게 별점</div>
-          <div class="input-box"><input type="text"></div>
-        </div>
-        <div class="flex-box">
-          <div class="title">주문 메뉴</div>
+          <div class="title">훈련 기관 명</div>
           <div class="input-box">
-            <input type="text">
+            <input type="text" placeholder="">
           </div>
-          <div><input type="button" value="메뉴 추가"></div>
         </div>
+
         <div class="flex-box">
-          <div class="title">메뉴 사진</div>
-          <div><input type="button" value="사진 업로드"></div>
-        </div>
-        <div class="flex-box">
-          <div class="review-info">가게 리뷰</div>
+          <div class="title">주소</div>
           <div class="input-box">
-            <textarea type="text" name="message" rows="4" cols="50" placeholder="가게에 대한 설명을 입력하세요"></textarea>
+            <input type="text" placeholder="">
+          </div>
+        </div>
+
+        <div class="flex-box">
+          <div class="title"></div>
+          <div class="input-box">
+            <button class="submit-button">훈련기관 수정</button>
           </div>
         </div>
       </div>
@@ -43,6 +47,14 @@ textarea{
   margin-top: 10px;
 }
 
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .back{
   display: flex;
   justify-content: center;
@@ -50,6 +62,39 @@ textarea{
   flex-direction: column;
   background-color: var(--background-color);
 }
+
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #dedede;
+  padding-bottom: 20px;
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #dedede;
+  padding-bottom: 20px;
+  margin-right: 50px;
+  width: 1300px;
+}
+
+.form-header img.icons {
+  width: 50px;
+  height: 50px;
+}
+
+.form-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #555;
+}
+
 .white-box {
   display: flex;
   flex-direction: column;
@@ -58,30 +103,20 @@ textarea{
   box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.13) inset;
   border-radius: 43px;
   background-color: var(--white);
-  max-width: 1000px;
+  max-width: 800px;
   width: 100%;
   padding: 65px 150px;
   margin: 0 auto;
 }
 
-.flex-box{
+.flex-box {
   display: flex;
   align-items: center;
   width: 635px;
-  margin: 50px 30px 4px;
+  margin: 30px 4px;
 }
-.review-info {
-  font-size: 17px;
-  font-weight: 600;
-  white-space: nowrap;
-  height: 44px;
-  text-align: center;
-  display: flex;
-  align-items: flex-start;
-  width: 150px;
-  padding-top: 5px;
-}
-.title{
+
+.title {
   font-size: 17px;
   font-weight: 600;
   white-space: nowrap;
@@ -91,18 +126,21 @@ textarea{
   align-items: center;
   width: 150px;
 }
-input[type="button"] {
+
+input[type="button"], input[type="file"], .submit-button {
   background-color: var(--basic-yellow);
   box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
   color: var(--text-color);
   text-align: center;
   font-weight: 600;
   border-radius: 10px;
-  width: 138px;
+  width: 100%;
   height: 44px;
   border: none;
+  cursor: pointer;
 }
-input[type="text"] {
+
+input[type="text"], textarea {
   border-radius: 10px;
   background-color: var(--gray-input);
   border: none;
@@ -113,6 +151,7 @@ input[type="text"] {
   text-align: center;
   align-items: center;
 }
+
 .days input[type="button"] {
   width: 44px;
   height: 44px;
@@ -123,7 +162,8 @@ input[type="text"] {
   font-weight: 600;
   color: var(--text-color);
 }
-.input-box{
-  width: 348px;
+
+.input-box {
+  width: 50%;
 }
 </style>

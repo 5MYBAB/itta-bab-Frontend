@@ -1,4 +1,4 @@
-import PostDetail from "@/views/board/PostDetail.vue";
+ import PostDetail from "@/views/board/PostDetail.vue";
 import PostCreate from "@/views/board/PostCreate.vue";
 import PostComment from "@/views/board/PostComment.vue";
 

@@ -3,14 +3,14 @@ import { ref, computed } from 'vue';
 import PageNumAndWritingButton from '@/components/common/PageNumAndWritingButton.vue';
 
 const jsonData = [
-  { menu_id: 1, menu_name: "서울 중앙 도서관", menu_price: 8000 },
-  { menu_id: 2, menu_name: "부산 남구 도서관", menu_price: 10000 },
-  { menu_id: 3, menu_name: "대구 북구 도서관", menu_price: 9000 },
-  { menu_id: 4, menu_name: "광주 서구 도서관", menu_price: 8500 },
-  { menu_id: 5, menu_name: "대전 동구 도서관", menu_price: 9500 },
-  { menu_id: 6, menu_name: "대전 동구 도서관", menu_price: 9500 },
-  { menu_id: 7, menu_name: "대전 동구 도서관", menu_price: 9500 },
-  { menu_id: 8, menu_name: "대전 동구 도서관", menu_price: 9500 },
+  { name: "서울 중앙 도서관", status: "open", location: "서울", week: "월-금", open_time: "09:00", end_time: "18:00" },
+  { name: "부산 남구 도서관", status: "close", location: "부산", week: "월-금", open_time: "09:00", end_time: "17:00" },
+  { name: "대구 북구 도서관", status: "open", location: "대구", week: "월-토", open_time: "10:00", end_time: "19:00" },
+  { name: "광주 서구 도서관", status: "open", location: "광주", week: "화-일", open_time: "09:30", end_time: "18:30" },
+  { name: "대전 동구 도서관", status: "close", location: "대전", week: "월-금", open_time: "08:30", end_time: "17:30" },
+  { name: "울산 북구 도서관", status: "open", location: "울산", week: "월-토", open_time: "09:00", end_time: "18:00" },
+  { name: "인천 서구 도서관", status: "open", location: "인천", week: "화-일", open_time: "09:00", end_time: "18:00" },
+  { name: "제주 서귀포 도서관", status: "close", location: "제주", week: "월-금", open_time: "10:00", end_time: "17:00" },
 ];
 
 

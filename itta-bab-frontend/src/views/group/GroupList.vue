@@ -1,7 +1,8 @@
 <script setup>
 import {computed, provide, ref} from "vue";
 import BottomPageButton from "@/components/common/BottomPageButton.vue"
-import SearchBarAndSort from "@/components/group/SearchBarAndSort.vue";
+import SearchBar from "@/components/common/SearchBar.vue";
+import PageTitleTop from "@/components/common/PageTitleTop.vue";
 
 /* 테스트 데이터 */
 const jsonData = [
@@ -185,8 +186,9 @@ const paginatedDate = computed(() => {
   const start = (currentPage.value - 1) * itemsPage;
   const end = start + itemsPage;
 
-  return filteredData.value.slice(start, end);
+  return filteredData.value.slice(start, end); // 필터링된 데이터에서 페이지네이션
 });
+
 
 // 날짜 형식화 함수
 function formatDate(dateString) {
@@ -219,6 +221,7 @@ function goToWRegisterPage() {
 const filter = (searchTerm) => {
   if (searchTerm.trim() === "") { // 빈칸인지 확인
     filteredData.value = jsonData; // 검색어가 빈칸이면 전체 데이터를 보여줌
+    currentPage.value = 1; // 페이지를 1로 초기화
     return;
   }
 
@@ -226,7 +229,11 @@ const filter = (searchTerm) => {
   filteredData.value = jsonData.filter(item =>
       item.group_title.includes(searchTerm)
   );
+
+  // 검색 후 현재 페이지를 1로 초기화
+  currentPage.value = 1;
 };
+
 
 // filter를 제공
 provide("filter", filter);
@@ -234,8 +241,14 @@ provide("filter", filter);
 
 <template>
   <div class="background">
+    <div class="title-section">
+      <PageTitleTop/>
+    </div>
+    <div class="title">
+      <h1>모임 리스트</h1>
+    </div>
     <div class="search-container">
-      <SearchBarAndSort/>
+      <SearchBar/>
     </div>
     <div class="total-container">
       <div class="header-row">
@@ -265,7 +278,8 @@ provide("filter", filter);
           :totalPages="totalPages"
           @changePage="goToPage"
           @writePage="goToWRegisterPage"
-      />
+      >등록
+      </BottomPageButton>
     </div>
   </div>
 </template>
@@ -343,6 +357,11 @@ provide("filter", filter);
 
 .bottom-container button {
   justify-content: flex-end; /* 글쓰기 버튼을 오른쪽 끝 정렬 */
+}
+
+.title-section {
+  width: 100%;
+  justify-content: flex-start;
 }
 
 </style>

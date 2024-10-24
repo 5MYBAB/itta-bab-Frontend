@@ -126,7 +126,7 @@ function goToWritePage() {
 
 .data-row {
   display: flex;
-  padding: 50px;
+  padding: 20px;
   margin-bottom: 14px;
   border-bottom: 1px solid #ddd;
 }

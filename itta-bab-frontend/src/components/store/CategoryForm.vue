@@ -7,28 +7,15 @@ import '@/assets/css/resetcss.css';
     <div class="white-box">
       <div class="form-container">
         <div class="flex-box">
-          <div class="title">가게 별점</div>
+          <div class="title">카테고리 명</div>
           <div class="input-box"><input type="text"></div>
         </div>
-        <div class="flex-box">
-          <div class="title">주문 메뉴</div>
-          <div class="input-box">
-            <input type="text">
-          </div>
-          <div><input type="button" value="메뉴 추가"></div>
-        </div>
-        <div class="flex-box">
-          <div class="title">메뉴 사진</div>
-          <div><input type="button" value="사진 업로드"></div>
-        </div>
-        <div class="flex-box">
-          <div class="review-info">가게 리뷰</div>
-          <div class="input-box">
-            <textarea type="text" name="message" rows="4" cols="50" placeholder="가게에 대한 설명을 입력하세요"></textarea>
-          </div>
-        </div>
+
       </div>
+      <br><br>
+      <input type="button" value="등록" id="submit-button">
     </div>
+
   </div>
 </template>
 
@@ -70,17 +57,7 @@ textarea{
   width: 635px;
   margin: 50px 30px 4px;
 }
-.review-info {
-  font-size: 17px;
-  font-weight: 600;
-  white-space: nowrap;
-  height: 44px;
-  text-align: center;
-  display: flex;
-  align-items: flex-start;
-  width: 150px;
-  padding-top: 5px;
-}
+
 .title{
   font-size: 17px;
   font-weight: 600;
@@ -106,7 +83,7 @@ input[type="text"] {
   border-radius: 10px;
   background-color: var(--gray-input);
   border: none;
-  width: 328px;
+  width: 400px;
   height: 44px;
   color: var(--gray-font);
   display: flex;

@@ -41,7 +41,7 @@ const handleLogin = async () => {
     <div class="service-link">
       <div>아이디 찾기</div>
       <div>비밀번호 찾기</div>
-      <div>아이디 찾기</div>
+      <div>회원 가입</div>
     </div>
   </div>
 </template>

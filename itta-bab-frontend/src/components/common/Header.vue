@@ -30,6 +30,10 @@ const goToBoardPage = () => {
   router.push('/board/post');
 }
 
+const goToMypage = () => {
+  router.push('mypage');
+}
+
 </script>
 <template>
   <header>
@@ -42,7 +46,7 @@ const goToBoardPage = () => {
       </ul>
       <div class="user-tap">
         <Notification/>
-        <div id="mypage"><font-awesome-icon :icon="['far', 'user']" /></div>
+        <div @click="goToMypage" id="mypage" class="custom-cursor"><font-awesome-icon :icon="['far', 'user']" /></div>
         <div @click="handleLogout" id="log-out" class="custom-cursor"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" /></div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 <script setup>
 import { computed, ref } from "vue";
 import PageNumAndWritingButton from '@/components/common/PageNumAndWritingButton.vue';
+import BottomPageButton from "@/components/common/BottomPageButton.vue";
+import Page from "@/components/common/Page.vue";
 
 /* 테스트 데이터 */
 const jsonData = [
@@ -68,7 +70,7 @@ const jsonData = [
 ];
 
 const currentPage = ref(1);
-const itemsPage = 5;
+const itemsPage = 3;
 
 const totalPages = computed(() => {
   return Math.ceil(jsonData.length / itemsPage);
@@ -100,33 +102,37 @@ function goToWritePage() {
             class="data-row"
         >
           <img :src="item.userImageUrl" alt="Menu Image" class="menu-image" />
-          <div class="data-item">{{ item.menu_name }}<br>{{ item.menu_price }}원</div>
+          <div class="data-item">
+            <div class="item_name">{{ item.menu_name }}</div>
+            <div class="item_price">{{ item.menu_price }}원</div>
+          </div>
         </div>
 
 
-    <PageNumAndWritingButton
+    <Page
         :currentPage="currentPage"
         :totalPages="totalPages"
         @changePage="goToPage"
-        @writePage="goToWritePage"
     />
 
   </div>
 </template>
 
 <style scoped>
-
-.menu-image {
-  width: 100px;
-  height: 100px;
-  margin-left: 10px;
+.item_name{
+  font-size: 20px;
+  font-weight: 600;
 }
-
-
-
+.item_price{
+  font-size: 15px;
+}
+.menu-image {
+  width: 107px;
+  height: 107px;
+  margin:20px
+}
 .data-row {
   display: flex;
-  padding: 50px;
   margin-bottom: 14px;
   border-bottom: 1px solid #ddd;
 }
@@ -134,13 +140,13 @@ function goToWritePage() {
 .data-item {
   flex: 1;
   text-align: left;
-  margin-left: 50px;
-  margin-top: 10px;
+  margin-left: 10px;
+  margin-top: 20px;
 }
 
 .page-named span {
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 5px 13px;
   border: 1px solid var(--white);
   background-color: var(--white);
 }
@@ -151,11 +157,8 @@ function goToWritePage() {
 }
 
 .list-style {
-  background-color: white;
   border-radius: 0 0 10px 10px;
 }
-
-
 .bottom-container button {
   justify-content: flex-end;
 }

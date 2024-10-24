@@ -39,7 +39,7 @@ router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth && !authStore.accessToken) {
         next({ path: '/login' });
     }
-    else if (authStore.accessToken && (to.path === '/user/login')) {
+    else if (authStore.accessToken && (to.path === '/login')) {
         next({ path: '/' });
     } else {
         next(); // 나머지 경우는 계속 진행

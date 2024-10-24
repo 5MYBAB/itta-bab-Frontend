@@ -18,6 +18,7 @@ const handleLogin = async () => {
 
     if(response.status === 200) {
       authStore.login(response.headers.token);
+      window.location.reload();
       router.push('/');
     }
 

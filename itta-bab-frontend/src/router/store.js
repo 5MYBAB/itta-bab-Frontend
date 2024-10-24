@@ -5,7 +5,9 @@ import StoreDetail from "@/views/store/StoreDetail.vue";
 import MenuCreate from "@/views/store/MenuCreate.vue";
 import MenuMain from "@/views/store/MenuMain.vue";
 import MenuUpdate from "@/views/store/MenuUpdate.vue";
+import ReviewMain from "@/views/store/ReviewMain.vue";
 import AdminStoreDetail from "@/views/store/AdminStoreDetail.vue";
+
 
 export default [
     {
@@ -21,11 +23,11 @@ export default [
         component: StoreCreate
     },
     {
-        path: '/store/update',
+        path: '/store/menu/:id/update',
         component: StoreUpdate
     },
     {
-        path: '/store/menu/main',
+        path: '/store/menu',
         component: MenuMain
     },
     {
@@ -35,9 +37,16 @@ export default [
     {
         path: '/store/menu/update',
         component: MenuUpdate
+
+    },
+    {
+        path: '/store/review',
+        component: ReviewMain
+
     }, {
         path: "/admin/store/:id",
         component: AdminStoreDetail
+
     }
 
 

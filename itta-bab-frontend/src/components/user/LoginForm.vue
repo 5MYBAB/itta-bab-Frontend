@@ -28,11 +28,11 @@ const handleLogin = async () => {
 }
 
 const goToFindId = () => {
-  router.push('/findId');
+  router.push('/find-id');
 }
 
 const goToFindPassword = () => {
-  router.push('/findPwd');
+  router.push('/find-pwd');
 }
 
 const goToSignUp = () => {
@@ -46,8 +46,8 @@ const goToSignUp = () => {
       <img src="/src/assets/icons/login-logo.svg" alt="Logo"/>
     </div>
     <form class="form" @submit.prevent="handleLogin">
-      <input v-model="loginId" id="id" placeholder="아이디" required />
-      <input v-model="pwd" id="passwd" placeholder="비밀번호" required />
+      <input v-model="loginId" id="id" type="text" placeholder="아이디" required />
+      <input v-model="pwd" id="passwd" type="password" placeholder="비밀번호" required />
       <button type="submit">로그인</button>
     </form>
     <div class="service-link">

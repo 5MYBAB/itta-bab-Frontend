@@ -15,7 +15,6 @@ import {faUser} from '@fortawesome/free-regular-svg-icons'
 import {faInstagram, faYoutube} from '@fortawesome/free-brands-svg-icons';
 import {faClock} from "@fortawesome/free-regular-svg-icons/faClock";
 import {faReceipt} from "@fortawesome/free-solid-svg-icons/faReceipt";
-// import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import {faSmile} from "@fortawesome/free-regular-svg-icons/faSmile";
 import {faMap} from "@fortawesome/free-regular-svg-icons/faMap";
 import {faMobileScreen} from "@fortawesome/free-solid-svg-icons/faMobileScreen";
@@ -31,13 +30,15 @@ import {faList} from "@fortawesome/free-solid-svg-icons/faList";
 import {faBan} from "@fortawesome/free-solid-svg-icons/faBan";
 import {faArrowTurnUp} from "@fortawesome/free-solid-svg-icons/faArrowTurnUp";
 import {faCircleArrowRight} from "@fortawesome/free-solid-svg-icons/faCircleArrowRight";
+import {faAngleRight} from "@fortawesome/free-solid-svg-icons/faAngleRight";
 import {faCalendarDays} from "@fortawesome/free-regular-svg-icons/faCalendarDays";
 import {faLocationDot} from "@fortawesome/free-solid-svg-icons/faLocationDot";
 import {faBowlFood} from "@fortawesome/free-solid-svg-icons/faBowlFood";
 
 // 아이콘들을 라이브러리에 추가
 library.add(faBell, faUser, faArrowRightFromBracket, faUserPlus, faSmile ,faMap, faMobileScreen,faUserGroup,faListUl,faPenToSquare, faBookmark,faTriangleExclamation,faClipboard, faComment,
-    faArrowTurnUp, faCircleArrowRight,solidHeart, regularHeart,faCalendarDays,faLocationDot,solid);
+    faArrowTurnUp, faCircleArrowRight,solidHeart, regularHeart,faCalendarDays,faLocationDot,solid, faAngleRight);
+
 
 // SNS 아이콘
 library.add(faInstagram, faYoutube);

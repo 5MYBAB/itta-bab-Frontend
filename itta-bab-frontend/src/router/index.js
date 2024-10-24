@@ -7,7 +7,7 @@ import scheduleRoutes from './schedule.js';
 import storeRoutes from './store.js';
 import inquiryRoutes from './inquiry.js';
 import reportRoutes from "@/router/report.js";
-import bootcampRoutes from './admin.js';
+import adminRoutes from './admin.js';
 
 import HomeView from "@/views/Home.vue";
 import {useAuthStore} from "@/stores/auth.js";
@@ -25,8 +25,7 @@ const routes = [
     ...storeRoutes,
     ...inquiryRoutes,
     ...reportRoutes,
-    ...bootcampRoutes
-
+    ...adminRoutes
 ];
 
 const router = createRouter({

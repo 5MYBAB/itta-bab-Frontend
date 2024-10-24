@@ -1,10 +1,47 @@
 <script setup>
 
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import alarmReviewIcon from '@/assets/icons/alarm-review-gray.svg'
+import alarmPostIcon from '@/assets/icons/alarm-post-gray.svg'
+import alarmGroupIcon from '@/assets/icons/alarm-group-gray.svg'
+import {useRouter} from "vue-router";
 
 const isDropdownVisible = ref(false);
 const redDotStates = ref([false, false, false]);
+
+const notifications = ref([
+  {
+    icon: alarmReviewIcon,
+    title: "리뷰",
+    content: "리뷰가 등록되었습니다: 버거킹 신대방삼거리점",
+    time: "10/24 12:19",
+  },
+  {
+    icon: alarmPostIcon,
+    title: "익명 게시판",
+    content: "글이 등록되었습니다: 소통해요!",
+    time: "10/02 17:34",
+  },
+  {
+    icon: alarmGroupIcon,
+    title: "모임",
+    content: "임광택(pangtaek)님의 모임이 등록되었습니다: 저랑 컵밥 시키실 분",
+    time: "09/22 13:01",
+  },
+  {
+    icon: alarmReviewIcon,
+    title: "리뷰",
+    content: "새로운 리뷰가 등록되었습니다!",
+    time: "10/20 10:00",
+  },
+  {
+    icon: alarmPostIcon,
+    title: "익명 게시판",
+    content: "새 글이 등록되었습니다: 소통해요!",
+    time: "10/15 14:00",
+  },
+]);
 
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value;
@@ -12,6 +49,13 @@ const toggleDropdown = () => {
 
 const handleLineClick = (index) => {
   redDotStates.value[index] = true;
+}
+
+const router = useRouter();
+
+const goToMypage = () => {
+  isDropdownVisible.value = false;
+  router.push('/mypage');
 }
 
 </script>
@@ -28,41 +72,22 @@ const handleLineClick = (index) => {
         </div>
       </div>
       <div class="list">
-        <div id="line" @click="handleLineClick(0)" class="custom-cursor">
+        <div id="item" @click="handleLineClick(index)" class="custom-cursor"
+             v-for="(notification, index) in notifications" :key="index">
           <div class="icon">
-            <img src="@/assets/icons/alarm-review-gray.svg">
+            <img :src="notification.icon" alt="알림 아이콘"/>
           </div>
           <div class="info">
-            <div class="title">리뷰
-              <div id="red-dot" :class="{ inactive: redDotStates[0] }"></div>
+            <div class="title">{{ notification.title }}
+              <div id="red-dot" :class="{ inactive: redDotStates[index] }"/>
             </div>
-            <div class="content">리뷰가 등록되었습니다: 버거킹 신대방삼거리점</div>
-            <div class="time">10/24 12:19</div>
+            <div class="content">{{ notification.content }}</div>
+            <div class="time">{{ notification.time }}</div>
           </div>
         </div>
-        <div id="line" @click="handleLineClick(1)" class="custom-cursor">
-          <div class="icon">
-            <img src="@/assets/icons/alarm-post-gray.svg">
-          </div>
-          <div class="info">
-            <div class="title">익명 게시판
-              <div id="red-dot" :class="{ inactive: redDotStates[1] }"></div>
-            </div>
-            <div class="content">글이 등록되었습니다: 소통해요!</div>
-            <div class="time">10/02 17:34</div>
-          </div>
-        </div>
-        <div id="line" @click="handleLineClick(2)" class="custom-cursor">
-          <div class="icon">
-            <img src="@/assets/icons/alarm-group-gray.svg">
-          </div>
-          <div class="info">
-            <div class="title">모임
-              <div id="red-dot" :class="{ inactive: redDotStates[2] }"></div>
-            </div>
-            <div class="content">임광택(pangtaek)님의 모임이 등록되었습니다: 저랑 컵밥 시키실 분</div>
-            <div class="time">09/22 13:01</div>
-          </div>
+        <div v-if="notifications.length === 5" @click="goToMypage" id="show-more-button" class="custom-cursor">
+          <div class="faArrowRight"><font-awesome-icon :icon="['fas', 'angle-right']" /></div>
+          <div class="text-more">더보기</div>
         </div>
       </div>
     </div>
@@ -110,15 +135,14 @@ const handleLineClick = (index) => {
   border-radius: 0px 0px 20px 20px;
   height: 513px;
   width: 414px;
-  padding: 15px 0px;
+  padding: 25px 35px;
   display: flex;
   flex-direction: column;
 }
 
-#line {
-  margin: 10px 35px;
+#item {
+  padding: 10px 0px;
   border-bottom: 2px var(--gray-font) solid;
-  padding-bottom: 4px;
   display: flex;
   gap: 20px;
   align-items: center;
@@ -164,6 +188,25 @@ const handleLineClick = (index) => {
 .time {
   font-size: 10px;
   font-weight: 400;
+}
+
+.faArrowRight {
+  width: 12px;
+  height: 28px;
+  margin-right: 4px;
+}
+
+#show-more-button {
+  color: var(--gray-font);
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-more {
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .custom-cursor {

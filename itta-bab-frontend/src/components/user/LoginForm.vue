@@ -33,6 +33,10 @@ const goToFindId = () => {
 const goToFindPassword = () => {
   router.push('/findPwd');
 }
+
+const goToSignUp = () => {
+  router.push('/signup');
+}
 </script>
 
 <template>
@@ -48,7 +52,7 @@ const goToFindPassword = () => {
     <div class="service-link">
       <div @click="goToFindId" class="custom-cursor">아이디 찾기</div>
       <div @click="goToFindPassword" class="custom-cursor">비밀번호 찾기</div>
-      <div>회원 가입</div>
+      <div @click="goToSignUp" class="custom-cursor">회원 가입</div>
     </div>
   </div>
 </template>

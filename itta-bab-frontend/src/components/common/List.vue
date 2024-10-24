@@ -70,7 +70,8 @@ function goToWritePage() {
 <style scoped>
 /* List.vue CSS */
 .board-container {
-  width: 100%;
+  width:  80%; /* 너비를 80%로 설정 */
+  margin: 0 auto;
   background-color: var(--white);
   padding: 0 20px;
   border-radius: 10px;

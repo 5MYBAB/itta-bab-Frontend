@@ -146,7 +146,7 @@ function likeComment(index) {
 .post-content-wrapper {
   background-color: var(--white);
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 20px;
   margin-bottom: 20px;
 }
 .comment-author,.reply-author {
@@ -184,10 +184,6 @@ function likeComment(index) {
 }
 
 
-.liked {
-  color: red;
-}
-
 /* Post Content */
 .post-date {
   color: var(--unactive-button);
@@ -201,7 +197,7 @@ function likeComment(index) {
 .comments-section {
   background: var(--white);
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 .comments-header {
@@ -275,3 +271,4 @@ function likeComment(index) {
   color: var(--gray-font); /* 버튼 색상 설정 */
 }
 </style>
+

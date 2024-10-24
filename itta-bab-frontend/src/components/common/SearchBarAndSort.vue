@@ -20,7 +20,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 80px;
-  width: 90%;
+  width: 80%;
 }
 .search-bar {
   display: flex;

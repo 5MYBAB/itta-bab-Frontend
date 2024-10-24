@@ -6,6 +6,8 @@ import {BModal} from "bootstrap-vue-3";
 import {useAuthStore} from "@/stores/auth.js";
 import axios from "axios";
 
+let authStore = null;
+
 export default {
   components: {
     FullCalendar, // make the <FullCalendar> tag available
@@ -13,7 +15,6 @@ export default {
   },
   data() {
     return {
-      authStore: useAuthStore(),
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin],
         initialView: 'dayGridMonth',
@@ -57,28 +58,61 @@ export default {
           this.newEvent = {title: '', start: '', description: ''};
 
           const saveEventDB = async () => {
-            const token = this.authStore.accessToken;
+            const token = authStore.accessToken;
             await axios.post('http://localhost:8003/schedule',
                 {
                   scheduleTitle : eventData.title,
                   scheduleContent : eventData.description,
                   scheduleDate : eventData.start
                 },{
-
-                  headers: {
+                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                    }
                 }
             )
-                .catch(error => {
-                  console.error('Error fetching data:', error);
-                });
           }
+
+
           saveEventDB();
         }
       }
+    },
+    getEventDB: async function () {
+      const token = authStore.accessToken;
+      try {
+        const response = await axios.get('http://localhost:8003/schedule', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const calendar = this.$refs.calendar.getApi();
+        const events = response.data;
+        console.log('Fetched events:', events);
+
+        let eventData = {
+          title: '',
+          start: '',
+          description: ''
+        }
+        for(let i = 0; i<events.length ;i++) {
+          eventData = {
+            title: events[i].scheduleTitle,
+            start: events[i].scheduleDate,
+            description: events[i].scheduleContent
+          };
+          calendar.addEvent(eventData);
+        }
+
+
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
     }
+  },
+  mounted() {
+    authStore = useAuthStore();
+    this.getEventDB();
   }
 }
 </script>

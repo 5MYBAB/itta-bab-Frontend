@@ -1,16 +1,19 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'; // useRouter import
 import '@/assets/css/resetcss.css';
 
 const userInput = ref('');
 const errorMessage = ref('');
+const router = useRouter(); // useRouter 사용
 
 const checkInput = () => {
   if (userInput.value !== '회원 탈퇴 하겠습니다.') {
-    errorMessage.value = '정확히 "회원 탈퇴 하겠습니다."를 입력해주세요.';
+    errorMessage.value = '정확히 "회원 탈퇴 하겠습니다."를 정확히 입력해주세요.';
   } else {
     errorMessage.value = '';
     alert('회원 탈퇴가 완료되었습니다.');
+    router.push({ name: 'DeleteUserResult' });
   }
 };
 
@@ -20,6 +23,7 @@ const handleEnter = (event) => {
   }
 };
 </script>
+
 
 <template>
   <div class="back">

@@ -4,6 +4,7 @@ import MyPageView from "@/views/user/MyPage.vue";
 import UpdateUserInfo from "@/views/user/UpdateUserInfo.vue";
 import DeleteUser from "@/views/user/DeleteUser.vue";
 import DeleteUserResult from "@/views/user/DeleteUserResult.vue";
+
 export default [
     {
         path: '/user/login',

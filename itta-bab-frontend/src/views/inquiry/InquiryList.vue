@@ -2,6 +2,8 @@
 import {computed, defineProps, ref} from 'vue';
 import PageNumAndWritingButton from '@/components/common/PageNumAndWritingButton.vue';
 import SearchBarAndSort from '@/components/common/SearchBarAndSort.vue';
+import Header from "@/App.vue";
+import PageTitleTop from "@/components/common/PageTitleTop.vue";
 
 const jsonData = [
   { title: "댓글 문의", likes: 15, date: "2024-10-11 12:00", answered: false },
@@ -57,16 +59,15 @@ const props = defineProps({
 </script>
 
 <template>
+  <PageTitleTop/>
   <div class="inquiry-detail">
-    <div class="inline-content">
-      <img src="@/assets/icons/itta-bab-logo.svg" alt="밥 이미지" />
-      <h3>한화 시스템 부트캠프</h3>
-    </div>
     <div class="title">
       <h1>문의</h1>
     </div>
     <br>
-    <SearchBarAndSort/>
+    <div class="parent-container">
+      <SearchBarAndSort/>
+    </div>
     <br>
 
     <div class="board-container">
@@ -109,9 +110,6 @@ const props = defineProps({
    </span>
         <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">〉</button>
       </div>
-
-
-
     </div>
     <br>
   </div>
@@ -123,11 +121,11 @@ const props = defineProps({
   min-height: 100vh;
   width: 100%;
 }
-
-.inline-content {
+.parent-container {
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
+
 
 .title {
   text-align: center;
@@ -143,14 +141,17 @@ img {
 }
 
 .board-container {
-  width: 100%;
+  width:  80%; /* 너비를 80%로 설정 */
+  margin: 0 auto;
   background-color: var(--white);
-  padding: 20px;
+  padding: 0 20px;
   border-radius: 10px;
 }
 
 .header-row {
   display: flex;
+  width: calc(100% + 40px); /* Compensate for the left and right padding */
+  margin-left: -20px;
   background-color: var(--basic-yellow);
   padding: 15px;
   border-radius: 10px 10px 0 0;

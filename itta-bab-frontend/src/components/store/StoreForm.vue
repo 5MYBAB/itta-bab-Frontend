@@ -77,7 +77,7 @@ textarea{
   box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.13) inset;
   border-radius: 43px;
   background-color: var(--white);
-  max-width: 800px;
+  max-width: 1000px;
   width: 100%;
   padding: 65px 150px;
   margin: 0 auto;

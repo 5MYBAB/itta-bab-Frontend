@@ -62,6 +62,7 @@ function goToWritePage() {
         @changePage="goToPage"
         @writePage="goToWritePage"
     />
+    <br>
 
   </div>
 </template>
@@ -69,19 +70,26 @@ function goToWritePage() {
 <style scoped>
 /* List.vue CSS */
 .board-container {
-  width: 100%;
-  background-color: var(--white); /* 전체 배경색 */
-  padding: 20px;
-  border-radius: 10px; /* 모서리 둥글게 */
+  width:  80%; /* 너비를 80%로 설정 */
+  margin: 0 auto;
+  background-color: var(--white);
+  padding: 0 20px;
+  border-radius: 10px;
 }
 
 .header-row {
+
+  width: 100px;
   display: flex;
-  background-color: var(--basic-yellow); /* 노란색 배경 */
+  width: calc(100% + 40px); /* Compensate for the left and right padding */
+  margin-left: -20px;
+  background-color: var(--basic-yellow);
   padding: 15px;
-  border-radius: 10px 10px 0 0; /* 윗부분만 둥글게 */
+  border-radius: 10px 10px 0 0;
   font-weight: bold;
+
 }
+
 
 .header-item {
   flex: 1;

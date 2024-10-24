@@ -265,7 +265,7 @@ provide("filter", filter);
           :totalPages="totalPages"
           @changePage="goToPage"
           @writePage="goToWRegisterPage"
-      />
+      >등록</BottomPageButton>
     </div>
   </div>
 </template>

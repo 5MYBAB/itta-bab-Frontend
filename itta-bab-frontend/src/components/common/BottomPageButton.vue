@@ -1,7 +1,9 @@
 <template>
   <div class="total-container">
     <div class="button-container">
-      <button class="write-button" @click="$emit('writePage')">글쓰기</button>
+      <button class="write-button" @click="$emit('writePage')">
+        <slot>버튼</slot> <!-- 슬롯을 통해 전달받은 텍스트를 사용 -->
+      </button>
     </div>
     <div class="page-named">
       <button @click="$emit('changePage', currentPage - 1)" :disabled="currentPage === 1">〈</button>
@@ -19,7 +21,7 @@
 </template>
 
 <script setup>
-import {defineProps} from 'vue';
+import { defineProps } from 'vue';
 
 // 부모 컴포넌트로부터 받을 props 정의
 const props = defineProps({

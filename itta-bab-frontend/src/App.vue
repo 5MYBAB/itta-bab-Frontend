@@ -1,22 +1,16 @@
 <script setup>
 import '@/assets/css/resetcss.css';
+import { RouterView } from "vue-router";
 import Header from "@/components/common/Header.vue";
 import Footer from "@/components/common/Footer.vue";
-import { RouterLink, RouterView } from "vue-router";
-import StoreDetail from "@/views/store/StoreDetail.vue";
 </script>
 
 <template>
-  <Header>
-    <nav>
-      <RouterLink to="/" active-class="active">Home</RouterLink>
-      <RouterLink to="/login" active-class="active">Login</RouterLink>
-      <RouterLink to="/signup" active-class="active">SignUp</RouterLink>
-    </nav>
-  </Header>
+  <Header/>
   <main>
     <RouterView/>
   </main>
+  <Footer/>
 </template>
 
 <style scoped>

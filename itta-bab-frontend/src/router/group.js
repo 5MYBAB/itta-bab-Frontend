@@ -2,6 +2,7 @@ import GroupChat from "@/views/group/GroupChat.vue";
 import GroupDetail from "@/views/group/GroupDetail.vue";
 import GroupList from "@/views/group/GroupList.vue";
 import GroupRegister from "@/views/group/GroupRegister.vue";
+import GroupCategoryList from "@/views/group/GroupCategoryList.vue";
 
 export default [
     {
@@ -23,5 +24,10 @@ export default [
         // 모임 등록
         path: '/group/register',
         component: GroupRegister
+    },
+    {
+        // 모임 카테고리 목록
+        path: '/admin/groupCategory',
+        component: GroupCategoryList
     }
 ];

@@ -5,6 +5,7 @@ import StoreDetail from "@/views/store/StoreDetail.vue";
 import MenuCreate from "@/views/store/MenuCreate.vue";
 import MenuMain from "@/views/store/MenuMain.vue";
 import MenuUpdate from "@/views/store/MenuUpdate.vue";
+import AdminStoreDetail from "@/views/store/AdminStoreDetail.vue";
 
 export default [
     {
@@ -34,6 +35,9 @@ export default [
     {
         path: '/store/menu/update',
         component: MenuUpdate
+    }, {
+        path: "/admin/store/:id",
+        component: AdminStoreDetail
     }
 
 

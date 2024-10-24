@@ -3,6 +3,7 @@ import LoginView from "@/views/user/Login.vue";
 import MyPageView from "@/views/user/MyPage.vue";
 import UpdateUserInfo from "@/views/user/UpdateUserInfo.vue";
 import DeleteUser from "@/views/user/DeleteUser.vue";
+import DeleteUserResult from "@/views/user/DeleteUserResult.vue";
 export default [
     {
         path: '/user/login',
@@ -23,5 +24,10 @@ export default [
     {
         path: '/delete-user',
         component: DeleteUser
+    },
+    {
+        path: '/delete-user-result',
+        name: 'DeleteUserResult',
+        component: DeleteUserResult
     }
 ];

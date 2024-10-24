@@ -31,7 +31,7 @@ const goToBoardPage = () => {
 }
 
 const goToMypage = () => {
-  router.push('mypage');
+  router.push('/mypage');
 }
 
 </script>

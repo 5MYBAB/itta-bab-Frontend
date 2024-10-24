@@ -4,6 +4,7 @@ import MyPageView from "@/views/user/MyPage.vue";
 import UpdateUserInfo from "@/views/user/UpdateUserInfo.vue";
 import DeleteUser from "@/views/user/DeleteUser.vue";
 import DeleteUserResult from "@/views/user/DeleteUserResult.vue";
+import FindId from "@/views/user/FindId.vue";
 
 export default [
     {
@@ -13,6 +14,10 @@ export default [
     {
         path: '/signup',
         component: SignUpView
+    },
+    {
+        path: '/findId',
+        component: FindId
     },
     {
         path: '/mypage',

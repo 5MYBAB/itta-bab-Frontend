@@ -26,6 +26,10 @@ const handleLogin = async () => {
   }
 }
 
+const goToFindId = () => {
+  router.push('/findId');
+}
+
 </script>
 
 <template>
@@ -39,7 +43,7 @@ const handleLogin = async () => {
       <button type="submit">로그인</button>
     </form>
     <div class="service-link">
-      <div>아이디 찾기</div>
+      <div @click="goToFindId" class="custom-cursor">아이디 찾기</div>
       <div>비밀번호 찾기</div>
       <div>회원 가입</div>
     </div>
@@ -91,5 +95,8 @@ const handleLogin = async () => {
   background: #f2f1f1;
   margin-bottom: 10px; /* 아래쪽 간격 */
   padding: 0 20px; /* 좌우 패딩 추가 */
+}
+.custom-cursor {
+  cursor: pointer;
 }
 </style>

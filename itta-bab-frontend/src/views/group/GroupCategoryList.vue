@@ -94,7 +94,8 @@ provide("filter", filter);
           :totalPages="totalPages"
           @changePage="goToPage"
           @writePage="goToWRegisterPage"
-      >등록</BottomPageButton>
+      >등록
+      </BottomPageButton>
     </div>
   </div>
 </template>
@@ -164,7 +165,7 @@ provide("filter", filter);
 }
 
 .bottom-container button {
-  justify-content: flex-end; /* 글쓰기 버튼을 오른쪽 끝 정렬 */
+  justify-content: flex-end;
 }
 
 

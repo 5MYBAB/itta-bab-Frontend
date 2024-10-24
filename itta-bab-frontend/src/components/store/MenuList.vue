@@ -1,7 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
-import PageNumAndWritingButton from '@/components/common/PageNumAndWritingButton.vue';
-import BottomPageButton from "@/components/common/BottomPageButton.vue";
+import {computed, inject, ref} from "vue";
 import Page from "@/components/common/Page.vue";
 
 /* 테스트 데이터 */
@@ -88,49 +86,64 @@ function goToPage(page) {
   }
 }
 
-function goToWritePage() {
-  window.location.href = '/write'; // '글쓰기' 페이지로 이동
+const selectedItem = inject("selectedItem"); // selectedItem 배열을 주입받습니다
+
+if (!selectedItem) {
+  console.error("selectedItem이 주입되지 않았습니다.");
 }
+
+const selectItem = (item) => {
+  if (!selectedItem.value.includes(item)) {
+    selectedItem.value.push(item); // 아이템 추가
+    alert(`${item.menu_name}이(가) 선택되었습니다.`);
+  } else {
+    selectedItem.value = selectedItem.value.filter(i => i !== item); // 아이템 제거
+    alert(`${item.menu_name}이(가) 선택 해제되었습니다.`);
+  }
+}
+
 </script>
 
 <template>
-
-      <div class="list-style">
-        <div
-            v-for="item in paginatedData"
-            :key="item.menu_id"
-            class="data-row"
-        >
-          <img :src="item.userImageUrl" alt="Menu Image" class="menu-image" />
-          <div class="data-item">
-            <div class="item_name">{{ item.menu_name }}</div>
-            <div class="item_price">{{ item.menu_price }}원</div>
-          </div>
-        </div>
-
+  <div class="list-style">
+    <div
+        v-for="item in paginatedData"
+        :key="item.menu_id"
+        class="data-row"
+        @click="selectItem(item)"
+    >
+      <img :src="item.userImageUrl" alt="Menu Image" class="menu-image"/>
+      <div class="data-item">
+        <div class="item_name">{{ item.menu_name }}</div>
+        <div class="item_price">{{ item.menu_price }}원</div>
+      </div>
+    </div>
 
     <Page
         :currentPage="currentPage"
         :totalPages="totalPages"
         @changePage="goToPage"
     />
-
   </div>
 </template>
 
+
 <style scoped>
-.item_name{
+.item_name {
   font-size: 20px;
   font-weight: 600;
 }
-.item_price{
+
+.item_price {
   font-size: 15px;
 }
+
 .menu-image {
   width: 107px;
   height: 107px;
-  margin:20px
+  margin: 20px
 }
+
 .data-row {
   display: flex;
   margin-bottom: 14px;
@@ -159,6 +172,7 @@ function goToWritePage() {
 .list-style {
   border-radius: 0 0 10px 10px;
 }
+
 .bottom-container button {
   justify-content: flex-end;
 }

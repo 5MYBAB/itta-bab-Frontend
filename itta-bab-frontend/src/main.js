@@ -15,7 +15,6 @@ import {faUser} from '@fortawesome/free-regular-svg-icons'
 import {faInstagram, faYoutube} from '@fortawesome/free-brands-svg-icons';
 import {faClock} from "@fortawesome/free-regular-svg-icons/faClock";
 import {faReceipt} from "@fortawesome/free-solid-svg-icons/faReceipt";
-// import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import {faSmile} from "@fortawesome/free-regular-svg-icons/faSmile";
 import {faMap} from "@fortawesome/free-regular-svg-icons/faMap";
 import {faMobileScreen} from "@fortawesome/free-solid-svg-icons/faMobileScreen";
@@ -23,6 +22,7 @@ import {faUserGroup} from "@fortawesome/free-solid-svg-icons/faUserGroup";
 import {faListUl} from "@fortawesome/free-solid-svg-icons/faListUl";
 import {faPenToSquare} from "@fortawesome/free-regular-svg-icons/faPenToSquare";
 import {faBookmark} from "@fortawesome/free-regular-svg-icons/faBookmark";
+import {faBookmark as solid} from "@fortawesome/free-solid-svg-icons/faBookmark";
 import {faTriangleExclamation} from "@fortawesome/free-solid-svg-icons/faTriangleExclamation";
 import {faClipboard} from "@fortawesome/free-regular-svg-icons/faClipboard";
 import {faComment} from "@fortawesome/free-regular-svg-icons/faComment";
@@ -31,16 +31,20 @@ import {faBan} from "@fortawesome/free-solid-svg-icons/faBan";
 import {faArrowTurnUp} from "@fortawesome/free-solid-svg-icons/faArrowTurnUp";
 import {faCircleArrowRight} from "@fortawesome/free-solid-svg-icons/faCircleArrowRight";
 import {faAngleRight} from "@fortawesome/free-solid-svg-icons/faAngleRight";
+import {faCalendarDays} from "@fortawesome/free-regular-svg-icons/faCalendarDays";
+import {faLocationDot} from "@fortawesome/free-solid-svg-icons/faLocationDot";
+import {faBowlFood} from "@fortawesome/free-solid-svg-icons/faBowlFood";
 
 // 아이콘들을 라이브러리에 추가
 library.add(faBell, faUser, faArrowRightFromBracket, faUserPlus, faSmile ,faMap, faMobileScreen,faUserGroup,faListUl,faPenToSquare, faBookmark,faTriangleExclamation,faClipboard, faComment,
-    faArrowTurnUp, faCircleArrowRight,solidHeart, regularHeart, faAngleRight);
+    faArrowTurnUp, faCircleArrowRight,solidHeart, regularHeart,faCalendarDays,faLocationDot,solid, faAngleRight);
+
 
 // SNS 아이콘
 library.add(faInstagram, faYoutube);
 
 // 임광택
-library.add(faClock, faReceipt, faFlag, faList, faBan);
+library.add(faClock, faReceipt, faFlag, faList, faBan, faBowlFood);
 
 const app = createApp(App);
 const pinia = createPinia();

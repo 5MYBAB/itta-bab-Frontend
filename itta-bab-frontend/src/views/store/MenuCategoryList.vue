@@ -7,11 +7,11 @@ import AdminTopSection from "@/components/common/AdminTopSection.vue";
 
 /* 테스트 데이터 */
 const jsonData = [
-  {"group_category_id": 1, "group_category_name": "아침"},
-  {"group_category_id": 2, "group_category_name": "점심"},
-  {"group_category_id": 3, "group_category_name": "저녁"},
-  {"group_category_id": 4, "group_category_name": "오락"},
-  {"group_category_id": 5, "group_category_name": "음주"}
+  {"menu_category_id": 1, "menu_category_name": "아침"},
+  {"menu_category_id": 2, "menu_category_name": "점심"},
+  {"menu_category_id": 3, "menu_category_name": "저녁"},
+  {"menu_category_id": 4, "menu_category_name": "오락"},
+  {"menu_category_id": 5, "menu_category_name": "음주"}
 ];
 
 const filteredData = ref(jsonData); // 필터링된 데이터를 저장할 ref
@@ -45,7 +45,7 @@ const filter = (searchTerm) => {
     return;
   }
   filteredData.value = jsonData.filter(item =>
-      item.group_category_name.includes(searchTerm)
+      item.menu_category_name.includes(searchTerm)
   );
   currentPage.value = 1; // 검색 후 페이지를 1로 초기화
 };
@@ -58,10 +58,10 @@ provide("filter", filter);
   <div class="background">
     <AdminTopSection>
       <template #icon>
-        <font-awesome-icon icon="user-group"/> <!-- 아이콘 이름을 사용하여 아이콘 전달 -->
+        <font-awesome-icon icon="bowl-food"/> <!-- 아이콘 이름을 사용하여 아이콘 전달 -->
       </template>
       <template #label>
-        모임 카테고리 목록
+        메뉴 카테고리 목록
       </template>
     </AdminTopSection>
     <div class="search-container">
@@ -69,19 +69,19 @@ provide("filter", filter);
     </div>
     <div class="total-container">
       <div class="header-row">
-        <div class="header-item">모임 카테고리 ID</div>
-        <div class="header-item">모임 카테고리 이름</div>
+        <div class="header-item">메뉴 카테고리 ID</div>
+        <div class="header-item">메뉴 카테고리 이름</div>
         <div class="header-item">삭제</div>
       </div>
 
       <div class="list-style">
         <div
             v-for="item in paginatedDate"
-            :key="item.group_category_id"
+            :key="item.menu_category_id"
             class="data-row"
         >
-          <div class="data-item">{{ item.group_category_id }}</div>
-          <div class="data-item">{{ item.group_category_name }}</div>
+          <div class="data-item">{{ item.menu_category_id }}</div>
+          <div class="data-item">{{ item.menu_category_name }}</div>
           <div class="data-item">
             <DeleteButton v-slot:label>삭제</DeleteButton> <!-- 기본 슬롯을 사용하여 "삭제" 텍스트 전달 -->
           </div>

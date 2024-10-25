@@ -18,10 +18,10 @@
       @input="onSearch"/>
     </div>
     <div class="sort-dropdown">
-      <select>
-        <option value="latest">최신순</option>
-        <option value="mostHated">좋아요 적은순</option>
-        <option value="mostLiked">좋아요 많은 순</option>
+      <select @change="$emit('sort', $event.target.value)">
+        <option value="recent">최신순</option>
+        <option value="likes-desc">좋아요 내림차순</option>
+        <option value="likes-asc">좋아요 오름차순</option>
       </select>
     </div>
   </div>

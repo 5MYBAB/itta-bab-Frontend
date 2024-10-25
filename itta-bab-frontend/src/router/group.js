@@ -6,9 +6,16 @@ import GroupCategoryList from "@/views/group/GroupCategoryList.vue";
 
 export default [
     {
-        // 모임 리스트
+        // 모임 목록
         path: '/group',
-        component: GroupList
+        component: GroupList,
+        children: [
+            {
+                // 모임 등록
+                path: "/register",
+                component: GroupRegister
+            }
+        ]
     },
     {
         // 모임 채팅방

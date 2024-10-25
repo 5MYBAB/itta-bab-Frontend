@@ -14,7 +14,8 @@ const inquiryData = reactive({
   inquiry: [],
   inquiryId: 0,
   inquiryContent: "",
-  createDate: ""
+  createDate: "",
+  inquiryReply: ""
 });
 
 // Inquiry List Ref
@@ -30,7 +31,8 @@ const fetchInquiryList = async () => {
       params: {
         inquiryContent: inquiryData.inquiryContent || null, // 문의 내용
         createDate: inquiryData.createDate || null, // 작성 날짜
-        inquiryId: inquiryData.inquiryId || null
+        inquiryId: inquiryData.inquiryId || null,
+        inquiryReply: inquiryData.inquiryReply
       }
     });
 
@@ -73,6 +75,12 @@ function answerInquiry(index) {
   router.push(`/inquiry/admin/${inquiryId}`);
 }
 
+function viewAnswer(index) {
+  const inquiryId = paginatedData.value[index].inquiryId;
+  alert(`답변 : ${paginatedData.value[index].inquiryReply} \n 수정하고 싶으시면 확인을 눌러주세요.`)
+  router.push(`/inquiry/admin/${inquiryId}`)
+}
+
 </script>
 
 <template>
@@ -111,7 +119,7 @@ function answerInquiry(index) {
               class="view-answer-button"
               @click="viewAnswer(index)"
           >
-            답변보기
+            답변수정
           </button>
         </div>
       </div>

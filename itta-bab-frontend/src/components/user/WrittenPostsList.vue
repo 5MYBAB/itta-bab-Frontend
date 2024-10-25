@@ -103,12 +103,6 @@ function goToPage(page) {
   margin-left: 10px;
 }
 
-.borderline {
-  background-color: var(--gray-font);
-  height: 2px;
-  width: 80%;
-}
-
 .line {
   background-color: var(--gray-font);
   height: 1px;

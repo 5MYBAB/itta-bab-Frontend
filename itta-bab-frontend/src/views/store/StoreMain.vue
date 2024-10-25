@@ -3,9 +3,9 @@ import StoreMapApi from "@/components/common/StoreMapApi.vue";
 import StoreSearchBarAndSort from "@/components/common/StoreSearchBarAndSort.vue";
 import {computed, provide ,ref, onMounted} from "vue";
 import Page from "@/components/common/Page.vue";
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import {useAuthStore} from "@/stores/auth.js";
-import MenuMain from "@/views/store/MenuMain.vue";
+
 
 
 const router = useRouter(); // 라우터 이동을 위한 설정
@@ -88,6 +88,11 @@ function goToStoreMenu(storeId, storeName) {
   router.push({ name: 'MenuMain', params: { storeId, storeName } });
 }
 
+function goToStoreUpdate(storeId) {
+  router.push({ name: 'StoreUpdate', params: { storeId }});
+}
+
+
 </script>
 
 <template>
@@ -117,6 +122,10 @@ function goToStoreMenu(storeId, storeName) {
           <div class="store-open-info">
             <span class="week">{{ item.storeWeek }}&nbsp;&nbsp;</span>
             <span class="time">{{ item.storeOpenTime }} ~ {{ item.storeEndTime }}</span>
+            <input id="update"
+                   type="button" value="가게 수정"
+                   @click = "goToStoreUpdate(item.storeId)"
+            >
           </div>
         </div>
 
@@ -261,6 +270,11 @@ input[type="button"] {
   text-align: right;
 }
 
+#update {
+  margin-top: 20px;
+  text-align: right;
+}
+
 .add-store-btn button {
   width: 140px;
   height: 44px;
@@ -270,5 +284,6 @@ input[type="button"] {
   font-weight: 600;
   text-align: center;
 }
+
 
 </style>

@@ -42,7 +42,7 @@ async function registerMenu() {
 
     console.log('메뉴 등록 성공:', response.data);
     alert('메뉴 등록이 완료되었습니다!');
-    router.push({name: 'MenuMain'}); // 등록 성공 후 이동
+    router.push({name: 'StoreMain'}); // 등록 성공 후 이동
   } catch (error) {
     console.error('메뉴 등록 실패:', error.message);
     alert('메뉴 등록에 실패했습니다. 다시 시도해주세요.');

@@ -1,22 +1,48 @@
 <script setup>
 import StoreMapApi from "@/components/common/StoreMapApi.vue";
 import StoreSearchBarAndSort from "@/components/common/StoreSearchBarAndSort.vue";
-import {computed, provide ,ref} from "vue";
+import {computed, provide ,ref, onMounted} from "vue";
 import Page from "@/components/common/Page.vue";
+import {useAuthStore} from "@/stores/auth.js";
 
-/* 테스트 데이터 */
-const jsonData = [
-  { name: "서울 중앙 도서관", status: "open", location: "서울", week: "월-금", open_time: "09:00", end_time: "18:00" },
-  { name: "부산 남구 도서관", status: "close", location: "부산", week: "월-금", open_time: "09:00", end_time: "17:00" },
-  { name: "대구 북구 도서관", status: "open", location: "대구", week: "월-토", open_time: "10:00", end_time: "19:00" },
-  { name: "광주 서구 도서관", status: "open", location: "광주", week: "화-일", open_time: "09:30", end_time: "18:30" },
-  { name: "대전 동구 도서관", status: "close", location: "대전", week: "월-금", open_time: "08:30", end_time: "17:30" },
-  { name: "울산 북구 도서관", status: "open", location: "울산", week: "월-토", open_time: "09:00", end_time: "18:00" },
-  { name: "인천 서구 도서관", status: "open", location: "인천", week: "화-일", open_time: "09:00", end_time: "18:00" },
-  { name: "제주 서귀포 도서관", status: "close", location: "제주", week: "월-금", open_time: "10:00", end_time: "17:00" },
-];
+// 데이터를 저장할 상태 변수
+const storeList = ref([]);
 
-const filteredData = ref(jsonData); // 필터링된 데이터를 저장할 ref
+// 인증 토큰 가져오기
+const authStore = useAuthStore();
+
+// 서버로부터 데이터를 가져오는 함수
+async function fetchStoreList() {
+  try {
+    const token = authStore.accessToken;
+    const response = await fetch('http://localhost:8003/store/list', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`  // 여기에 실제 인증 토큰을 넣어야 합니다.
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('데이터를 가져오는 데 실패했습니다.');
+    }
+
+    const jsonData = await response.json();
+    storeList.value = jsonData;  // 가져온 데이터를 storeList에 저장
+  } catch (error) {
+    console.error('에러 발생:', error);
+  }
+}
+
+// 컴포넌트가 마운트되면 자동으로 데이터 조회
+onMounted(() => {
+  fetchStoreList();
+});
+
+
+
+
+const filteredData = ref(storeList); // 필터링된 데이터를 저장할 ref
 const currentPage = ref(1);
 const itemsPerPage = 5;
 
@@ -39,6 +65,10 @@ function goToWritePage() {
   window.location.href = '/write'; // '글쓰기' 페이지로 이동
 }
 
+function goToRegisterPage() {
+  window.location.href = '/store/regist'; // 가게 추가 페이지로 이동
+}
+
 const filter = (searchTerm) => {
   if (searchTerm.trim() === "") { // 빈칸인지 확인
     filteredData.value = jsonData; // 검색어가 빈칸이면 전체 데이터를 보여줌
@@ -46,7 +76,7 @@ const filter = (searchTerm) => {
   }
 
   // 검색어가 포함된 항목만 필터링
-  filteredData.value = jsonData.filter(item =>
+  filteredData.value = storeList.value.filter(item =>
       item.name.includes(searchTerm)
   );
 
@@ -68,17 +98,17 @@ provide("filter", filter);
         </div>
         <div v-for="(item, index) in paginatedData" :key="index" class="store-item">
           <div class="store-name">
-            <span class="name">{{ item.name }}</span>
+            <span class="name">{{ item.storeName }}</span>
             <span class="status">
-          <input type="button" :value="item.status" :class="{'open-status': item.status === 'open', 'closed-status': item.status === 'close'}" id="submit-button">
+          <input type="button" :value="item.storeStatus" :class="{'open-status': item.storeStatus === 'OPEN', 'closed-status': item.storeStatus === 'CLOSED'}" id="submit-button">
         </span>
           </div>
           <div class="store-details">
-            <span class="location">{{ item.location }}</span>
+            <span class="location">{{ item.storeLocation }}</span>
           </div>
           <div class="store-open-info">
-            <span class="week">{{ item.week }}&nbsp;&nbsp;</span>
-            <span class="time">{{ item.open_time }} ~ {{ item.end_time }}</span>
+            <span class="week">{{ item.storeWeek }}&nbsp;&nbsp;</span>
+            <span class="time">{{ item.storeOpenTime }} ~ {{ item.storeEndTime }}</span>
           </div>
         </div>
 
@@ -87,6 +117,13 @@ provide("filter", filter);
             :totalPages="totalPages"
             @changePage="goToPage"
         />
+
+        <!-- 가게 추가 버튼 -->
+        <div class="add-store-btn">
+          <button @click="goToRegisterPage">가게 추가</button>
+        </div>
+
+
       </div>
 
     </div>
@@ -208,6 +245,22 @@ input[type="button"] {
 .page-named .active {
   font-weight: bold;
   color: black;
+}
+
+
+.add-store-btn {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.add-store-btn button {
+  width: 140px;
+  height: 44px;
+  background-color: var(--basic-yellow);
+  border-radius: 52px;
+  border: none;
+  font-weight: 600;
+  text-align: center;
 }
 
 </style>

@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios from "axios";
 import {useAuthStore} from "@/stores/auth.js";
 import {onMounted, ref} from "vue";
-import user from "@/router/user.js";
 
 const authStore = useAuthStore();
 const userData = ref(null);
@@ -16,18 +15,24 @@ const phone = ref(null);
 
 const fetchUserData = async () => {
   try {
-    const token = authStore.accessToken;
-    const response = await axios.get('http://localhost:8003/user/mypage', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    userData.value = response.data;
-    username.value = userData.value.username;
-    phone.value = formatPhoneNumber(userData.value.phone);
+    if(authStore.isAuthorized('USER')) {
+      const token = authStore.accessToken;
+      const response = await axios.get('http://localhost:8003/user/mypage', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      userData.value = response.data;
+      username.value = userData.value.username;
+      phone.value = formatPhoneNumber(userData.value.phone);
+    } else {
+      alert(`권한이 없습니다.`);
+      router.push('/');
+    }
   } catch (error) {
     console.error('사용자 정보 가져오기 실패', error);
   }
+
 };
 
 onMounted(() => {
@@ -44,6 +49,9 @@ const goToDelete = () => {
   router.push('/delete-user'); // 회원정보 삭제 확인 페이지로 이동
 };
 
+const goToInquiry = () =>{
+  router.push('/inquiry')
+}
 function formatPhoneNumber(phone) {
   return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
 }
@@ -55,7 +63,7 @@ function formatPhoneNumber(phone) {
       <img src="@/assets/icons/logo.svg">
       <div class="name">{{ username }} 회원님</div>
     </div>
-    <div class="inquiry"><input type="button" value="문의하기"></div>
+    <div class="inquiry"><input type="button" value="문의하기" @click="goToInquiry"></div>
   </div>
 
   <div class="padding">

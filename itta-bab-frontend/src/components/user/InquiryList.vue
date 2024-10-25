@@ -1,6 +1,6 @@
 <script setup>
 import '@/assets/css/resetcss.css';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import axios from "axios";
 import {computed, onMounted, reactive, ref} from "vue";
 import {useAuthStore} from "@/stores/auth.js";
@@ -59,44 +59,81 @@ function goToPage(page) {
       <div>문의 목록</div>
     </div>
   </div>
-  <div v-for="(inquiry, index) in paginatedData" :key="inquiry.inquiryId" class="list-container">
-    <div class="borderline"></div>
-    <div class="list-content">
-      <div class="inquiry-content inquiry-title">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
-      <div class="inquiry-content1">
-        <div class="inquiry-title">{{ inquiry.inquiryContent }}</div>
+  <div class="board-container">
+    <div v-for="(inquiry, index) in paginatedData" :key="inquiry.inquiryId" class="list-container">
+      <div class="borderline"></div>
+      <div class="list-content">
+        <div class="inquiry-content inquiry-title">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
+        <div class="inquiry-content1">
+          <div class="inquiry-title">{{ inquiry.inquiryContent }}</div>
+        </div>
+        <div class="inquiry-content date">{{ inquiry.createDate }}</div>
       </div>
-      <div class="inquiry-content date">{{ inquiry.createDate }}</div>
-    </div>
-    <div class="yellow" v-if="inquiry.inquiryReply">
-      <div class="box">
-        <div><font-awesome-icon :icon="['fas', 'arrow-turn-up']" rotation=90 /></div>
-        <div class="inquiry-answer">{{ inquiry.inquiryReply }}</div>
+      <div class="yellow" v-if="inquiry.inquiryReply">
+        <div class="box">
+          <div>
+            <font-awesome-icon :icon="['fas', 'arrow-turn-up']" rotation=90 />
+          </div>
+          <div class="inquiry-answer">{{ inquiry.inquiryReply }}</div>
+        </div>
       </div>
+      <div class="line"></div>
     </div>
-    <div class="line"></div>
+    <div class="page-named">
+      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">〈</button>
+      <span
+          v-for="page in totalPages"
+          :key="page"
+          @click="goToPage(page)"
+          :class="{ active: currentPage === page }"
+      >
+          {{ page }}
+        </span>
+      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">〉</button>
+    </div>
   </div>
-
-
 </template>
 
 <style scoped>
-.borderline{
+
+.page-named {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.page-named span {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid var(--gray-font);
+  background-color: var(--white);
+}
+
+.page-named .active {
+  font-weight: bold;
+  color: black;
+}
+
+.borderline {
   background-color: var(--gray-font);
   height: 2px;
   width: 80%;
 }
-.line{
+
+.line {
   background-color: var(--gray-font);
   height: 1px;
   width: 80%;
 }
-.inquiry-answer{
+
+.inquiry-answer {
   padding: 0px 20px;
   word-wrap: break-word;
   width: 90%;
 }
-.box{
+
+.box {
   width: 70%;
   margin-left: 50px;
   background-color: var(--background-color);
@@ -105,51 +142,61 @@ function goToPage(page) {
   display: flex;
   margin-bottom: 15px;
 }
-.yellow{
-  width:100%;
+
+.yellow {
+  width: 100%;
   display: flex;
   justify-content: center;
 }
-.inquiry-content1{
+
+.inquiry-content1 {
   width: 600px;
 }
-.inquiry-title{
+
+.inquiry-title {
   word-wrap: break-word;
   font-weight: 600;
   margin-bottom: 10px;
 }
-.date{
+
+.date {
   font-size: 15px;
 }
-.inquiry-content{
+
+.inquiry-content {
   margin: 0px 15px;
   word-wrap: break-word;
   padding-bottom: 10px;
 }
-.list-content{
+
+.list-content {
   align-items: center;
   width: 80%;
   display: flex;
   justify-content: space-between;
   padding: 15px 0px;
 }
-.list-container{
+
+.list-container {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.display{
+
+.display {
   margin-top: 50px;
   display: flex;
   justify-content: center;
 }
-.title{
+
+.title {
   display: flex;
   align-items: center;
   margin-bottom: 30px;
 }
-.title div{
+
+.title div {
   font-size: 30px;
   font-weight: 600;
   margin-left: 10px;

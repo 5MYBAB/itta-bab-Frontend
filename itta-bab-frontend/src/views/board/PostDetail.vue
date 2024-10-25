@@ -42,7 +42,14 @@ const fetchData = async () => {
         Authorization: `Bearer ${authStore.accessToken}`
       }
     });
-    filteredData.value = response.data;
+    console.log("json 정보:", response.data);
+    /*filteredData.value = [...response.data];*/
+    filteredData.value.splice(0, filteredData.value.length, ...response.data);
+    currentPage.value = 1;
+    console.log("업데이트된 데이터:", filteredData.value);
+    console.log("현재 페이지 데이터:", paginatedData.value);
+
+
   } catch (error) {
     console.error("데이터를 가져오는 중 오류가 발생했습니다:", error);
   }
@@ -76,7 +83,9 @@ const filter = (searchTerm) => {
 
 // 정렬 옵션이 변경될 때 데이터 다시 가져오기
 function handleSortChange(option) {
+  console.log("정렬 옵션 변경됨:", option);
   sortOption.value = option;
+  currentPage.value = 1; // 하고 페이지 초기화
   fetchData();
 }
 

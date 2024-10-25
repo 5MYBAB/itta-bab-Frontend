@@ -1,7 +1,7 @@
 <script setup>
 
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import {computed, ref} from "vue";
+import {ref} from "vue";
 import alarmReviewIcon from '@/assets/icons/alarm-review-gray.svg'
 import alarmPostIcon from '@/assets/icons/alarm-post-gray.svg'
 import alarmGroupIcon from '@/assets/icons/alarm-group-gray.svg'

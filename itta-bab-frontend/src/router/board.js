@@ -1,8 +1,8 @@
- import PostDetail from "@/views/board/PostDetail.vue";
+import PostDetail from "@/views/board/PostDetail.vue";
 import PostCreate from "@/views/board/PostCreate.vue";
 import PostComment from "@/views/board/PostComment.vue";
- import MenuCategoryList from "@/views/store/MenuCategoryList.vue";
- import StoreList from "@/views/store/StoreList.vue";
+import MenuCategoryList from "@/views/store/MenuCategoryList.vue";
+import StoreList from "@/views/store/StoreList.vue";
 
 export default [
     {
@@ -15,6 +15,7 @@ export default [
     },
     {
         path:'/board/post/:id',
+
         component: PostComment
     },
     {

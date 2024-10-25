@@ -3,9 +3,9 @@
 </script>
 
 <template>
-  <Button>
+  <button>
     신고
-  </Button>
+  </button>
 </template>
 
 <style scoped>

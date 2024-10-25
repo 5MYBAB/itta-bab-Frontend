@@ -1,3 +1,118 @@
+<script setup>
+import axios from "axios";
+import logo from '@/assets/icons/itta-bab_logo.svg';
+import {useRoute, useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth.js";
+import {nextTick, onMounted, ref} from 'vue';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+
+// 로그인 사용자 정보
+const authStore = useAuthStore();
+
+// DB 데이터
+const data = ref([]);
+
+// 라우터
+const router = useRouter();
+const route = useRoute(); // 현재 라우트 정보 가져오기
+
+// 댓글 데이터 정의
+const comments = ref([
+  {author: '작성자(작성자ID)', text: '내용'},
+  {author: '나', text: '내용'}
+]);
+
+const newComment = ref('');
+const commentsList = ref(null);
+const commentInput = ref(null);
+
+// 댓글 추가 메서드
+function addComment() {
+  if (newComment.value.trim() !== '') {
+    comments.value.push({author: '나', text: newComment.value}); // "나" 아이디로 댓글 추가
+    newComment.value = ''; // 입력 필드 초기화
+    nextTick(() => {
+      // 댓글 추가 후 스크롤을 가장 아래로 이동
+      commentsList.value.scrollTop = commentsList.value.scrollHeight;
+      // 댓글 입력 필드로 포커스 이동
+      commentInput.value.focus();
+    });
+  }
+}
+
+// REST API 호출 함수
+const fetchData = async () => {
+  try {
+    const responseAboutGroupDetail = await axios.get(`http://localhost:8003/group/${route.params.id}`, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+
+    data.value = responseAboutGroupDetail.data;
+    console.log(data);
+  } catch (error) {
+    console.log("어라라...?\n" + error);
+  }
+}
+
+// 데이터 전송 함수
+async function sendData() {
+  try {
+    const groupId = route.params.id; // 그룹 ID 가져오기
+    const response = await axios.post(`http://localhost:8003/group/detail/${groupId}`, {}, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+
+    if (response.status === 200) {
+      alert("참여에 성공하였습니다.");
+    } else if (response.status === 208) {
+      alert("이미 참여하였습니다.");
+    } else if (response.status === 404) {
+      alert("모임이 없습니다.");
+    } else if (response.status === 423) {
+      alert("모입이 마감되었습니다.")
+    }
+  } catch (error) {
+    console.log(error.response);
+
+    if (error.response) {
+      // 서버가 응답을 보냈지만 상태 코드가 2xx가 아닌 경우
+      console.log("Status:", error.response.status);
+      console.log("Data:", error.response.data);
+      alert("참여에 실패하였습니다. " + error.response.data); // 사용자에게 오류 메시지 표시
+    } else {
+      // 요청이 이루어지지 않았거나 네트워크 오류
+      console.log("Error:", error.message);
+      alert("참여에 실패하였습니다. 네트워크 오류입니다."); // 네트워크 오류 메시지 표시
+    }
+  }
+}
+
+// DateTime 형식 변경 함수
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+
+// 목록으로 돌아가는 함수
+function goToListPage() {
+  router.push("/group");
+}
+
+onMounted(() => {
+  fetchData();
+})
+</script>
+
 <template>
   <div class="meeting-detail">
     <!-- Header Section -->
@@ -9,7 +124,7 @@
     <div class="content-wrapper">
       <!-- Meeting Content Section -->
       <section class="meeting-content">
-        <p>모임 내용이 나옵니다.</p>
+        <p>{{ data.groupPost }}</p>
 
         <div class="meeting-info">
           <div class="meeting-deco"></div>
@@ -19,15 +134,15 @@
           </div>
           <div class="meeting-detail-item">
             <font-awesome-icon :icon="['fas', 'receipt']"/>
-            <span class="members-count">현재 모집된 인원 / 전체 모집 인원</span>
+            <span class="members-count">{{ data.userCounting }}</span>
           </div>
           <div class="meeting-detail-item">
             <font-awesome-icon :icon="['far', 'clock']" class="icon"/>
-            <span class="meeting-time">마감시간</span>
+            <span class="meeting-time">{{ formatDate(data.endDate) }}</span>
           </div>
           <div class="participation">
             <div class="dashed-line"></div> <!-- 점선 추가 -->
-            <button class="participate-btn">
+            <button class="participate-btn" v-on:click="sendData">
               <font-awesome-icon :icon="['fas', 'user-plus']"/>
               참여하기
             </button>
@@ -59,39 +174,9 @@
   </div>
   <!-- Back Button -->
   <div class="button-container">
-    <button class="back-btn">목록</button>
+    <button class="back-btn" v-on:click="goToListPage">목록</button>
   </div>
 </template>
-
-<script setup>
-import logo from '@/assets/icons/itta-bab_logo.svg';
-import {nextTick, ref} from 'vue';
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-
-// 댓글 데이터 정의
-const comments = ref([
-  {author: '작성자(작성자ID)', text: '내용'},
-  {author: '나', text: '내용'}
-]);
-
-const newComment = ref('');
-const commentsList = ref(null);
-const commentInput = ref(null);
-
-// 댓글 추가 메서드
-function addComment() {
-  if (newComment.value.trim() !== '') {
-    comments.value.push({author: '나', text: newComment.value}); // "나" 아이디로 댓글 추가
-    newComment.value = ''; // 입력 필드 초기화
-    nextTick(() => {
-      // 댓글 추가 후 스크롤을 가장 아래로 이동
-      commentsList.value.scrollTop = commentsList.value.scrollHeight;
-      // 댓글 입력 필드로 포커스 이동
-      commentInput.value.focus();
-    });
-  }
-}
-</script>
 
 <style scoped>
 /* 전체 배경 */
@@ -142,13 +227,13 @@ function addComment() {
   display: flex;
   flex-wrap: nowrap; /* 아이템이 한 줄에 모두 들어가도록 설정 */
   justify-content: flex-start; /* 왼쪽 정렬 */
-  margin: 20px 0;
   padding: 10px; /* 패딩 추가 */
   border: 1px solid #e3e3e3; /* 테두리 색상 및 두께 */
   border-radius: 10px; /* 모서리 둥글게 */
   background-color: #fafafa; /* 배경색 */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
   width: max-content; /* 부모 요소의 너비를 자동 조정 */
+  margin-top: 10%;
 }
 
 /* 댓글 섹션 */
@@ -273,6 +358,10 @@ function addComment() {
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.members-count {
+  margin-left: 10px;
 }
 </style>
 

@@ -18,7 +18,7 @@ onMounted(() => {
 const handleLogout = () => {
   authStore.logout();
   alert('로그아웃 되었습니다.');
-  // window.location.reload();
+  window.location.reload();
 }
 
 const goToMainPage = () => {

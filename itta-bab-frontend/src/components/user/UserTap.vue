@@ -54,7 +54,7 @@ const selectMenu = (menu) => {
       </div>
       <div class="menu-button" :class="{ 'active': selectedMenu === 'notifications' }" @click="selectMenu('notifications')">
         <font-awesome-icon :icon="['fas', 'bell']" />
-        <a>알람 목록</a>
+        <a>알림 목록</a>
       </div>
     </div>
 

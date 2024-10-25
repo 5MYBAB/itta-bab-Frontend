@@ -64,9 +64,42 @@ function goToPage(page) {
     </div>
     <div class="line"></div>
   </div>
+  <div class="page-named">
+    <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">〈</button>
+    <span
+        v-for="page in totalPages"
+        :key="page"
+        @click="goToPage(page)"
+        :class="{ active: currentPage === page }"
+    >
+          {{ page }}
+        </span>
+    <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">〉</button>
+  </div>
 </template>
 
 <style scoped>
+
+
+.page-named {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.page-named span {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid var(--gray-font);
+  background-color: var(--white);
+}
+
+.page-named .active {
+  font-weight: bold;
+  color: black;
+}
+
 .inline {
   display: flex;
   justify-content: space-between;

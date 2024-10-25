@@ -1,12 +1,13 @@
 <script setup>
 import axios from "axios";
 import {computed, onMounted, provide, ref} from "vue";
+import {useRouter} from "vue-router";
 import {useAuthStore} from "@/stores/auth.js";
 import BottomPageButton from "@/components/common/BottomPageButton.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
 
-// 보안
+// 로그인 사용자 정보
 const authStore = useAuthStore();       // 로그인 토큰
 
 // DB 데이터
@@ -16,6 +17,9 @@ const groupCategoryData = ref([]);  // DB 모임 카테고리 데이터
 // 페이지 관련
 const currentPage = ref(1);       // 현재 페이지
 const itemsPage = 10;                   // 페이지 당 보여줄 데이터
+
+// 라우터
+const router = useRouter();
 
 // REST API 호출 함수
 const fetchData = async () => {
@@ -80,8 +84,8 @@ function goToPage(page) {
   }
 }
 
-function goToWRegisterPage() {
-  window.location.href = '/register';
+function goToRegisterPage() {
+  router.push("/group/register");
 }
 
 const filter = (searchTerm) => {
@@ -129,7 +133,7 @@ provide("filter", filter);
             class="data-row"
         >
           <div class="data-item">{{ getCategoryName(item.groupCategoryId) }}</div>
-          <div class="data-item">{{ item.groupId }}</div>
+          <div class="data-item">{{ item.groupTitle }}</div>
           <div class="data-item">{{ item.userCounting }}</div>
           <div class="data-item">{{ formatDate(item.endDate) }}</div>
         </div>
@@ -141,7 +145,7 @@ provide("filter", filter);
           :currentPage="currentPage"
           :totalPages="totalPages"
           @changePage="goToPage"
-          @writePage="goToWRegisterPage"
+          @writePage="goToRegisterPage"
       >등록
       </BottomPageButton>
     </div>

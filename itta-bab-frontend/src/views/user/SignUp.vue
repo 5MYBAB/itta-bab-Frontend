@@ -2,7 +2,7 @@
 import '@/assets/css/resetcss.css';
 import axios from "axios";
 import {useRouter} from "vue-router";
-import {computed, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import './styles/SignUp.css'
 
 const loginId = ref('');
@@ -14,16 +14,22 @@ const emailUser = ref('');
 const emailDomain = ref('');
 const fullEmail = ref('');
 const authCode = ref('');
+const phone1 = ref('');
+const phone2 = ref('');
+const phone3 = ref('');
 const router = useRouter();
 
 const handleSignUp = async () => {
   try {
+
+    const fullPhone = `${phone1.value}${phone2.value}${phone3.value}`;
+
     const response = await axios.post('http://localhost:8003/user/signup', {
       username: username.value,
       loginId: loginId.value,
       pwd: password.value,
       email: fullEmail.value,
-      phone: "string",
+      phone: fullPhone,
       birth: birthDate.value,
       courseId: 0,
       authCode: "string"
@@ -141,6 +147,61 @@ const isValidPassword = computed(() => {
   }
 });
 
+const bootcamps = ref([]);
+const bootcampInfo = ref([]);
+
+const fetchBootcampList = async () => {
+  try {
+    const response = await axios.get('http://localhost:8003/bootcamp/list');
+
+    if(response.status === 200) {
+      bootcampInfo.value = response.data.map(item => ({
+        bootId: item.bootId,
+        bootName: item.bootName
+      }));
+      bootcamps.value = bootcampInfo.value.map(item => item.bootName);
+    }
+  } catch (error) {
+    console.error('훈련 기관 불러오기 실패', error);
+  }
+};
+
+const selectedBootcamp = ref('');
+const selectedBootcampId = computed(() => {
+  const bootcamp = bootcampInfo.value.find(item => item.bootName === selectedBootcamp.value);
+  return bootcamp ? bootcamp.bootId : null;
+});
+const courses = ref([]);
+const coursesInfo = ref([]);
+
+const fetchCourseList = async (bootId) => {
+  try {
+    const response = await axios.get('http://localhost:8003/course/list', {
+      params: {
+        bootId: bootId
+      }
+    });
+
+    if(response.status === 200) {
+      coursesInfo.value = response.data.map(item => ({
+        className: item.className,
+        seasonNum: item.seasonNum
+      }));
+      courses.value = coursesInfo.value.map(item => `${item.className} ${item.seasonNum}기`);
+    }
+  } catch (error) {
+    console.error('훈련 과정 불러오기 실패', error);
+  }
+};
+
+watch(selectedBootcampId, (newId) => {
+  if (newId) fetchCourseList(newId);
+});
+
+onMounted(() => {
+  fetchBootcampList();
+});
+
 </script>
 
 <template>
@@ -227,25 +288,30 @@ const isValidPassword = computed(() => {
         <div class="flex-box">
           <div class="title">휴대 전화</div>
           <div class="input-box inline">
-            <input type="number" id="phone1">
+            <input type="number" v-model="phone1" id="phone1">
             <div class="phone-icon">-</div>
-            <input type="number" id="phone2">
+            <input type="number" v-model="phone2" id="phone2">
             <div class="phone-icon">-</div>
-            <input type="number" id="phone3">
+            <input type="number" v-model="phone3" id="phone3">
           </div>
         </div>
         <div class="flex-box">
           <div class="title">부트캠프 정보</div>
-          <div class="input-box inline">
-            <select name="bootcamp" class="bootcamp">
-              <option value="hanwha">hanwha</option>
-              <option value="saffy">saffy</option>
-            </select>
-            <select name="course" class="course">
-              <option value="web1">web1</option>
-              <option value="web2">web2</option>
-              <option value="web3">web3</option>
-            </select>
+          <div class="bootcamp-box">
+            <div class="input-box">
+              <select v-model="selectedBootcamp" name="bootcamp" class="bootcamp">
+                <option v-for="(bootcamp, index) in bootcamps" :key="index" :value="bootcamp">
+                  {{ bootcamp }}
+                </option>
+              </select>
+            </div>
+            <div class="input-box">
+              <select name="course" class="course">
+                <option v-for="(course, index) in courses" :key="index" :value="course">
+                  {{ course }}
+                </option>
+              </select>
+            </div>
           </div>
           <div><input type="button" value="위치 인증"></div>
         </div>

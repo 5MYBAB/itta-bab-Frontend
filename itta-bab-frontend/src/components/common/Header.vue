@@ -61,7 +61,6 @@ const goToMypage = () => {
   </header>
 </template>
 <style scoped>
-@import '../../assets/css/resetcss.css';
 
 * {
   color: var(--text-color);

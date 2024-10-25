@@ -57,7 +57,7 @@
 }
 
 .bootcamp {
-    width: 136px;
+    width: 328px;
     border-radius: 10px;
     background-color: var(--gray-input);
     color: var(--gray-font);
@@ -68,7 +68,7 @@
 }
 
 .course {
-    width: 173px;
+    width: 328px;
     border-radius: 10px;
     background-color: var(--gray-input);
     color: var(--gray-font);
@@ -228,4 +228,10 @@ input[type="date"], [type="number"] {
 
 .email-box, .email-and-button {
     display: flex;
+}
+
+.bootcamp-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

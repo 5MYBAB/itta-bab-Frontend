@@ -1,6 +1,55 @@
 <script setup>
 import '@/assets/css/resetcss.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import axios from "axios";
+import {computed, onMounted, reactive, ref} from "vue";
+import {useAuthStore} from "@/stores/auth.js";
+import {useRouter} from "vue-router";
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+const inquiryList = ref([]);
+
+const fetchInquiryList = async () => {
+  try {
+    const response = await axios.get('http://localhost:8003/inquiry/user', {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`, // 필요한 경우 인증 토큰 추가
+      }
+    });
+
+    inquiryList.value = response.data; // 응답 데이터를 inquiryList에 저장
+  } catch (error) {
+    console.error('문의 목록을 불러오는 중 에러가 발생했습니다.', error.response ? error.response.data : error.message);
+  }
+};
+
+onMounted(() => {
+  fetchInquiryList();
+});
+
+// Pagination 관련 변수 및 함수
+const currentPage = ref(1);
+const itemsPerPage = 10;
+
+// 총 페이지 계산
+const totalPages = computed(() => Math.ceil(inquiryList.value.length / itemsPerPage));
+
+// 현재 페이지에 해당하는 데이터만 보여주기
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return inquiryList.value.slice(start, end);
+});
+
+// 페이지 이동 함수
+function goToPage(page) {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+}
+
 </script>
 
 <template>
@@ -10,31 +59,19 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
       <div>문의 목록</div>
     </div>
   </div>
-  <div class="list-container">
+  <div v-for="(inquiry, index) in paginatedData" :key="inquiry.inquiryId" class="list-container">
     <div class="borderline"></div>
-<!-- 문의ver -->
     <div class="list-content">
-      <div class="inquiry-content inquiry-title">1</div>
+      <div class="inquiry-content inquiry-title">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
       <div class="inquiry-content1">
-        <div class="inquiry-title">문의 제목 합니당</div>
-        <div class="inquiry-text">문의 합니당문의 합니당문의 합니당문의 합니당문의 합니당문의 합니당문의 합니당문의 합니당문의 합니당</div>
+        <div class="inquiry-title">{{ inquiry.inquiryContent }}</div>
       </div>
-      <div class="inquiry-content date">2024-10-11</div>
+      <div class="inquiry-content date">{{ inquiry.createDate }}</div>
     </div>
-    <div class="line"></div>
-<!--  답변ver  -->
-    <div class="list-content">
-      <div class="inquiry-content inquiry-title">1</div>
-      <div class="inquiry-content1">
-        <div class="inquiry-title">문의 제목 합니당</div>
-        <div class="inquiry-text">문의 합니당문의 </div>
-      </div>
-      <div class="inquiry-content date">2024-10-11</div>
-    </div>
-    <div class="yellow">
+    <div class="yellow" v-if="inquiry.inquiryReply">
       <div class="box">
         <div><font-awesome-icon :icon="['fas', 'arrow-turn-up']" rotation=90 /></div>
-        <div class="inquiry-answer">dfsdjfsildjfslijflsdfdfsdjfsildjfslijflsdf</div>
+        <div class="inquiry-answer">{{ inquiry.inquiryReply }}</div>
       </div>
     </div>
     <div class="line"></div>
@@ -83,9 +120,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 }
 .date{
   font-size: 15px;
-}
-.inquiry-text{
-  word-wrap: break-word;
 }
 .inquiry-content{
   margin: 0px 15px;

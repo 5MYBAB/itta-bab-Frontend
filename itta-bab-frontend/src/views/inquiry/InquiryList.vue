@@ -1,22 +1,13 @@
 <script setup>
-import PageTitleTop from "@/components/common/PageTitleTop.vue";
 import SearchBarAndSort from '@/components/common/SearchBarAndSort.vue';
 import axios from "axios";
-import { ref, reactive, computed, onMounted } from "vue";
-import { useAuthStore } from "@/stores/auth.js";
-import { useRouter } from "vue-router";
+import {computed, onMounted, reactive, ref} from "vue";
+import {useAuthStore} from "@/stores/auth.js";
+import {useRouter} from "vue-router";
 
 // Authentication Store
 const authStore = useAuthStore();
 const router = useRouter();
-
-const inquiryData = reactive({
-  inquiry: [],
-  inquiryId: 0,
-  inquiryContent: "",
-  createDate: "",
-  inquiryReply: ""
-});
 
 // Inquiry List Ref
 const inquiryList = ref([]);
@@ -27,12 +18,6 @@ const fetchInquiryList = async () => {
     const response = await axios.get('http://localhost:8003/inquiry/admin', {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`, // 필요한 경우 인증 토큰 추가
-      },
-      params: {
-        inquiryContent: inquiryData.inquiryContent || null, // 문의 내용
-        createDate: inquiryData.createDate || null, // 작성 날짜
-        inquiryId: inquiryData.inquiryId || null,
-        inquiryReply: inquiryData.inquiryReply
       }
     });
 

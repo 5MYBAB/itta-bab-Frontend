@@ -111,6 +111,10 @@ function goToRegisterPage() {
   router.push("/group/register");
 }
 
+  function goToDetailPage(groupId) {
+    router.push(`/group/${groupId}`);
+  }
+
 const filter = (searchTerm) => {
   if (searchTerm.trim() === "") { // 빈칸인지 확인
     fetchData(); // 검색어가 빈칸이면 전체 데이터를 다시 가져옴
@@ -155,13 +159,14 @@ provide("filter", filter);
             v-for="item in paginatedData"
             :key="item.groupId"
             class="data-row"
+            v-on:click="goToDetailPage(item.groupId)"
         >
           <div class="data-item">{{ getCategoryName(item.groupCategoryId) }}</div>
           <div class="data-item">{{ item.groupTitle }}</div>
           <div class="data-item">{{ item.userCounting }}</div>
           <div class="data-item">{{ formatDate(item.endDate) }}</div>
           <div class="report-button-container">
-            <ReportButton @click="selectItem(item.groupId)"/> <!-- 클릭 이벤트 추가 -->
+            <ReportButton @click.stop="selectItem(item.groupId)"/> <!-- 클릭 이벤트 추가 -->
           </div>
         </div>
       </div>

@@ -10,11 +10,12 @@ import { useRouter } from "vue-router";
 const authStore = useAuthStore();
 const router = useRouter();
 
-// Inquiry Data Reactive Object
 const inquiryData = reactive({
   inquiry: [],
-  inquiryContent: "", // 검색할 문의 내용
-  createDate: "" // 검색할 작성 날짜
+  inquiryId: 0,
+  inquiryContent: "",
+  createDate: "",
+  inquiryReply: ""
 });
 
 // Inquiry List Ref
@@ -29,7 +30,9 @@ const fetchInquiryList = async () => {
       },
       params: {
         inquiryContent: inquiryData.inquiryContent || null, // 문의 내용
-        createDate: inquiryData.createDate || null // 작성 날짜
+        createDate: inquiryData.createDate || null, // 작성 날짜
+        inquiryId: inquiryData.inquiryId || null,
+        inquiryReply: inquiryData.inquiryReply
       }
     });
 
@@ -67,18 +70,20 @@ function goToPage(page) {
 
 // 답변하기 버튼 클릭 처리
 function answerInquiry(index) {
+  const inquiryId = paginatedData.value[index].inquiryId;
   alert(`${paginatedData.value[index].inquiryContent}에 답변을 작성합니다.`);
-  router.push('/inquiry/admin/response');
+  router.push(`/inquiry/admin/${inquiryId}`);
 }
 
-// 답변 보기 버튼 클릭 처리
 function viewAnswer(index) {
-  alert(`${paginatedData.value[index].inquiryContent}의 답변을 확인합니다.`);
-  // 실제 답변 보기 로직 구현
+  const inquiryId = paginatedData.value[index].inquiryId;
+  alert(`답변 : ${paginatedData.value[index].inquiryReply} \n 수정하고 싶으시면 확인을 눌러주세요.`)
+  router.push(`/inquiry/admin/${inquiryId}`)
 }
+
 </script>
+
 <template>
-  <PageTitleTop />
   <div class="inquiry-detail">
     <div class="title">
       <h1>문의</h1>
@@ -114,7 +119,7 @@ function viewAnswer(index) {
               class="view-answer-button"
               @click="viewAnswer(index)"
           >
-            답변보기
+            답변수정
           </button>
         </div>
       </div>

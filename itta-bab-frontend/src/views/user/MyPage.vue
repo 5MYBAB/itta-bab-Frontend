@@ -12,9 +12,8 @@ import Footer from "@/components/common/Footer.vue";
   </div>
 </template>
 
-
 <style scoped>
-.setting{
+.setting {
   background-color: var(--background-color);
 }
 </style>

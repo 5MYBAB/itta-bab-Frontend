@@ -22,20 +22,24 @@ export default [
         component: StoreCreate
     },
     {
-        path: '/store/menu/:id/update',
+        path: '/store/:id/update',
         component: StoreUpdate
     },
     {
-        path: '/store/menu',
+        path: '/store/:storeId/menu',
+        name : 'MenuMain',
         component: MenuMain
     },
     {
-        path: '/store/menu/regist',
+        path: '/store/menu/:storeId/regist',
+        name: 'MenuCreate',
         component: MenuCreate
     },
     {
-        path: '/store/menu/update',
-        component: MenuUpdate
+
+        path: '/store/menu/:id/update',
+        name: 'MenuUpdate',
+        component: MenuUpdate,
 
     },
     {

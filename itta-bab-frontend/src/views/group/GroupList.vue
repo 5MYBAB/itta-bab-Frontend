@@ -133,7 +133,7 @@ provide("filter", filter);
             class="data-row"
         >
           <div class="data-item">{{ getCategoryName(item.groupCategoryId) }}</div>
-          <div class="data-item">{{ item.groupId }}</div>
+          <div class="data-item">{{ item.groupTitle }}</div>
           <div class="data-item">{{ item.userCounting }}</div>
           <div class="data-item">{{ formatDate(item.endDate) }}</div>
         </div>

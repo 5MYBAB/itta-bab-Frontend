@@ -2,9 +2,11 @@
 import '@/assets/css/resetcss.css';
 import axios from "axios";
 import {useRouter} from "vue-router";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 const loginId = ref('');
+const password = ref('');
+const confirmPassword = ref('');
 const router = useRouter();
 
 const handleSignUp = async () => {
@@ -12,7 +14,7 @@ const handleSignUp = async () => {
     const response = await axios.post('http://localhost:8003/user/signup', {
       username: "string",
       loginId: loginId.value,
-      pwd: "string",
+      pwd: password.value,
       email: "string",
       phone: "string",
       birth: "2024-10-24",
@@ -30,7 +32,55 @@ const handleSignUp = async () => {
   } catch (error) {
     console.error('회원 가입 실패', error);
   }
-}
+};
+
+const handleDuplicateCheckClick = async (loginId) => {
+  try {
+    const response = await axios.get('http://localhost:8003/user/id', {
+      params: {
+        id: loginId
+      }
+    });
+    console.log(`아이디 중복확인 성공 ${response.status}`);
+    alert('사용할 수 있는 아이디입니다.');
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 409) {
+        console.log('아이디 중복확인 실패: 이미 존재하는 아이디입니다.');
+        alert('이미 존재하는 아이디입니다.');
+      } else {
+        console.error('아이디 중복확인 실패:', error.response.data);
+      }
+    } else {
+      console.error('아이디 중복확인 실패', error.message);
+    }
+  }
+};
+
+const passwordMismatch = computed(() => {
+  return password.value !== confirmPassword.value && confirmPassword.value.length > 0;
+});
+
+// 비밀번호 일치 여부
+const passwordMatch = computed(() => {
+  return password.value === confirmPassword.value && confirmPassword.value.length > 0;
+});
+
+const passwordCheckMessage = ref('');
+
+// 비밀번호 유효성 검사
+const isValidPassword = computed(() => {
+  if (password.value.length >= 8 && password.value.length <= 15 && password.value.match(/[A-Za-z]/) && password.value.match(/\d/)) {
+    passwordCheckMessage.value = '사용할 수 있는 비밀번호입니다.';
+    return true; // 유효한 비밀번호
+  } else if (password.value.length === 0) {
+    passwordCheckMessage.value = '영문, 숫자 포함하여 8~15자 입력해주세요 '; // 비밀번호가 비어있을 경우
+    return false; // 비밀번호가 유효하지 않음
+  } else {
+    passwordCheckMessage.value = '영문, 숫자 포함하여 8~15자 입력해주세요 '; // 유효하지 않을 경우
+    return false; // 비밀번호가 유효하지 않음
+  }
+});
 
 </script>
 
@@ -45,20 +95,31 @@ const handleSignUp = async () => {
         <div class="flex-box">
           <div class="title">아이디</div>
           <div class="input-box">
-            <input v-model="loginId" type="text" required>
+            <input type="text" v-model="loginId" required>
           </div>
-          <div><input type="button" value="중복확인"></div>
+          <div>
+            <input @click="handleDuplicateCheckClick(loginId)" type="button" value="중복확인">
+          </div>
         </div>
         <div class="flex-box">
           <div class="title">비밀번호</div>
           <div class="input-box">
-            <input type="password" required>
-            <div class="small">영문 ,숫자 포함하여 8~15자 입력해주세요</div>
+            <input type="password" v-model="password" required @input="validatePassword">
+            <div
+                class="small"
+                :class="{'valid': isValidPassword, 'invalid': !isValidPassword && password.length > 0}"
+            >
+              {{ passwordCheckMessage }}
+            </div>
           </div>
         </div>
         <div class="flex-box">
           <div class="title">비밀번호 확인</div>
-          <div class="input-box"><input type="password"></div>
+          <div class="input-box">
+            <input type="password" v-model="confirmPassword" :disabled="!password" required>
+            <div v-if="passwordMismatch" class="error-message">비밀번호가 일치하지 않습니다.</div>
+            <div v-if="passwordMatch" class="success-message">비밀번호가 일치합니다.</div>
+          </div>
         </div>
         <div class="flex-box">
           <div class="title">이름</div>
@@ -330,7 +391,7 @@ input[type="button"] {
   border: none;
 }
 
-input[type="text"], [type="password"]{
+input[type="text"], [type="password"] {
   border-radius: 10px;
   background-color: var(--gray-input);
   border: none;
@@ -361,5 +422,13 @@ input[type="date"], [type="number"] {
 
 .input-box {
   width: 348px;
+}
+
+.success-message, .valid{
+  color: var(--active-green);
+}
+
+.invalid {
+  color: var(--real-red);
 }
 </style>

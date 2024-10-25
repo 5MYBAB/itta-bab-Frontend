@@ -1,9 +1,9 @@
 <script setup>
 import '@/assets/css/resetcss.css';
 import axios from "axios";
-import { onMounted, ref, computed } from "vue";
-import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/auth.js";
+import {computed, onMounted, ref} from "vue";
+import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth.js";
 
 // 라우터
 const router = useRouter();
@@ -20,6 +20,16 @@ const showDropdown = ref(false); // 드롭다운 표시 여부
 
 // 모집인원 입력란에 대한 참조
 const countingInput = ref(null);
+
+// 입력받은 데이터
+const data = ref({
+  title: '',
+  category: '',
+  location: '',
+  endDate: '',
+  counting: '',
+  content: ''
+});
 
 // REST API 호출
 const fetchData = async () => {
@@ -42,32 +52,58 @@ const fetchData = async () => {
   }
 };
 
-// 입력받은 데이터
-const data = ref({
-  title: '',
-  category: '',
-  location: '',
-  endDate: '',
-  counting: '',
-  content: ''
-});
+// 데이터 전송
+const sendData = async () => {
+  try {
+    const request = await axios.post("http://localhost:8003/group", {
+      "groupId": 0,
+      "groupCategoryId": data.value.category,
+      "userId": 0,
+      "groupTitle": data.value.title,
+      "userCounting": data.value.counting,
+      "groupStatus": true,
+      "createDate": new Date(),
+      "endDate": data.value.endDate,
+      "groupPost": data.value.content,
+      "chatRoomStatus": "NOT_CREATED",
+      "blinded": false
+    }, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+
+    if (request.status === 200) {
+      console.log(request.status);
+    } else {
+      alert("어라라?" + request.status);
+    }
+    router.push("/group");
+
+  } catch (error) {
+    console.log("어라라?\n" + error);
+  }
+}
+
 
 const register = () => {
   // 카테고리 값 추가
   data.value.category = selectedCategory.value ? selectedCategory.value.groupCategoryId : '';
 
   console.log(data.value);
-}
+
+  sendData();
+};
 
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value; // 드롭다운 토글
-}
+};
 
 const selectCategory = (cat) => {
   selectedCategory.value = cat; // 선택된 카테고리 설정
   data.value.category = cat.groupCategoryName;
   showDropdown.value = false; // 드롭다운 닫기
-}
+};
 
 // 선택된 카테고리 이름을 computed로 정의
 const selectedCategoryName = computed(() => {
@@ -115,7 +151,7 @@ onMounted(() => {
             <div v-for="cat in category" :key="cat.groupCategoryId" @click="selectCategory(cat)">
               <input type="radio"
                      :value="cat.groupCategoryName"
-                     :checked="selectedCategory.groupCategoryId === cat.groupCategoryId" />
+                     :checked="selectedCategory.groupCategoryId === cat.groupCategoryId"/>
               {{ cat.groupCategoryName }}
             </div>
           </div>

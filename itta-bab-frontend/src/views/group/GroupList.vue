@@ -6,6 +6,7 @@ import {useAuthStore} from "@/stores/auth.js";
 import BottomPageButton from "@/components/common/BottomPageButton.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
+import ReportButton from "@/components/common/ReportButton.vue";
 
 // 로그인 사용자 정보
 const authStore = useAuthStore();       // 로그인 토큰
@@ -17,6 +18,10 @@ const groupCategoryData = ref([]);  // DB 모임 카테고리 데이터
 // 페이지 관련
 const currentPage = ref(1);       // 현재 페이지
 const itemsPage = 10;                   // 페이지 당 보여줄 데이터
+const selectedItemId = ref({
+  target: "GROUP",
+  groupId: null
+}); // 선택된 아이템의 ID를 저장
 
 // 라우터
 const router = useRouter();
@@ -45,6 +50,11 @@ const fetchData = async () => {
   }
 };
 
+// 삭제 버튼 누르면 때 작동하는 함수
+function selectItem(groupId) {
+  selectedItemId.value.groupId = groupId;
+  console.log("신고 ID:", selectedItemId.value); // 확인용 로그
+}
 
 onMounted(() => {
   fetchData(); // 컴포넌트가 마운트될 때 데이터 가져오기
@@ -124,6 +134,7 @@ provide("filter", filter);
         <div class="header-item">제목</div>
         <div class="header-item">모집인원</div>
         <div class="header-item">마감시간</div>
+        <div class="blank"></div>
       </div>
 
       <div class="list-style">
@@ -136,6 +147,9 @@ provide("filter", filter);
           <div class="data-item">{{ item.groupTitle }}</div>
           <div class="data-item">{{ item.userCounting }}</div>
           <div class="data-item">{{ formatDate(item.endDate) }}</div>
+          <div class="report-button-container">
+            <ReportButton @click="selectItem(item.groupId)"/> <!-- 클릭 이벤트 추가 -->
+          </div>
         </div>
       </div>
     </div>
@@ -151,6 +165,7 @@ provide("filter", filter);
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .background {
@@ -187,12 +202,21 @@ provide("filter", filter);
   padding: 15px;
   margin-bottom: 14px; /* 아래 여백 추가 */
   border-bottom: 1px solid #ddd; /* 가로줄 추가 */
+  align-items: center; /* 세로 가운데 정렬 */
 }
 
 .data-item {
   flex: 1;
   text-align: center;
 }
+
+/* 신고 버튼을 위한 스타일 추가 */
+.report-button-container {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 끝 정렬 */
+  margin-left: auto; /* 왼쪽 여백 자동으로 설정하여 오른쪽 정렬 */
+}
+
 
 .page-named span {
   cursor: pointer;
@@ -229,6 +253,10 @@ provide("filter", filter);
 .title-section {
   width: 100%;
   justify-content: flex-start;
+}
+
+.blank {
+  width: 45px;
 }
 
 </style>

@@ -12,6 +12,8 @@ const router = useRouter();
 const attendGroup = ref([]);
 const username = ref(null);
 const phone = ref(null);
+const loading = ref(true); // 로딩 상태 추가
+const errorMessage = ref(''); // 에러 메시지 추가
 
 // 페이지 관련
 const currentPage = ref(1); // 현재 페이지
@@ -35,22 +37,30 @@ const fetchUserData = async () => {
     }
   } catch (error) {
     console.error('사용자 정보 가져오기 실패', error);
+    errorMessage.value = '사용자 정보를 가져오는 데 실패했습니다.';
+  } finally {
+    loading.value = false; // 로딩 완료
   }
 };
 
 // 참여중인 모임 REST API 호출
 const fetchAttendGroupData = async () => {
-  const responseAboutGroup = await axios.get('http://localhost:8003/group/attend', {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`
-    }
-  });
+  try {
+    const responseAboutGroup = await axios.get('http://localhost:8003/group/attend', {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
 
-  if (responseAboutGroup.status === 200) {
-    attendGroup.value = responseAboutGroup.data;
-    console.log(attendGroup.value);
-  } else {
-    console.log("참여중인 모임 정보를 불러오는데 실패했습니다.");
+    if (responseAboutGroup.status === 200) {
+      attendGroup.value = responseAboutGroup.data;
+      console.log(attendGroup.value);
+    } else {
+      console.log("참여중인 모임 정보를 불러오는데 실패했습니다.");
+    }
+  } catch (error) {
+    console.error('참여 중인 모임 정보 가져오기 실패', error);
+    errorMessage.value = '참여 중인 모임 정보를 가져오는 데 실패했습니다.';
   }
 }
 
@@ -92,6 +102,10 @@ function goToPage(page) {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page;
   }
+}
+
+function goToChatPage(groupId) {
+  router.push(`/group/${groupId}/chat`)
 }
 </script>
 
@@ -139,11 +153,16 @@ function goToPage(page) {
       </div>
     </div>
 
+    <!-- 사용자 정보 로딩 중 및 에러 메시지 표시 -->
+    <div v-if="loading" class="loading">로딩 중...</div>
+    <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+
     <!-- 참여 중인 모임 -->
     <div class="chat-list-container">
       <div class="yellow">참여중인 모임</div>
       <div class="chat-list">
-        <div class="chat-list-line" v-for="item in paginatedAttendGroups" :key="item.groupId">
+        <div class="chat-list-line" v-for="item in paginatedAttendGroups" :key="item.groupId"
+             v-on:click="goToChatPage(item.groupId)">
           <div class="chat-title">{{ item.groupTitle }}</div>
           <div class="chat-sub-title">{{ item.groupPost }}</div>
           <div>
@@ -165,6 +184,21 @@ function goToPage(page) {
 </template>
 
 <style scoped>
+/* 기존 스타일 유지 */
+/* 추가된 스타일 */
+.loading {
+  text-align: center;
+  font-size: 20px;
+  color: var(--primary-color);
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  font-size: 18px;
+  margin: 10px 0;
+}
+
 /* 기존 스타일 유지 */
 .chat-list-line {
   display: flex;

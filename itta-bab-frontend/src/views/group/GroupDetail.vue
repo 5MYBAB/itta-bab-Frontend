@@ -5,6 +5,7 @@ import {useRoute, useRouter} from "vue-router";
 import {useAuthStore} from "@/stores/auth.js";
 import {nextTick, onMounted, ref} from 'vue';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import ReportButton from "@/components/common/ReportButton.vue";
 
 // 로그인 사용자 정보
 const authStore = useAuthStore();
@@ -25,6 +26,18 @@ const comments = ref([
 const newComment = ref('');
 const commentsList = ref(null);
 const commentInput = ref(null);
+const postLiked = ref(false); // 게시물의 좋아요 상태
+
+function toggleLike(index) {
+  if (index >= 0 && index < comments.value.length) {
+    comments.value[index].liked = !comments.value[index].liked;
+  } else {
+    console.error(`Invalid index: ${index}`);
+  }
+}
+function togglePostLike() {
+  postLiked.value = !postLiked.value;
+}
 
 // 댓글 추가 메서드
 function addComment() {
@@ -73,7 +86,7 @@ async function sendData() {
     } else if (response.status === 404) {
       alert("모임이 없습니다.");
     } else if (response.status === 423) {
-      alert("모입이 마감되었습니다.")
+      alert("모임이 마감되었습니다.");
     }
   } catch (error) {
     console.log(error.response);
@@ -89,6 +102,18 @@ async function sendData() {
       alert("참여에 실패하였습니다. 네트워크 오류입니다."); // 네트워크 오류 메시지 표시
     }
   }
+}
+
+const reportData = ref({
+  target: "GROUP",
+  targetId: null
+})
+
+function reporting(groupId) {
+  reportData.value.targetId = groupId;
+  alert("신고버튼 누름")
+  console.log("신고하였습니다.");
+  console.log(reportData.value);
 }
 
 // DateTime 형식 변경 함수
@@ -108,9 +133,10 @@ function goToListPage() {
   router.push("/group");
 }
 
+// 컴포넌트가 마운트될 때 데이터 가져오기
 onMounted(() => {
   fetchData();
-})
+});
 </script>
 
 <template>
@@ -122,15 +148,33 @@ onMounted(() => {
     </header>
 
     <div class="content-wrapper">
-      <!-- Meeting Content Section -->
-      <section class="meeting-content">
-        <p>{{ data.groupPost }}</p>
-
+      <!-- 제목 -->
+      <div class="top-section">
+        <h1>{{ data.groupTitle }}</h1>
+      </div>
+      <div class="middle-section">
+        <!-- 내용 -->
+        <div class="left">
+          <div class="title-section">
+            <p>작성자 : {{ data.userId }}</p>
+            <div class="plz-end">
+              <ReportButton v-on:click="reporting(data.groupId)"/>
+              <button class="like-button" @click="togglePostLike">
+                <font-awesome-icon
+                    :icon="postLiked ? ['fas', 'heart'] : ['far', 'heart']"
+                    class="heart-icon"
+                    style="color: #da4d10"
+                />
+              </button>
+            </div>
+          </div>
+          <p>{{ data.groupPost }}</p>
+        </div>
         <div class="meeting-info">
           <div class="meeting-deco"></div>
           <div class="meeting-detail-item">
             <font-awesome-icon :icon="['fas', 'flag']" class="icon"/>
-            <span class="location-text">장소</span>
+            <span class="location-text">테스트 장소</span>
           </div>
           <div class="meeting-detail-item">
             <font-awesome-icon :icon="['fas', 'receipt']"/>
@@ -148,7 +192,7 @@ onMounted(() => {
             </button>
           </div>
         </div>
-      </section>
+      </div>
 
       <!-- Comment Section -->
       <section class="comment-section">
@@ -187,6 +231,34 @@ onMounted(() => {
   min-height: 600px; /* 원하는 높이로 설정 */
 }
 
+.top-section {
+  background-color: var(--basic-yellow);
+  border: none; /* 기존 테두리 제거 */
+  border-top-left-radius: 10px; /* 왼쪽 상단 모서리 둥글게 */
+  border-top-right-radius: 10px; /* 오른쪽 상단 모서리 둥글게 */
+  height: 10%;
+}
+
+.top-section h1 {
+  padding-left: 1px;
+  margin: 2%; /* 필요에 따라 여백 조정 */
+}
+
+.middle-section {
+  background-color: white;
+  display: flex; /* Flexbox 사용 */
+  flex-direction: column; /* 세로 정렬 */
+  align-items: center; /* 중앙 정렬 */
+
+}
+
+.left {
+  text-align: left; /* p 태그 왼쪽 정렬 */
+  padding-left: 2%;
+  margin: 2%; /* 필요에 따라 여백 조정 */
+  width: 100%; /* 부모 요소의 너비를 사용 */
+  /* 추가적인 여백 조정 필요 시 아래 속성 사용 */
+}
 
 /* 헤더 스타일 */
 .header {
@@ -194,6 +266,7 @@ onMounted(() => {
   align-items: center;
   background-color: #fcf4ca;
   padding: 10px;
+  border: none !important;
 }
 
 .header img {
@@ -208,21 +281,11 @@ onMounted(() => {
 
 /* Content Wrapper */
 .content-wrapper {
-  display: flex; /* 좌우 배치 */
   margin-top: 20px; /* 위쪽 여백 */
   min-height: 500px;
 }
 
 /* 모임 정보 섹션 */
-.meeting-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  flex: 1; /* 가변 너비 */
-  margin-right: 20px; /* 오른쪽 간격 */
-}
-
 .meeting-info {
   display: flex;
   flex-wrap: nowrap; /* 아이템이 한 줄에 모두 들어가도록 설정 */
@@ -253,7 +316,6 @@ onMounted(() => {
   align-items: center;
   margin-top: 10px; /* 위쪽 여백 */
 }
-
 
 /* 댓글 리스트 */
 .comments-list {
@@ -294,11 +356,6 @@ onMounted(() => {
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
-}
-
-/* 기타 스타일링 */
-.my-comment {
-  text-align: right;
 }
 
 .my-comment-bubble {
@@ -363,5 +420,24 @@ onMounted(() => {
 .members-count {
   margin-left: 10px;
 }
-</style>
 
+.title-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 1%;
+  margin-bottom: 1%;
+}
+
+.plz-end {
+  border: none !important;
+  background-color: transparent !important;
+  cursor: pointer;
+}
+
+.like-button {
+  border: none;
+  background-color: var(--white);
+}
+</style>

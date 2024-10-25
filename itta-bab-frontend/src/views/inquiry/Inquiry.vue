@@ -1,32 +1,81 @@
 <script setup>
-
+import { ref } from 'vue';
+import axios from 'axios';
 import Header from "@/App.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
+import { useAuthStore } from '@/stores/auth'; // authStore를 가져옵니다.
+
+const authStore = useAuthStore();
+// 폼 데이터 상태
+const inquiryTitle = ref('');
+const inquiryContent = ref('');
+
+function getUserIdFromToken() {
+  if (!authStore.accessToken) return null;
+
+  try {
+    const payload = JSON.parse(atob(authStore.accessToken.split('.')[1])); // JWT 토큰의 페이로드를 디코딩
+    console.log('Payload 작동하는지 테스트:', payload);
+    return payload.sub; // 페이로드에서 userId 추출
+  } catch (error) {
+    console.error('Failed to decode token:', error);
+    return null;
+  }
+}
+// 문의 등록 함수
+async function submitInquiry() {
+  // 입력 값이 비어 있는지 확인
+  if (!inquiryContent.value) {
+    alert('내용을 입력해주세요.');
+    return;
+  }
+
+  const inquiryData = {
+    inquiryContent: inquiryContent.value,
+    createDate: new Date().toISOString() // 현재 시간을 ISO 8601 형식으로 추가
+  };
+
+  try {
+    const response = await axios.post('http://localhost:8003/inquiry/user', inquiryData, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+    console.log('문의 등록 성공:', response.data);
+    alert('문의가 성공적으로 등록되었습니다.');
+    // 성공 시 폼 초기화
+
+    inquiryContent.value = '';
+  } catch (error) {
+    console.error('문의 등록 실패:', error);
+    alert('문의 등록에 실패했습니다.');
+  }
+}
 </script>
 
 <template>
-
-  <main  class="post-detail">
-    <br>
+  <main class="post-detail">
+    <br />
     <div class="post-write-container">
       <h2>문의 하기</h2>
-      <form>
+      <form @submit.prevent="submitInquiry">
         <div class="form-group">
-          <label for="title">문의</label>
-          <input type="text" id="title" placeholder="제목을 입력하세요" />
+<!--          <label for="title">문의</label>
+          <input type="text" id="title" v-model="inquiryTitle" placeholder="제목을 입력하세요" />-->
         </div>
         <div class="form-group">
           <label for="content">문의 내용</label>
-          <textarea id="content" placeholder="내용을 입력하세요"></textarea>
+          <textarea id="content" v-model="inquiryContent" placeholder="내용을 입력하세요"></textarea>
         </div>
         <button type="submit" class="submit-button">작성 완료</button>
       </form>
     </div>
-
-
   </main>
-
 </template>
+
+<style scoped>
+/* 스타일 코드 생략 (기존 코드 그대로 유지) */
+</style>
 
 <style scoped>
 .post-detail{/*배경 화면 노란색으로 설정하는 부분*/

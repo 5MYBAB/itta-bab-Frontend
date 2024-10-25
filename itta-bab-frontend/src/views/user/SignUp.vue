@@ -18,9 +18,15 @@ const phone1 = ref('');
 const phone2 = ref('');
 const phone3 = ref('');
 const router = useRouter();
+const agreement = ref('');
 
 const handleSignUp = async () => {
   try {
+
+    if (agreement.value !== 'agree') {
+      alert('이용약관에 동의하셔야 회원가입을 진행할 수 있습니다.');
+      return; // 동의하지 않은 경우 함수 종료
+    }
 
     const fullPhone = `${phone1.value}${phone2.value}${phone3.value}`;
 
@@ -31,8 +37,7 @@ const handleSignUp = async () => {
       email: fullEmail.value,
       phone: fullPhone,
       birth: birthDate.value,
-      courseId: 0,
-      authCode: "string"
+      courseId: selectedCourseId.value
     });
 
     if (response.status === 201) {
@@ -184,10 +189,10 @@ const fetchCourseList = async (bootId) => {
 
     if(response.status === 200) {
       coursesInfo.value = response.data.map(item => ({
-        className: item.className,
-        seasonNum: item.seasonNum
+        courseId: item.courseId,
+        courseName: `${item.className} ${item.seasonNum}기`
       }));
-      courses.value = coursesInfo.value.map(item => `${item.className} ${item.seasonNum}기`);
+      courses.value = coursesInfo.value.map(item => item.courseName);
     }
   } catch (error) {
     console.error('훈련 과정 불러오기 실패', error);
@@ -195,7 +200,16 @@ const fetchCourseList = async (bootId) => {
 };
 
 watch(selectedBootcampId, (newId) => {
-  if (newId) fetchCourseList(newId);
+  if (newId) {
+    fetchCourseList(newId);
+    selectedCourse.value = '';
+  }
+});
+
+const selectedCourse = ref('');
+const selectedCourseId = computed(() => {
+  const course = coursesInfo.value.find(item => item.courseName === selectedCourse.value);
+  return course ? course.courseId : null;
 });
 
 onMounted(() => {
@@ -268,7 +282,7 @@ onMounted(() => {
                 </div>
               </div>
               <div>
-                <input @click="handleSendAuthCodeClick" type="button" value="인증번호 발송" :disabled="!emailUser">
+                <input @click="handleSendAuthCodeClick" type="button" value="인증번호 발송" :disabled="!emailUser || !emailDomain">
               </div>
             </div>
             <div class="email-message">{{ emailSendMessage }}</div>
@@ -282,17 +296,17 @@ onMounted(() => {
             <div v-if="isAuth" class="success-message">{{ emailAuthMessage }}</div>
           </div>
           <div>
-            <input @click="handleAuthCodeCheckClick" type="button" value="인증 확인" :disabled="fullEmail">
+            <input @click="handleAuthCodeCheckClick" type="button" value="인증 확인" :disabled="!fullEmail">
           </div>
         </div>
         <div class="flex-box">
           <div class="title">휴대 전화</div>
           <div class="input-box inline">
-            <input type="number" v-model="phone1" id="phone1">
+            <input type="text" v-model="phone1" id="phone1">
             <div class="phone-icon">-</div>
-            <input type="number" v-model="phone2" id="phone2">
+            <input type="text" v-model="phone2" id="phone2">
             <div class="phone-icon">-</div>
-            <input type="number" v-model="phone3" id="phone3">
+            <input type="text" v-model="phone3" id="phone3">
           </div>
         </div>
         <div class="flex-box">
@@ -306,14 +320,14 @@ onMounted(() => {
               </select>
             </div>
             <div class="input-box">
-              <select name="course" class="course">
+              <select v-model="selectedCourse" name="course" class="course">
                 <option v-for="(course, index) in courses" :key="index" :value="course">
                   {{ course }}
                 </option>
               </select>
             </div>
           </div>
-          <div><input type="button" value="위치 인증"></div>
+
         </div>
       </div>
       <!-- 이용 약관 -->
@@ -321,7 +335,6 @@ onMounted(() => {
         <div>
           <div class="notice-wrapper">
             <div class="border">이용약관</div>
-            <div class="border"><input type="checkbox">&nbsp;&nbsp;전체 동의</div>
           </div>
           <div class="sub-notice">
             회원가입을 위해서는 홈페이지 이용약관 및 개인정보 수집 및 이용에 대한 정책 확인 후, 동의여부를 체크하셔야만 회원가입이 완료됩니다.
@@ -342,8 +355,8 @@ onMounted(() => {
         </div>
       </div>
       <div class="agree">
-        <div><input type="radio" id="agree">동의함</div>
-        <div><input type="radio" id="agree">동의안함</div>
+        <div><input type="radio" id="agree" value="agree" v-model="agreement">동의함</div>
+        <div><input type="radio" id="agree" value="disagree" v-model="agreement">동의안함</div>
       </div>
       <div class="submit">
         <input type="button" value="회원가입" id="submit-button" @click="handleSignUp">

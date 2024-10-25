@@ -102,7 +102,9 @@ const selectItem = (item) => {
   }
 }
 
+
 </script>
+
 
 <template>
   <div class="list-style">

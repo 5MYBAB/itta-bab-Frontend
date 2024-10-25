@@ -41,6 +41,7 @@ const handleInquiryCreate = async () => {
     <br />
     <div class="post-write-container">
       <h2>문의 하기</h2>
+
       <!-- @submit.prevent로 폼 제출 시 새로고침 방지 -->
       <form @submit.prevent="handleInquiryCreate">
         <div class="form-group">
@@ -50,6 +51,7 @@ const handleInquiryCreate = async () => {
               placeholder="내용을 입력하세요"
               v-model="formData.inquiryContent"
           ></textarea>
+
         </div>
         <!-- isFormValid에 따라 버튼 비활성화 -->
         <button type="submit" class="submit-button" :disabled="!isFormValid">작성 완료</button>
@@ -57,6 +59,10 @@ const handleInquiryCreate = async () => {
     </div>
   </main>
 </template>
+
+<style scoped>
+/* 스타일 코드 생략 (기존 코드 그대로 유지) */
+</style>
 
 <style scoped>
 .post-detail{/*배경 화면 노란색으로 설정하는 부분*/

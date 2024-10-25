@@ -3,7 +3,12 @@ import StoreMapApi from "@/components/common/StoreMapApi.vue";
 import StoreSearchBarAndSort from "@/components/common/StoreSearchBarAndSort.vue";
 import {computed, provide ,ref, onMounted} from "vue";
 import Page from "@/components/common/Page.vue";
+import { useRouter } from 'vue-router';
 import {useAuthStore} from "@/stores/auth.js";
+import MenuMain from "@/views/store/MenuMain.vue";
+
+
+const router = useRouter(); // 라우터 이동을 위한 설정
 
 // 데이터를 저장할 상태 변수
 const storeList = ref([]);
@@ -40,8 +45,6 @@ onMounted(() => {
 });
 
 
-
-
 const filteredData = ref(storeList); // 필터링된 데이터를 저장할 ref
 const currentPage = ref(1);
 const itemsPerPage = 5;
@@ -61,9 +64,6 @@ function goToPage(page) {
   }
 }
 
-function goToWritePage() {
-  window.location.href = '/write'; // '글쓰기' 페이지로 이동
-}
 
 function goToRegisterPage() {
   window.location.href = '/store/regist'; // 가게 추가 페이지로 이동
@@ -74,16 +74,19 @@ const filter = (searchTerm) => {
     filteredData.value = jsonData; // 검색어가 빈칸이면 전체 데이터를 보여줌
     return;
   }
-
   // 검색어가 포함된 항목만 필터링
   filteredData.value = storeList.value.filter(item =>
-      item.name.includes(searchTerm)
+      item.storeName.includes(searchTerm)
   );
 
 };
 
 // filter를 제공
 provide("filter", filter);
+
+function goToStoreMenu(storeId, storeName) {
+  router.push({ name: 'MenuMain', params: { storeId, storeName } });
+}
 
 </script>
 
@@ -100,7 +103,12 @@ provide("filter", filter);
           <div class="store-name">
             <span class="name">{{ item.storeName }}</span>
             <span class="status">
-          <input type="button" :value="item.storeStatus" :class="{'open-status': item.storeStatus === 'OPEN', 'closed-status': item.storeStatus === 'CLOSED'}" id="submit-button">
+          <input type="button"
+                 :value="item.storeStatus"
+                 :class="{'open-status': item.storeStatus === 'OPEN', 'closed-status': item.storeStatus === 'CLOSED'}"
+                 id="submit-button"
+                 @click="goToStoreMenu(item.storeId, item.storeName)"
+          >
         </span>
           </div>
           <div class="store-details">

@@ -79,7 +79,7 @@ const goToInstitutionRegistration = () => {
           </li>
           <li><a>문의 관리</a>
             <ul>
-              <li><a href="#" @click.prevent="router.push('/inquiry/list')">문의 조회</a></li> <!--여기 링크를 이렇게 만들게 아니고 userTap처럼 만들어야됨-->
+              <li><a href="#" @click.prevent="router.push('/inquiry/admin')">문의 조회</a></li> <!--여기 링크를 이렇게 만들게 아니고 userTap처럼 만들어야됨-->
             </ul>
           </li>
           <li><a href="#" @click.prevent="router.push('/menu-management')">모임 관리</a>

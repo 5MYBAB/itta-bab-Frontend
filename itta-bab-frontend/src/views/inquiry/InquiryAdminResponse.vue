@@ -1,33 +1,80 @@
 <script setup>
-import { ref } from 'vue';
 import axios from 'axios';
-import UserTap from "@/components/user/UserTap.vue";
+import { ref, reactive, onMounted } from "vue";
+import { useAuthStore } from "@/stores/auth.js";
+import { useRouter, useRoute } from "vue-router";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
-import AdminTap from "@/components/admin/AdminTap.vue";
+import router from "@/router/index.js";
 
-const replyContent = ref(''); // 답변 내용을 저장할 변수
+const authStore = useAuthStore();
+const route = useRoute();
+
+const inquiryId = route.params.id;
+
+const inquiryData = reactive({
+  inquiry_user_id: "",  // 문의를 남긴 유저 ID
+  inquiry_content: ""    // 문의 내용
+});
+
+const replyContent = ref("");
+
+// 문의 내용 보여주기
+const fetchInquiryData = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8003/inquiry/admin/${inquiryId}`, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+    // API 응답에서 필요한 값 설정
+    inquiryData.inquiry_user_id = response.data.inquiryUserId; // API 응답에서 유저 ID 가져오기
+    inquiryData.inquiry_content = response.data.inquiryContent; // API 응답에서 내용 가져오기
+  } catch (error) {
+    console.error('문의 내용을 불러오는 중 오류가 발생했습니다:', error.response ? error.response.data : error.message);
+  }
+};
+
+// 답변 등록 함수
+const formData = ref({
+  inquiryReply: "",
+  inquiryReplyTime: new Date().toISOString()
+});
 
 // 답변 등록 함수
 const registerReply = async () => {
-  if (!replyContent.value.trim()) {
+  if (replyContent.value.trim() === "") {
     alert('답변 내용을 입력하세요.');
     return;
   }
+  // formData 업데이트
+  formData.value.inquiryReply = replyContent.value;
+  formData.value.inquiryReplyTime = new Date().toISOString();
 
   try {
-    // 예시로 '/api/inquiry/reply'로 POST 요청 보냄
-    const response = await axios.post('답변 api 내용 넣기', {
-      reply: replyContent.value
+    console.log("formData:", formData.value); // 콘솔에 formData 내용 확인
+    const response = await axios.post(`http://localhost:8003/inquiry/admin/${inquiryId}`, formData.value, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
     });
-    // 성공 시 알림 메시지
     alert('답변이 완료되었습니다.');
-    replyContent.value = ''; // 입력 필드 초기화
+    replyContent.value = ""; // 답변 등록 후 내용 초기화
+    formData.value.inquiryReply = ""; // formData도 초기화'
+    router.push('/inquiry/admin');
   } catch (error) {
     console.error('답변 등록 중 오류가 발생했습니다:', error);
     alert('답변 등록에 실패했습니다. 다시 시도하세요.');
   }
 };
+
+
+// 컴포넌트 마운트 시 데이터 요청
+onMounted(async () => {
+  console.log("inquiryId:", inquiryId); // inquiryId 값 확인
+  await fetchInquiryData();
+});
 </script>
+
 
 <template>
   <div class="inquiry-content">
@@ -38,10 +85,9 @@ const registerReply = async () => {
       <br>
       <div class="question-section">
         <div class="question-details">
-          <div><strong>유저:</strong> pangtaek</div>
-          <div><strong>문의:</strong> 정지 사유</div>
+          <div><strong>유저 ID:</strong> {{ inquiryData.inquiry_user_id }}</div> <!-- 유저 ID 표시 -->
           <div><strong>문의 내용:</strong>
-            <div class="inquiry-content-indent">제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!제가 왜 정지를 당했는지 궁금합니다!</div>
+            <div class="inquiry-content-indent">{{ inquiryData.inquiry_content }}</div> <!-- 문의 내용 표시 -->
           </div>
         </div>
       </div>
@@ -54,7 +100,6 @@ const registerReply = async () => {
         <button @click="registerReply" class="submit-button">답변 등록</button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -62,8 +107,8 @@ const registerReply = async () => {
 .inquiry-content-indent {
   margin-left: 20px; /* 들여쓰기 크기 설정 */
 }
-.full-section{
-  width:  80%; /* 너비를 80%로 설정 */
+.full-section {
+  width: 80%; /* 너비를 80%로 설정 */
   margin: 0 auto;
   background-color: var(--white);
   padding: 0 20px;
@@ -96,11 +141,8 @@ const registerReply = async () => {
   margin-bottom: 30px; /* 아래쪽 여백 추가 */
 }
 
-
 .question-details div {
   margin-bottom: 10px;
-  /*  margin-top: 10px;
-    padding-top: 10px;*/
 }
 .section-title {
   text-align: center; /* 중앙 정렬 */

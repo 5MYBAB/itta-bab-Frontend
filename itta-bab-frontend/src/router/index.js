@@ -7,7 +7,7 @@ import scheduleRoutes from './schedule.js';
 import storeRoutes from './store.js';
 import inquiryRoutes from './inquiry.js';
 import reportRoutes from "@/router/report.js";
-import bootcampRoutes from './admin.js';
+import adminRoutes from './admin.js';
 
 import HomeView from "@/views/Home.vue";
 import {useAuthStore} from "@/stores/auth.js";
@@ -25,8 +25,7 @@ const routes = [
     ...storeRoutes,
     ...inquiryRoutes,
     ...reportRoutes,
-    ...bootcampRoutes
-
+    ...adminRoutes
 ];
 
 const router = createRouter({
@@ -38,9 +37,9 @@ router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
 
     if (to.meta.requiresAuth && !authStore.accessToken) {
-        next({ path: '/user/login' });
+        next({ path: '/login' });
     }
-    else if (authStore.accessToken && (to.path === '/user/login')) {
+    else if (authStore.accessToken && (to.path === '/login')) {
         next({ path: '/' });
     } else {
         next(); // 나머지 경우는 계속 진행

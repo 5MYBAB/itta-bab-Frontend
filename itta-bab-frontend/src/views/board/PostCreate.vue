@@ -10,11 +10,11 @@
       <form @submit.prevent="submitPost">
         <div class="form-group">
           <label for="title">게시물 제목</label>
-          <input type="text" id="title" placeholder="제목을 입력하세요" v-model="title" />
+          <input type="text" id="title" placeholder="제목을 입력하세요" v-model="postTitle" />
         </div>
         <div class="form-group">
           <label for="content">게시물 내용</label>
-          <textarea id="content" placeholder="내용을 입력하세요" v-model="content"></textarea>
+          <textarea id="content" placeholder="내용을 입력하세요" v-model="postContent"></textarea>
         </div>
         <button type="submit" class="submit-button">작성 완료</button>
       </form>
@@ -29,8 +29,8 @@ import { useAuthStore } from '@/stores/auth'; // authStore를 가져옵니다.
 
 const authStore = useAuthStore(); // authStore 인스턴스를 가져옵니다.
 
-const title = ref('');
-const content = ref('');
+const postTitle = ref('');
+const postContent = ref('');
 
 console.log('AccessToken 받아오는지 테스트:', authStore.accessToken);
 
@@ -57,16 +57,16 @@ async function submitPost() {
   }
 
   const postData = {
-    title: title.value,
-    content: content.value,
-    userId: userId, // userId를 포함합니다.
-    createDate: new Date().toISOString() // 현재 시간을 ISO 8601 형식으로 추가합니다.
+    postTitle: postTitle.value,
+    postContent: postContent.value,
+    createDate: new Date().toISOString(), // 현재 시간을 ISO 8601 형식으로 추가합니다.
+    userId: 0
   };
 
   console.log('게시물 데이터 확인:', postData);
 
   try {
-    const response = await axios.post('http://localhost:8003/post', postData, {
+    const response = await axios.post("http://localhost:8003/post", postData, {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }

@@ -4,9 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {useAuthStore} from "@/stores/auth.js";
 import {useRouter} from 'vue-router';
 import Notification from "@/components/common/Notification.vue";
+import {onMounted, ref} from "vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
+const isLogin = ref(null);
+
+onMounted(() => {
+  const token = authStore.accessToken;
+  isLogin.value = !!token;
+});
 
 const handleLogout = () => {
   authStore.logout();
@@ -31,7 +38,7 @@ const goToBoardPage = () => {
 }
 
 const goToMypage = () => {
-  router.push('mypage');
+  router.push('/mypage');
 }
 
 </script>
@@ -47,13 +54,13 @@ const goToMypage = () => {
       <div class="user-tap">
         <Notification/>
         <div @click="goToMypage" id="mypage" class="custom-cursor"><font-awesome-icon :icon="['far', 'user']" /></div>
-        <div @click="handleLogout" id="log-out" class="custom-cursor"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" /></div>
+        <div @click="handleLogout" id="log-out" :class="{ disabled: !isLogin, 'custom-cursor': isLogin }"
+             :style="{ opacity: isLogin ? 1 : 0 }"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" /></div>
       </div>
     </div>
   </header>
 </template>
 <style scoped>
-@import '../../assets/css/resetcss.css';
 
 * {
   color: var(--text-color);
@@ -98,5 +105,9 @@ li {
 }
 .custom-cursor{
   cursor: pointer;
+}
+.disabled {
+  pointer-events: none; /* 클릭 비활성화 */
+  opacity: 0.5; /* 투명도 설정 */
 }
 </style>

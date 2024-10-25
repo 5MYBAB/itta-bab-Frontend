@@ -16,9 +16,17 @@ const handleLogin = async () => {
       pwd: pwd.value
     });
 
+    console.log(response.status);
     if(response.status === 200) {
       authStore.login(response.headers.token);
-      router.push('/');
+      console.log(authStore.userRole)
+      if(authStore.isAuthorized('USER')){
+        console.log('유저')
+        router.push('/');
+      }else if(authStore.isAuthorized('ADMIN')){
+        console.log('어드민')
+        router.push('/admin')
+      }
     }
 
   } catch (error) {
@@ -26,6 +34,17 @@ const handleLogin = async () => {
   }
 }
 
+const goToFindId = () => {
+  router.push('/find-id');
+}
+
+const goToFindPassword = () => {
+  router.push('/find-pwd');
+}
+
+const goToSignUp = () => {
+  router.push('/signup');
+}
 </script>
 
 <template>
@@ -34,14 +53,14 @@ const handleLogin = async () => {
       <img src="/src/assets/icons/login-logo.svg" alt="Logo"/>
     </div>
     <form class="form" @submit.prevent="handleLogin">
-      <input v-model="loginId" id="id" placeholder="아이디" required />
-      <input v-model="pwd" id="passwd" placeholder="비밀번호" required />
+      <input v-model="loginId" id="id" type="text" placeholder="아이디" required />
+      <input v-model="pwd" id="passwd" type="password" placeholder="비밀번호" required />
       <button type="submit">로그인</button>
     </form>
     <div class="service-link">
-      <div>아이디 찾기</div>
-      <div>비밀번호 찾기</div>
-      <div>아이디 찾기</div>
+      <div @click="goToFindId" class="custom-cursor">아이디 찾기</div>
+      <div @click="goToFindPassword" class="custom-cursor">비밀번호 찾기</div>
+      <div @click="goToSignUp" class="custom-cursor">회원 가입</div>
     </div>
   </div>
 </template>
@@ -91,5 +110,8 @@ const handleLogin = async () => {
   background: #f2f1f1;
   margin-bottom: 10px; /* 아래쪽 간격 */
   padding: 0 20px; /* 좌우 패딩 추가 */
+}
+.custom-cursor {
+  cursor: pointer;
 }
 </style>

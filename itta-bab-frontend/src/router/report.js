@@ -4,7 +4,8 @@ import ReportList from "@/views/report/ReportList.vue";
 
 export default [
     {
-        path: '/report/create',
+        path: '/report/user',
+        name: 'ReportCreate',
         component: ReportCreate
     },
     {

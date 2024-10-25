@@ -1,10 +1,10 @@
 <script setup>
-import ResultDetail from "@/components/user/ResultDetail.vue";
+import FindPwdResultDetail from "@/components/user/FindPwdResultDetail.vue";
 </script>
 
 <template>
   <div class="back">
-    <ResultDetail/>
+    <FindPwdResultDetail/>
   </div>
 </template>
 

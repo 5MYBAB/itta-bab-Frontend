@@ -1,194 +1,87 @@
 <script setup>
-import {computed, provide, ref} from "vue";
-import BottomPageButton from "@/components/common/BottomPageButton.vue"
+import axios from "axios";
+import {computed, onMounted, provide, ref} from "vue";
+import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth.js";
+import BottomPageButton from "@/components/common/BottomPageButton.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
+import ReportButton from "@/components/common/ReportButton.vue";
 
-/* 테스트 데이터 */
-const jsonData = [
-  {
-    "group_id": 1,
-    "group_category_id": 1,
-    "user_id": 1,
-    "group_title": "아침 식사 모임",
-    "user_counting": 5,
-    "group_status": 1,
-    "create_date": "2024-09-25T10:25:49.000Z",
-    "end_date": "2024-09-25T11:25:49.000Z",
-    "group_post": "아침을 함께 즐기며 대화 나누는 모임입니다.",
-    "is_blinded": 0,
-    "chat_room_status": "NOT_CREATED"
-  },
-  {
-    "group_id": 2,
-    "group_category_id": 2,
-    "user_id": 2,
-    "group_title": "점심 식사 모임",
-    "user_counting": 10,
-    "group_status": 1,
-    "create_date": "2024-09-25T10:25:49.000Z",
-    "end_date": "2024-09-25T12:25:49.000Z",
-    "group_post": "점심시간에 함께 식사하고 이야기를 나눕니다.",
-    "is_blinded": 0,
-    "chat_room_status": "CLOSED"
-  },
-  {
-    "group_id": 3,
-    "group_category_id": 3,
-    "user_id": 3,
-    "group_title": "저녁 만찬 모임",
-    "user_counting": 8,
-    "group_status": 1,
-    "create_date": "2024-09-25T10:25:49.000Z",
-    "end_date": "2024-09-25T13:25:49.000Z",
-    "group_post": "저녁에 맛있는 음식을 나누며 소통하는 모임입니다.",
-    "is_blinded": 0,
-    "chat_room_status": "NOT_CREATED"
-  },
-  {
-    "group_id": 4,
-    "group_category_id": 4,
-    "user_id": 4,
-    "group_title": "오락 게임 모임",
-    "user_counting": 6,
-    "group_status": 1,
-    "create_date": "2024-09-25T10:25:49.000Z",
-    "end_date": "2024-09-25T14:25:49.000Z",
-    "group_post": "재미있는 게임을 함께 즐기는 모임입니다.",
-    "is_blinded": 0,
-    "chat_room_status": "NOT_CREATED"
-  },
-  {
-    "group_id": 5,
-    "group_category_id": 5,
-    "user_id": 5,
-    "group_title": "음주 모임",
-    "user_counting": 4,
-    "group_status": 1,
-    "create_date": "2024-09-25T10:25:49.000Z",
-    "end_date": "2024-09-25T15:25:49.000Z",
-    "group_post": "술을 마시며 즐거운 시간을 보내는 모임입니다.",
-    "is_blinded": 0,
-    "chat_room_status": "NOT_CREATED"
-  },
-  {
-    "group_id": 9,
-    "group_category_id": 1,
-    "user_id": 1,
-    "group_title": "BHC 황금올리브",
-    "user_counting": 2,
-    "group_status": 1,
-    "create_date": "2024-09-26T02:31:42.000Z",
-    "end_date": "2024-09-25T17:40:23.000Z",
-    "group_post": "황올 먹을분 5층으로 오세요",
-    "is_blinded": 0,
-    "chat_room_status": "NOT_CREATED"
-  },
-  {
-    "group_id": 12,
-    "group_category_id": 3,
-    "user_id": 7,
-    "group_title": "모수",
-    "user_counting": 2,
-    "group_status": 0,
-    "create_date": "2024-09-30T00:53:02.000Z",
-    "end_date": "2024-09-30T01:53:04.000Z",
-    "group_post": "모수는 묘수",
-    "is_blinded": 0,
-    "chat_room_status": "NOT_CREATED"
-  },
-  {
-    "group_id": 15,
-    "group_category_id": 3,
-    "user_id": 7,
-    "group_title": "과자 모임",
-    "user_counting": 4,
-    "group_status": 1,
-    "create_date": "2024-10-02T10:20:05.000Z",
-    "end_date": "2024-11-02T01:19:42.000Z",
-    "group_post": "과자가 제일 맛있어!!",
-    "is_blinded": 1,
-    "chat_room_status": "CREATED"
-  },
-  {
-    "group_id": 16,
-    "group_category_id": 1,
-    "user_id": 7,
-    "group_title": "음료수 모임",
-    "user_counting": 1,
-    "group_status": 1,
-    "create_date": "2024-10-03T14:44:16.000Z",
-    "end_date": "2024-10-04T05:43:59.000Z",
-    "group_post": "음료수는 파워에이드",
-    "is_blinded": 1,
-    "chat_room_status": "NOT_CREATED"
-  },
-  {
-    "group_id": 22,
-    "group_category_id": 1,
-    "user_id": 7,
-    "group_title": "모임이 뭐임",
-    "user_counting": 1,
-    "group_status": 1,
-    "create_date": "2024-10-03T14:58:38.000Z",
-    "end_date": "2024-10-04T05:43:59.000Z",
-    "group_post": "모임이 뭐임",
-    "is_blinded": 1,
-    "chat_room_status": "NOT_CREATED"
-  }, {
-    "group_id": 22,
-    "group_category_id": 1,
-    "user_id": 7,
-    "group_title": "모임이 뭐임",
-    "user_counting": 1,
-    "group_status": 1,
-    "create_date": "2024-10-03T14:58:38.000Z",
-    "end_date": "2024-10-04T05:43:59.000Z",
-    "group_post": "모임이 뭐임",
-    "is_blinded": 1,
-    "chat_room_status": "NOT_CREATED"
+// 로그인 사용자 정보
+const authStore = useAuthStore();       // 로그인 토큰
+
+// DB 데이터
+const groupData = ref([]);        // DB 모임 데이터
+const groupCategoryData = ref([]);  // DB 모임 카테고리 데이터
+
+// 페이지 관련
+const currentPage = ref(1);       // 현재 페이지
+const itemsPage = 10;                   // 페이지 당 보여줄 데이터
+const selectedItemId = ref({
+  target: "GROUP",
+  groupId: null
+}); // 선택된 아이템의 ID를 저장
+
+// 라우터
+const router = useRouter();
+
+// REST API 호출 함수
+const fetchData = async () => {
+  try {
+    const response1 = await axios.get("http://localhost:8003/group/list", {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+    groupData.value = response1.data;
+
+    const response2 = await axios.get("http://localhost:8003/groupCategory", {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+    groupCategoryData.value = response2.data;
+    console.log(groupCategoryData);
+
+  } catch (error) {
+    console.error("어라라...?\n", error);
   }
-];
+};
 
-// 카테고리 정보
-const groupCategories = [
-  {
-    "group_category_id": 1,
-    "group_category_name": "아침"
-  },
-  {
-    "group_category_id": 2,
-    "group_category_name": "점심"
-  },
-  {
-    "group_category_id": 3,
-    "group_category_name": "저녁"
-  },
-  {
-    "group_category_id": 4,
-    "group_category_name": "오락"
-  },
-  {
-    "group_category_id": 5,
-    "group_category_name": "음주"
-  }
-];
+// 삭제 버튼 누르면 때 작동하는 함수
+function selectItem(groupId) {
+  selectedItemId.value.groupId = groupId;
+  console.log("신고 ID:", selectedItemId.value);
+  console.log({
+    name: 'ReportCreate',
+    query: {
+      target: selectedItemId.value.target,
+      targetId: selectedItemId.value.groupId
+    }
+  });
+  router.push({
+    name: 'ReportCreate',
+    query: {
+      target: selectedItemId.value.target,
+      targetId: selectedItemId.value.groupId
+    }
+  });
+}
 
-const filteredData = ref(jsonData); // 필터링된 데이터를 저장할 ref
-const currentPage = ref(1);
-const itemsPage = 10;
+onMounted(() => {
+  fetchData(); // 컴포넌트가 마운트될 때 데이터 가져오기
+});
 
 const totalPages = computed(() => {
-  return Math.ceil(filteredData.value.length / itemsPage);
+  return Math.ceil(groupData.value.length / itemsPage);
 });
 
-const paginatedDate = computed(() => {
+const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * itemsPage;
   const end = start + itemsPage;
-
-  return filteredData.value.slice(start, end); // 필터링된 데이터에서 페이지네이션
+  return groupData.value.slice(start, end); // 필터링된 데이터에서 페이지네이션
 });
-
 
 // 날짜 형식화 함수
 function formatDate(dateString) {
@@ -198,14 +91,14 @@ function formatDate(dateString) {
   const day = String(date.getDate()).padStart(2, '0');
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
-
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
 // 카테고리 이름 반환 함수
 function getCategoryName(categoryId) {
-  const category = groupCategories.find(cat => cat.group_category_id === categoryId);
-  return category ? category.group_category_name : "기타";
+  const category = groupCategoryData.value.find(item => item.groupCategoryId === categoryId);
+
+  return category ? category.groupCategoryName : "기타";
 }
 
 function goToPage(page) {
@@ -214,19 +107,23 @@ function goToPage(page) {
   }
 }
 
-function goToWRegisterPage() {
-  window.location.href = '/register';
+function goToRegisterPage() {
+  router.push("/group/register");
 }
+
+  function goToDetailPage(groupId) {
+    router.push(`/group/${groupId}`);
+  }
 
 const filter = (searchTerm) => {
   if (searchTerm.trim() === "") { // 빈칸인지 확인
-    filteredData.value = jsonData; // 검색어가 빈칸이면 전체 데이터를 보여줌
+    fetchData(); // 검색어가 빈칸이면 전체 데이터를 다시 가져옴
     currentPage.value = 1; // 페이지를 1로 초기화
     return;
   }
 
   // 검색어가 포함된 항목만 필터링
-  filteredData.value = jsonData.filter(item =>
+  groupData.value = groupData.value.filter(item =>
       item.group_title.includes(searchTerm)
   );
 
@@ -234,21 +131,19 @@ const filter = (searchTerm) => {
   currentPage.value = 1;
 };
 
-
-// filter를 제공
 provide("filter", filter);
 </script>
 
 <template>
   <div class="background">
-    <div class="title-section">
+    <div class="title-container">
       <PageTitleTop/>
     </div>
     <div class="title">
       <h1>모임 리스트</h1>
     </div>
     <div class="search-container">
-      <SearchBar/>
+      <SearchBar @search="filter"/>
     </div>
     <div class="total-container">
       <div class="header-row">
@@ -256,18 +151,23 @@ provide("filter", filter);
         <div class="header-item">제목</div>
         <div class="header-item">모집인원</div>
         <div class="header-item">마감시간</div>
+        <div class="blank"></div>
       </div>
 
       <div class="list-style">
         <div
-            v-for="item in paginatedDate"
-            :key="item.group_id"
+            v-for="item in paginatedData"
+            :key="item.groupId"
             class="data-row"
+            v-on:click="goToDetailPage(item.groupId)"
         >
-          <div class="data-item">{{ getCategoryName(item.group_category_id) }}</div>
-          <div class="data-item">{{ item.group_title }}</div>
-          <div class="data-item">{{ item.user_counting }}</div>
-          <div class="data-item">{{ formatDate(item.end_date) }}</div>
+          <div class="data-item">{{ getCategoryName(item.groupCategoryId) }}</div>
+          <div class="data-item">{{ item.groupTitle }}</div>
+          <div class="data-item">{{ item.userCounting }}</div>
+          <div class="data-item">{{ formatDate(item.endDate) }}</div>
+          <div class="report-button-container">
+            <ReportButton @click.stop="selectItem(item.groupId)"/> <!-- 클릭 이벤트 추가 -->
+          </div>
         </div>
       </div>
     </div>
@@ -277,15 +177,15 @@ provide("filter", filter);
           :currentPage="currentPage"
           :totalPages="totalPages"
           @changePage="goToPage"
-          @writePage="goToWRegisterPage"
+          @writePage="goToRegisterPage"
       >등록
       </BottomPageButton>
     </div>
   </div>
 </template>
 
-<style scoped>
 
+<style scoped>
 .background {
   display: flex; /* Flexbox 사용 */
   flex-direction: column; /* 세로 방향으로 정렬 */
@@ -320,12 +220,21 @@ provide("filter", filter);
   padding: 15px;
   margin-bottom: 14px; /* 아래 여백 추가 */
   border-bottom: 1px solid #ddd; /* 가로줄 추가 */
+  align-items: center; /* 세로 가운데 정렬 */
 }
 
 .data-item {
   flex: 1;
   text-align: center;
 }
+
+/* 신고 버튼을 위한 스타일 추가 */
+.report-button-container {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 끝 정렬 */
+  margin-left: auto; /* 왼쪽 여백 자동으로 설정하여 오른쪽 정렬 */
+}
+
 
 .page-named span {
   cursor: pointer;
@@ -359,9 +268,9 @@ provide("filter", filter);
   justify-content: flex-end; /* 글쓰기 버튼을 오른쪽 끝 정렬 */
 }
 
-.title-section {
-  width: 100%;
-  justify-content: flex-start;
+
+.blank {
+  width: 45px;
 }
 
 </style>

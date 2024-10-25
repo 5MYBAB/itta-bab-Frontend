@@ -1,7 +1,6 @@
 import Inquiry from "@/views/inquiry/Inquiry.vue";
 import InquiryList from "@/views/inquiry/InquiryList.vue";
-
-
+import InquiryAdminResponse from "@/views/inquiry/InquiryAdminResponse.vue";
 
 export default [
     {
@@ -9,8 +8,11 @@ export default [
         component: Inquiry
     },
     {
-        path:'/inquiry/list',
+        path:'/inquiry/admin',
         component: InquiryList
+    },
+    {
+        path: '/inquiry/admin/:id',
+        component: InquiryAdminResponse
     }
-
 ];

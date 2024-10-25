@@ -1,74 +1,98 @@
 <script setup>
-import {computed, defineProps, ref} from 'vue';
-import PageNumAndWritingButton from '@/components/common/PageNumAndWritingButton.vue';
-import SearchBarAndSort from '@/components/common/SearchBarAndSort.vue';
-import Header from "@/App.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
+import SearchBarAndSort from '@/components/common/SearchBarAndSort.vue';
+import axios from "axios";
+import { ref, reactive, computed, onMounted } from "vue";
+import { useAuthStore } from "@/stores/auth.js";
+import { useRouter } from "vue-router";
 
-const jsonData = [
-  { title: "댓글 문의", likes: 15, date: "2024-10-11 12:00", answered: false },
-  { title: "모임 문의", likes: 55, date: "2024-10-08 13:43", answered: false },
-  { title: "게시글 문의", likes: 30, date: "2024-10-05 14:22", answered: false },
-  { title: "채팅 문의", likes: 5, date: "2024-10-04 18:35", answered: true },
-  { title: "회원가입 문의", likes: 45, date: "2024-10-02 09:10", answered: true },
-  { title: "비밀번호 재설정 문의", likes: 20, date: "2024-09-30 10:15", answered: false },
-  { title: "로그인 오류 문의", likes: 60, date: "2024-09-28 16:00", answered: false },
-  { title: "결제 문의", likes: 25, date: "2024-09-25 08:45", answered: false },
-  { title: "서비스 중단 문의", likes: 35, date: "2024-09-23 14:20", answered: true },
-  { title: "프로필 수정 문의", likes: 18, date: "2024-09-21 11:05", answered: true },
-  { title: "이메일 인증 문의", likes: 40, date: "2024-09-18 13:00", answered: true },
-  { title: "공지사항 관련 문의", likes: 50, date: "2024-09-16 09:30", answered: true },
-  { title: "비정상적인 접근 문의", likes: 27, date: "2024-09-15 17:40", answered: true },
-  { title: "데이터 백업 문의", likes: 32, date: "2024-09-12 12:10", answered: true },
-  { title: "계정 복구 문의", likes: 22, date: "2024-09-10 15:25", answered: true }
-];
+// Authentication Store
+const authStore = useAuthStore();
+const router = useRouter();
 
+const inquiryData = reactive({
+  inquiry: [],
+  inquiryId: 0,
+  inquiryContent: "",
+  createDate: "",
+  inquiryReply: ""
+});
 
+// Inquiry List Ref
+const inquiryList = ref([]);
+
+// API 요청 함수
+const fetchInquiryList = async () => {
+  try {
+    const response = await axios.get('http://localhost:8003/inquiry/admin', {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`, // 필요한 경우 인증 토큰 추가
+      },
+      params: {
+        inquiryContent: inquiryData.inquiryContent || null, // 문의 내용
+        createDate: inquiryData.createDate || null, // 작성 날짜
+        inquiryId: inquiryData.inquiryId || null,
+        inquiryReply: inquiryData.inquiryReply
+      }
+    });
+
+    inquiryList.value = response.data; // 응답 데이터를 inquiryList에 저장
+  } catch (error) {
+    console.error('문의 목록을 불러오는 중 에러가 발생했습니다.', error.response ? error.response.data : error.message);
+  }
+};
+
+// 컴포넌트 마운트 시 API 호출
+onMounted(() => {
+  fetchInquiryList();
+});
+
+// Pagination 관련 변수 및 함수
 const currentPage = ref(1);
 const itemsPerPage = 10;
 
-const totalPages = computed(() => Math.ceil(jsonData.length / itemsPerPage));
+// 총 페이지 계산
+const totalPages = computed(() => Math.ceil(inquiryList.value.length / itemsPerPage));
 
+// 현재 페이지에 해당하는 데이터만 보여주기
 const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   const end = start + itemsPerPage;
-  return jsonData.slice(start, end);
+  return inquiryList.value.slice(start, end);
 });
 
+// 페이지 이동 함수
 function goToPage(page) {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page;
   }
 }
 
-
+// 답변하기 버튼 클릭 처리
 function answerInquiry(index) {
-  alert(`${paginatedData.value[index].title}에 답변을 작성합니다.`);
-  // 답변 로직 구현 필요
+  const inquiryId = paginatedData.value[index].inquiryId;
+  alert(`${paginatedData.value[index].inquiryContent}에 답변을 작성합니다.`);
+  router.push(`/inquiry/admin/${inquiryId}`);
 }
 
 function viewAnswer(index) {
-  alert(`${paginatedData.value[index].title}의 답변을 확인합니다.`);
-  // 답변 보기 로직 구현 필요
+  const inquiryId = paginatedData.value[index].inquiryId;
+  alert(`답변 : ${paginatedData.value[index].inquiryReply} \n 수정하고 싶으시면 확인을 눌러주세요.`)
+  router.push(`/inquiry/admin/${inquiryId}`)
 }
 
-const props = defineProps({
-  currentPage: Number,
-  totalPages: Number,
-});
 </script>
 
 <template>
-  <PageTitleTop/>
   <div class="inquiry-detail">
     <div class="title">
       <h1>문의</h1>
     </div>
-    <br>
+    <br />
     <div class="parent-container">
-      <SearchBarAndSort/>
+      <SearchBarAndSort />
     </div>
-    <br>
+    <br />
 
     <div class="board-container">
       <div class="header-row">
@@ -77,13 +101,14 @@ const props = defineProps({
         <div class="header-item">작성시간</div>
         <div class="header-item">답변</div>
       </div>
-      <div v-for="(item, index) in paginatedData" :key="index" class="data-row">
-        <div class="data-item">{{ index + 1 }}</div>
-        <div class="data-item">{{ item.title }}</div>
-        <div class="data-item">{{ item.date }}</div>
+      <!-- 문의 데이터를 화면에 출력 -->
+      <div v-for="(inquiry, index) in paginatedData" :key="inquiry.inquiryId" class="data-row">
+        <div class="data-item">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
+        <div class="data-item">{{ inquiry.inquiryContent }}</div>
+        <div class="data-item">{{ inquiry.createDate }}</div>
         <div class="data-item">
           <button
-              v-if="!item.answered"
+              v-if="!inquiry.inquiryReply"
               class="answer-button"
               @click="answerInquiry(index)"
           >
@@ -94,10 +119,11 @@ const props = defineProps({
               class="view-answer-button"
               @click="viewAnswer(index)"
           >
-            답변보기
+            답변수정
           </button>
         </div>
       </div>
+      <!-- 페이지네이션 -->
       <div class="page-named">
         <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">〈</button>
         <span
@@ -106,12 +132,12 @@ const props = defineProps({
             @click="goToPage(page)"
             :class="{ active: currentPage === page }"
         >
-     {{ page }}
-   </span>
+          {{ page }}
+        </span>
         <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">〉</button>
       </div>
     </div>
-    <br>
+    <br />
   </div>
 </template>
 
@@ -125,7 +151,6 @@ const props = defineProps({
   display: flex;
   justify-content: center;
 }
-
 
 .title {
   text-align: center;

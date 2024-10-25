@@ -1,28 +1,48 @@
 <script setup>
-import {computed, provide, ref} from "vue";
+import axios from "axios";
+import {computed, onMounted, provide, ref} from "vue";
+import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth.js";
 import BottomPageButton from "@/components/common/BottomPageButton.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
 import DeleteButton from "@/components/common/DeleteButton.vue";
 import AdminTopSection from "@/components/common/AdminTopSection.vue";
 
-/* 테스트 데이터 */
-const jsonData = [
-  {"group_category_id": 1, "group_category_name": "아침"},
-  {"group_category_id": 2, "group_category_name": "점심"},
-  {"group_category_id": 3, "group_category_name": "저녁"},
-  {"group_category_id": 4, "group_category_name": "오락"},
-  {"group_category_id": 5, "group_category_name": "음주"}
-];
+// 로그인 사용자 정보
+const authStore = useAuthStore(); // 로그인 토큰
+
+// 데이터 저장
+const jsonData = ref([]);
+
+// REST API 호출 함수
+const fetchData = async () => {
+  try {
+    const response1 = await axios.get(`http://localhost:8003/groupCategory`, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+
+    if (response1.status === 200) {
+      jsonData.value = response1.data; // API에서 받은 데이터를 jsonData에 저장
+    } else {
+      console.log("데이터 불러오기 실패");
+    }
+  } catch (error) {
+    console.error("어라라...?\n", error);
+  }
+};
 
 const filteredData = ref(jsonData); // 필터링된 데이터를 저장할 ref
 const currentPage = ref(1);
 const itemsPage = 10;
+const router = useRouter();
 
 const totalPages = computed(() => {
   return Math.ceil(filteredData.value.length / itemsPage);
 });
 
-const paginatedDate = computed(() => {
+const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * itemsPage;
   const end = start + itemsPage;
   return filteredData.value.slice(start, end);
@@ -34,21 +54,52 @@ function goToPage(page) {
   }
 }
 
-function goToWRegisterPage() {
-  window.location.href = '/register';
-}
-
 const filter = (searchTerm) => {
   if (searchTerm.trim() === "") {
-    filteredData.value = jsonData;
+    filteredData.value = jsonData.value; // .value로 접근
     currentPage.value = 1; // 페이지를 초기화
     return;
   }
-  filteredData.value = jsonData.filter(item =>
-      item.group_category_name.includes(searchTerm)
+  filteredData.value = jsonData.value.filter(item =>
+      item.groupCategoryName.includes(searchTerm) // 대소문자 구분 없이 검색
   );
   currentPage.value = 1; // 검색 후 페이지를 1로 초기화
 };
+
+function goToRegisterPage() {
+  router.push("groupCategory/register");
+}
+
+async function deleteItem(groupCategoryId) {
+  const confirmed = confirm("정말로 삭제하시겠습니까?");
+  if (confirmed) {
+    await sendData(groupCategoryId);
+    await fetchData(); // 데이터 다시 가져오기
+  }
+}
+
+async function sendData(groupCategoryId) {
+  try {
+    const request = await axios.delete(`http://localhost:8003/groupCategory/${groupCategoryId}`, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+
+    if (request.status === 200) {
+      alert("모임을 삭제했습니다.");
+    } else {
+      alert("모임 삭제에 실패했습니다.");
+      console.log(`모임 삭제 실패 상태코드 = ${request.status}`);
+    }
+  } catch (error) {
+    console.log("어라라?\n" + error);
+  }
+}
+
+onMounted(() => {
+  fetchData();
+});
 
 // filter를 제공
 provide("filter", filter);
@@ -64,9 +115,11 @@ provide("filter", filter);
         모임 카테고리 목록
       </template>
     </AdminTopSection>
+
     <div class="search-container">
-      <SearchBar/>
+      <SearchBar @search="filter"/> <!-- 검색어를 filter 함수로 전달 -->
     </div>
+
     <div class="total-container">
       <div class="header-row">
         <div class="header-item">모임 카테고리 ID</div>
@@ -75,15 +128,19 @@ provide("filter", filter);
       </div>
 
       <div class="list-style">
+        <div v-if="filteredData.length === 0" class="data-row">
+          <div class="data-item">데이터가 없습니다.</div>
+        </div>
+
         <div
-            v-for="item in paginatedDate"
-            :key="item.group_category_id"
+            v-for="item in paginatedData"
+            :key="item.groupCategoryId"
             class="data-row"
         >
-          <div class="data-item">{{ item.group_category_id }}</div>
-          <div class="data-item">{{ item.group_category_name }}</div>
+          <div class="data-item">{{ item.groupCategoryId }}</div>
+          <div class="data-item">{{ item.groupCategoryName }}</div>
           <div class="data-item">
-            <DeleteButton v-slot:label>삭제</DeleteButton> <!-- 기본 슬롯을 사용하여 "삭제" 텍스트 전달 -->
+            <DeleteButton v-slot:label @click="deleteItem(item.groupCategoryId)">삭제</DeleteButton>
           </div>
         </div>
       </div>
@@ -94,7 +151,7 @@ provide("filter", filter);
           :currentPage="currentPage"
           :totalPages="totalPages"
           @changePage="goToPage"
-          @writePage="goToWRegisterPage"
+          @click="goToRegisterPage"
       >등록
       </BottomPageButton>
     </div>
@@ -168,6 +225,4 @@ provide("filter", filter);
 .bottom-container button {
   justify-content: flex-end;
 }
-
-
 </style>

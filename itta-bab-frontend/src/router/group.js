@@ -3,6 +3,7 @@ import GroupDetail from "@/views/group/GroupDetail.vue";
 import GroupList from "@/views/group/GroupList.vue";
 import GroupRegister from "@/views/group/GroupRegister.vue";
 import GroupCategoryList from "@/views/group/GroupCategoryList.vue";
+import GroupCategoryRegister from "@/views/group/GroupCategoryRegister.vue";
 
 export default [
     {
@@ -19,7 +20,7 @@ export default [
     },
     {
         // 모임 채팅방
-        path: '/group/:id/chat',
+        path: '/group/chat/:id',
         component: GroupChat
     },
     {
@@ -36,5 +37,10 @@ export default [
         // 모임 카테고리 목록
         path: '/admin/groupCategory',
         component: GroupCategoryList
+    },
+    {
+        // 모임 카테고리 등록
+        path: "/admin/groupCategory/register",
+        component: GroupCategoryRegister
     }
 ];

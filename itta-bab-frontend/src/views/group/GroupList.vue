@@ -35,7 +35,6 @@ const fetchData = async () => {
       }
     });
     groupData.value = response1.data;
-    console.log(groupData);
 
     const response2 = await axios.get("http://localhost:8003/groupCategory", {
       headers: {
@@ -53,7 +52,21 @@ const fetchData = async () => {
 // 삭제 버튼 누르면 때 작동하는 함수
 function selectItem(groupId) {
   selectedItemId.value.groupId = groupId;
-  console.log("신고 ID:", selectedItemId.value); // 확인용 로그
+  console.log("신고 ID:", selectedItemId.value);
+  console.log({
+    name: 'ReportCreate',
+    query: {
+      target: selectedItemId.value.target,
+      targetId: selectedItemId.value.groupId
+    }
+  });
+  router.push({
+    name: 'ReportCreate',
+    query: {
+      target: selectedItemId.value.target,
+      targetId: selectedItemId.value.groupId
+    }
+  });
 }
 
 onMounted(() => {

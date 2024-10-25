@@ -42,6 +42,7 @@ import PageTitleTop from "@/components/common/PageTitleTop.vue";
 import {ref, computed, onMounted} from 'vue';
 import PageNumAndWritingButton from "@/components/common/PageNumAndWritingButton.vue";
 import {useAuthStore} from "@/stores/auth.js";
+import router from "@/router/index.js";
 
 // 데이터 관련 상태
 const currentPage = ref(1);
@@ -120,14 +121,24 @@ function handleSortChange(option) {
 
 // 신고 함수
 function reportPost(item) {
-  const reportData = {
-    postId: item.postId,
-    target: "POST"
-  };
+  // item 객체 구조 확인
+  console.log("Received item:", item);
 
-  console.log("신고 데이터:", reportData);
-  alert("신고 데이터가 콘솔에 출력되었습니다.");
+  // postId가 유효한지 확인 후, 페이지 이동
+  if (item && item.postId) {
+    router.push({
+      name: 'ReportCreate',
+      query: {
+        target: "POST",
+        targetId: item.postId
+      }
+    });
+    console.log("신고 데이터:", item.postId); // postId가 올바르게 출력되는지 확인
+  } else {
+    console.error("Error: postId is undefined or item is invalid."); // 오류 메시지
+  }
 }
+
 
 // 컴포넌트가 마운트될 때 데이터 가져오기
 onMounted(() => {

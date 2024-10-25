@@ -1,79 +1,112 @@
 <script setup>
+import axios from "axios";
 import SearchBarAndSort from "@/components/common/SearchBarAndSort.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
-
-import {ref, computed, provide} from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import PageNumAndWritingButton from "@/components/common/PageNumAndWritingButton.vue";
+import {useAuthStore} from "@/stores/auth.js";
 
-const jsonData = [ //테스트용 JSON 데이터 추후에 제거 예정
-  { title: "프론트엔드 고수 되는 법", likes: 15, date: "2024-10-11 12:00" },
-  { title: "신대방 삼거리의 괴담(3)", likes: 55, date: "2024-10-08 13:43" },
-  { title: "Vue.js와 Spring Boot 연동하기", likes: 30, date: "2024-10-05 14:22" },
-  { title: "개발자의 하루 일과", likes: 5, date: "2024-10-04 18:35" },
-  { title: "초보자를 위한 백엔드 개발 시작하기", likes: 45, date: "2024-10-02 09:10" },
-  { title: "JavaScript 비동기 처리 이해하기", likes: 20, date: "2024-09-30 10:15" },
-  { title: "React와 Vue의 차이점", likes: 60, date: "2024-09-28 16:00" },
-  { title: "Python으로 데이터 분석하기", likes: 25, date: "2024-09-25 08:45" },
-  { title: "코딩 면접 준비 방법", likes: 35, date: "2024-09-23 14:20" },
-  { title: "Git 기본 사용법 배우기", likes: 18, date: "2024-09-21 11:05" },
-  { title: "RESTful API 설계 가이드", likes: 40, date: "2024-09-18 13:00" },
-  { title: "클라우드 서비스 개요 및 활용", likes: 50, date: "2024-09-16 09:30" },
-  { title: "HTML/CSS 기초 다지기", likes: 27, date: "2024-09-15 17:40" },
-  { title: "DevOps 도구 소개", likes: 32, date: "2024-09-12 12:10" },
-  { title: "인공지능 윤리와 법적 이슈", likes: 22, date: "2024-09-10 15:25" }
-];
-
+// 데이터 관련 상태
 const currentPage = ref(1);
 const itemsPerPage = 10;
-const filteredData = ref(jsonData);
+const filteredData = ref([]);
+const sortOption = ref("recent"); // 정렬 옵션 설정
+const authStore = useAuthStore();
 
+// 전체 페이지 계산
 const totalPages = computed(() => Math.ceil(filteredData.value.length / itemsPerPage));
 
+// 페이지네이션에 따른 데이터 계산
 const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   const end = start + itemsPerPage;
   return filteredData.value.slice(start, end);
 });
 
+// 데이터 가져오기
+const fetchData = async () => {
+  let url = "";
+
+  // 정렬 옵션에 따라 URL 설정
+  if (sortOption.value === "recent") {
+    url = "http://localhost:8003/post/recent";
+  } else if (sortOption.value === "likes-desc") {
+    url = "http://localhost:8003/post/likes/desc";
+  } else if (sortOption.value === "likes-asc") {
+    url = "http://localhost:8003/post/likes/asc";
+  }
+
+  try {
+    const response = await axios.get(url,{
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+    filteredData.value = response.data;
+  } catch (error) {
+    console.error("데이터를 가져오는 중 오류가 발생했습니다:", error);
+  }
+};
+
+// 페이지 변경
 function goToPage(page) {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page;
   }
 }
 
+// 글쓰기 페이지로 이동
 function goToWritePage() {
-  window.location.href = '/board/post/create'; // '글쓰기' 페이지로 이동
+  window.location.href = '/board/post/create';
 }
 
+// 필터링 함수
 const filter = (searchTerm) => {
-  if (searchTerm.trim() === "") { // 빈칸인지 확인
-    filteredData.value = jsonData; // 검색어가 빈칸이면 전체 데이터를 보여줌
+  if (searchTerm.trim() === "") {
+    fetchData(); // 검색어가 비어 있을 때는 전체 데이터를 가져옴
     return;
   }
 
-  // 검색어가 포함된 항목만 필터링
-  filteredData.value = jsonData.filter(item =>
+  // 검색어를 포함하는 항목 필터링
+  filteredData.value = filteredData.value.filter(item =>
       item.title.includes(searchTerm)
   );
+  currentPage.value = 1; // 필터링 후 페이지 초기화
 };
 
-// filter를 제공
-provide("filter", filter);
+// 정렬 옵션이 변경될 때 데이터 다시 가져오기
+function handleSortChange(option) {
+  sortOption.value = option;
+  fetchData();
+}
+
+// 컴포넌트가 마운트될 때 데이터 가져오기
+onMounted(() => {
+  fetchData();
+});
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+
 </script>
 
 <template>
   <div class="post-detail">
-    <PageTitleTop/>
+    <PageTitleTop />
     <div class="title">
       <h1>게시판</h1>
-
     </div>
-    <br>
+    <br />
     <div class="parent-container">
-      <SearchBarAndSort @search="filter"/>
+      <SearchBarAndSort @search="filter" @sort="handleSortChange" />
     </div>
-
-    <br>
+    <br />
     <div class="board-container">
       <div class="header-row">
         <div class="header-item">번호</div>
@@ -84,20 +117,17 @@ provide("filter", filter);
       <div v-for="(item, index) in paginatedData" :key="index" class="data-row">
         <div class="data-item">{{ index + 1 }}</div>
         <div class="data-item">{{ item.title }}</div>
-        <div class="data-item">{{ item.likes }}</div>
-        <div class="data-item">{{ item.date }}</div>
-      </div>
+        <div class="data-item">{{ item.likeCount }}</div>
+        <div class="data-item">{{ formatDate(item.createdAt) }}</div>
 
+      </div>
       <PageNumAndWritingButton
           :currentPage="currentPage"
           :totalPages="totalPages"
           @changePage="goToPage"
           @writePage="goToWritePage"
       />
-      <br>
-
     </div>
-    <br>
   </div>
 </template>
 
@@ -106,9 +136,9 @@ provide("filter", filter);
   display: flex;
   justify-content: center;
 }
-.post-detail{/*배경 화면 노란색으로 설정하는 부분*/
-  background-color: var(--background-color); /* 노란색 배경 */
-  min-height: 100vh; /* 화면 전체 높이 */
+.post-detail {
+  background-color: var(--background-color);
+  min-height: 100vh;
   width: 100%;
 }
 .title {
@@ -118,60 +148,34 @@ provide("filter", filter);
   font-size: 2em;
   font-weight: bold;
 }
-img {
-  margin-right: 10px;
+.board-container {
+  width: 80%;
+  margin: 0 auto;
+  background-color: var(--white);
+  padding: 0 20px;
+  border-radius: 10px;
 }
-   /* List.vue CSS */
- .board-container {
-   width:  80%; /* 너비를 80%로 설정 */
-   margin: 0 auto;
-   background-color: var(--white);
-   padding: 0 20px;
-   border-radius: 10px;
- }
-
 .header-row {
   display: flex;
-  width: calc(100% + 40px); /* Compensate for the left and right padding */
+  width: calc(100% + 40px);
   margin-left: -20px;
   background-color: var(--basic-yellow);
   padding: 15px;
   border-radius: 10px 10px 0 0;
   font-weight: bold;
 }
-
-
 .header-item {
   flex: 1;
   text-align: center;
 }
-
 .data-row {
   display: flex;
   padding: 15px;
-  margin-bottom: 14px; /* 아래 여백 추가 */
-  border-bottom: 1px solid #ddd; /* 가로줄 추가 */
+  margin-bottom: 14px;
+  border-bottom: 1px solid #ddd;
 }
-
 .data-item {
   flex: 1;
   text-align: center;
 }
-
-
-
-.page-named span {
-  cursor: pointer;
-  padding: 5px 10px;
-  border: 1px solid var(--white);
-  background-color: var(--white);
-}
-
-.page-named .active {
-  font-weight: bold;
-  color: black;
-}
-
-
-
 </style>

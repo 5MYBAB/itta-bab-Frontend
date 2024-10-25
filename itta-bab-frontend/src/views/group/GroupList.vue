@@ -123,7 +123,7 @@ provide("filter", filter);
 
 <template>
   <div class="background">
-    <div class="title-section">
+    <div class="title-container">
       <PageTitleTop/>
     </div>
     <div class="title">
@@ -255,10 +255,6 @@ provide("filter", filter);
   justify-content: flex-end; /* 글쓰기 버튼을 오른쪽 끝 정렬 */
 }
 
-.title-section {
-  width: 100%;
-  justify-content: flex-start;
-}
 
 .blank {
   width: 45px;

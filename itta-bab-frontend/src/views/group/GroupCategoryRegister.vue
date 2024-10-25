@@ -12,7 +12,7 @@ const router = useRouter();
 
 async function sendData() {
   try {
-    if(!categoryName.value === ""){
+    if(!(categoryName.value === "")){
       const request = await axios.post("http://localhost:8003/groupCategory", {
         "groupCategoryId": 0,
         "groupCategoryName": categoryName.value

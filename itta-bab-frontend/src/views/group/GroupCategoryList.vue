@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import {computed, provide, ref, onMounted} from "vue";
+import {computed, onMounted, provide, ref} from "vue";
 import {useRouter} from "vue-router";
 import {useAuthStore} from "@/stores/auth.js";
 import BottomPageButton from "@/components/common/BottomPageButton.vue";
@@ -17,7 +17,7 @@ const jsonData = ref([]);
 // REST API 호출 함수
 const fetchData = async () => {
   try {
-    const response1 = await axios.get("http://localhost:8003/groupCategory", {
+    const response1 = await axios.get(`http://localhost:8003/groupCategory`, {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }
@@ -70,39 +70,28 @@ function goToRegisterPage() {
   router.push("groupCategory/register");
 }
 
-function deleteItem(groupCategoryId) {
-
+async function deleteItem(groupCategoryId) {
+  const confirmed = confirm("정말로 삭제하시겠습니까?");
+  if (confirmed) {
+    await sendData(groupCategoryId);
+    await fetchData(); // 데이터 다시 가져오기
+  }
 }
 
-async function sendData() {
+async function sendData(groupCategoryId) {
   try {
-    const request = await axios.delete("http://localhost:8003/groupCategory/", {
-      "groupId": 0,
-      "groupCategoryId": data.value.category,
-      "userId": 0,
-      "groupTitle": data.value.title,
-      "userCounting": data.value.counting,
-      "groupStatus": true,
-      "createDate": new Date(),
-      "endDate": data.value.endDate,
-      "groupPost": data.value.content,
-      "chatRoomStatus": "NOT_CREATED",
-      "blinded": false
-    }, {
+    const request = await axios.delete(`http://localhost:8003/groupCategory/${groupCategoryId}`, {
       headers: {
         Authorization: `Bearer ${authStore.accessToken}`
       }
     });
 
     if (request.status === 200) {
-      alert("새로운 모임을 등록하였습니다.");
+      alert("모임을 삭제했습니다.");
     } else {
-      alert("새로운 모임을 등록에 실패하였습니다.");
-      console.log(`모임 등록 실패
-      상태코드 = ${request.valueOf()}`);
+      alert("모임 삭제에 실패했습니다.");
+      console.log(`모임 삭제 실패 상태코드 = ${request.status}`);
     }
-    router.push("/group");
-
   } catch (error) {
     console.log("어라라?\n" + error);
   }

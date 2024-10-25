@@ -1,5 +1,39 @@
 <script setup>
 import '@/assets/css/resetcss.css';
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import MenuMain from "@/views/store/MenuMain.vue";
+
+const props = defineProps(['storeId']); // 부모 컴포넌트에서 전달된 storeId 받기
+const router = useRouter(); // 라우터 이동을 위한 설정
+
+// 메뉴 정보 입력 필드들
+const menuName = ref('');
+const menuPrice = ref('');
+const menuCategory = ref('');
+
+
+// 메뉴 등록 함수
+async function registerMenu() {
+  try {
+    const formData = new FormData();
+    formData.append('storeId', props.storeId); // storeId 포함
+    formData.append('menuName', menuName.value);
+    formData.append('menuPrice', menuPrice.value);
+    formData.append('menuCategory', menuCategory.value);
+
+    const response = await axios.post('http://localhost:8003/store/menu', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
+    console.log('메뉴 등록 성공:', response.data);
+    router.push({ name: 'MenuMain' }); // 등록 성공 후 이동
+  } catch (error) {
+    console.error('메뉴 등록 실패:', error);
+  }
+}
+
 </script>
 
 <template>

@@ -95,18 +95,18 @@ function goToWritePage() {
 
 <template>
 
-      <div class="list-style">
-        <div
-            v-for="item in paginatedData"
-            :key="item.menu_id"
-            class="data-row"
-        >
-          <img :src="item.userImageUrl" alt="Menu Image" class="menu-image" />
-          <div class="data-item">
-            <div class="item_name">{{ item.menu_name }}</div>
-            <div class="item_price">{{ item.menu_price }}원</div>
-          </div>
-        </div>
+  <div class="list-style">
+    <div
+        v-for="item in paginatedData"
+        :key="item.menu_id"
+        class="data-row"
+    >
+    <img :src="item.userImageUrl" alt="Menu Image" class="menu-image" />
+      <div class="data-item">
+        <div class="item_name">{{ item.menu_name }}</div>
+        <div class="item_price">{{ item.menu_price }}원</div>
+      </div>
+    </div>
 
 
     <Page
@@ -114,7 +114,6 @@ function goToWritePage() {
         :totalPages="totalPages"
         @changePage="goToPage"
     />
-
   </div>
 </template>
 

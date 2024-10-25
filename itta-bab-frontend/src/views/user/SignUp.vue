@@ -42,7 +42,7 @@ const handleSignUp = async () => {
     if (response.status === 201) {
       const name = username.value;
       router.push({
-        path: '/signup-result',
+        path: '/signup/result',
         query: {username: name}
       });
     }

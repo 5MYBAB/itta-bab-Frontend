@@ -1,12 +1,58 @@
+<script setup>
+import axios from "axios";
+import {ref} from "vue";
+import {useRouter} from "vue-router";
+
+const username = ref('');
+const phone = ref('');
+const loginId = ref('');
+const router = useRouter();
+
+const handleFindIdClick = async () => {
+  try {
+
+    const response = await axios.get('http://localhost:8003/user/find-id', {
+      params: {
+        username: username.value,
+        phone: phone.value
+      }
+    });
+    loginId.value = response.data;
+
+    if (response.status === 200) {
+      router.push({
+        path: '/find-id/result',
+        query: {
+          username: username.value,
+          loginId: loginId.value
+        }
+      });
+    }
+
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 409) {
+        console.log('아이디 찾기 실패: 입력값이 틀립니다.');
+      } else {
+        console.error('아이디 찾기 실패:', error.response.data);
+      }
+    } else {
+      console.error('아이디 찾기 실패', error.message);
+    }
+  }
+};
+
+</script>
+
 <template>
   <form class="container">
     <div class="logo">
       <img src="/src/assets/icons/login-logo.svg" alt="Logo"/>
     </div>
     <div class="form">
-      <input type="text" id="name" placeholder="이름"/>
-      <input type="text" id="phone" placeholder="전화번호"/>
-      <button>아이디 찾기</button>
+      <input type="text" v-model="username" placeholder="이름" required/>
+      <input type="text" v-model="phone" placeholder="전화번호 ( - 제외)" required/>
+      <button type="button" @click="handleFindIdClick" :disabled="!username || !phone">아이디 찾기</button>
     </div>
     <div class="service-link">
       <div>비밀번호 찾기</div>

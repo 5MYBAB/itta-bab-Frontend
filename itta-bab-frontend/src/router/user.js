@@ -7,6 +7,7 @@ import DeleteUserResult from "@/views/user/DeleteUserResult.vue";
 import FindId from "@/views/user/FindId.vue";
 import FindPassword from "@/views/user/FindPassword.vue";
 import SignUpResult from "@/views/user/SignUpResult.vue";
+import FindIdResult from "@/views/user/FindIdResult.vue";
 
 export default [
     {
@@ -18,12 +19,16 @@ export default [
         component: SignUpView
     },
     {
-        path: '/signup-result',
+        path: '/signup/result',
         component: SignUpResult
     },
     {
         path: '/find-id',
         component: FindId
+    },
+    {
+        path: '/find-id/result',
+        component: FindIdResult
     },
     {
         path: '/find-pwd',

@@ -12,8 +12,7 @@ export default [
         component: InquiryList
     },
     {
-        path: '/inquiry/admin/response',
+        path: '/inquiry/admin/:id',
         component: InquiryAdminResponse
     }
-
 ];

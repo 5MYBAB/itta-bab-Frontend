@@ -61,7 +61,7 @@ const isWebSocketOpen = ref(false); // 웹소켓 연결 상태
 // 웹소켓 연결
 const connectWebSocket = () => {
   const token = authStore.accessToken;
-  const websocket = new WebSocket(`ws://localhost:8003/group/${route.params.id}/chat?token=${token}`);
+  const websocket = new WebSocket(`ws://localhost:8003/group/${route.params.id}/chat`);
 
 
   websocket.onopen = () => {

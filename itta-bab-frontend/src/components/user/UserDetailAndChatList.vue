@@ -105,7 +105,7 @@ function goToPage(page) {
 }
 
 function goToChatPage(groupId) {
-  router.push(`/group/${groupId}/chat`)
+  router.push(`/group//chat/${groupId}`)
 }
 </script>
 

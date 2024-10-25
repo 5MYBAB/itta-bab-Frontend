@@ -42,6 +42,14 @@ const handleFindIdClick = async () => {
   }
 };
 
+const goToFindPassword = () => {
+  router.push('/find-pwd');
+}
+
+const goToSignUp = () => {
+  router.push('/signup');
+}
+
 </script>
 
 <template>
@@ -55,8 +63,8 @@ const handleFindIdClick = async () => {
       <button type="button" @click="handleFindIdClick" :disabled="!username || !phone">아이디 찾기</button>
     </div>
     <div class="service-link">
-      <div>비밀번호 찾기</div>
-      <div>회원 가입</div>
+      <div @click="goToFindPassword" class="custom-cursor">비밀번호 찾기</div>
+      <div @click="goToSignUp" class="custom-cursor">회원 가입</div>
     </div>
   </form>
 </template>
@@ -105,5 +113,8 @@ const handleFindIdClick = async () => {
   gap: 40px;
   color: var(--gray-font);
   justify-content: center;
+}
+.custom-cursor {
+  cursor: pointer;
 }
 </style>

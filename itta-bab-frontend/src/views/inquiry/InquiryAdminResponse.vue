@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import axios from 'axios';
 import UserTap from "@/components/user/UserTap.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
-import AdminTap from "@/components/admin/AdminTap.vue";
+import AdminTap from "@/views/AdminTap.vue";
 
 const replyContent = ref(''); // 답변 내용을 저장할 변수
 

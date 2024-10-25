@@ -8,7 +8,7 @@ export default [
         component: Inquiry
     },
     {
-        path: '/inquiry/list',
+        path:'/inquiry/admin',
         component: InquiryList
     },
     {

@@ -4,7 +4,7 @@ import {useRouter} from 'vue-router';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import axios from "axios";
 import {useAuthStore} from "@/stores/auth.js";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 
 const authStore = useAuthStore();
 const userData = ref(null);
@@ -12,6 +12,10 @@ const router = useRouter();
 const attendGroup = ref([]);
 const username = ref(null);
 const phone = ref(null);
+
+// 페이지 관련
+const currentPage = ref(1); // 현재 페이지
+const itemsPerPage = 3; // 페이지 당 항목 수
 
 const fetchUserData = async () => {
   try {
@@ -32,7 +36,6 @@ const fetchUserData = async () => {
   } catch (error) {
     console.error('사용자 정보 가져오기 실패', error);
   }
-
 };
 
 // 참여중인 모임 REST API 호출
@@ -49,7 +52,6 @@ const fetchAttendGroupData = async () => {
   } else {
     console.log("참여중인 모임 정보를 불러오는데 실패했습니다.");
   }
-
 }
 
 onMounted(() => {
@@ -68,11 +70,28 @@ const goToDelete = () => {
 };
 
 const goToInquiry = () => {
-  router.push('/inquiry')
-}
+  router.push('/inquiry');
+};
 
 function formatPhoneNumber(phone) {
   return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+}
+
+// 페이지네이션 관련 계산 속성
+const totalPages = computed(() => {
+  return Math.ceil(attendGroup.value.length / itemsPerPage);
+});
+
+const paginatedAttendGroups = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return attendGroup.value.slice(start, end);
+});
+
+function goToPage(page) {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
 }
 </script>
 
@@ -114,9 +133,7 @@ function formatPhoneNumber(phone) {
           <div class="user-content">23</div>
         </div>
         <div class="list-line-button">
-          <!-- 수정 버튼 -->
           <div class="user-info-update"><input type="button" value="수정" @click="goToUpdate"></div>
-          <!-- 삭제 버튼 -->
           <div class="user-info-delete"><input type="button" value="삭제" @click="goToDelete"></div>
         </div>
       </div>
@@ -126,7 +143,7 @@ function formatPhoneNumber(phone) {
     <div class="chat-list-container">
       <div class="yellow">참여중인 모임</div>
       <div class="chat-list">
-        <div class="chat-list-line" v-for="item in attendGroup">
+        <div class="chat-list-line" v-for="item in paginatedAttendGroups" :key="item.groupId">
           <div class="chat-title">{{ item.groupTitle }}</div>
           <div class="chat-sub-title">{{ item.groupPost }}</div>
           <div>
@@ -136,10 +153,19 @@ function formatPhoneNumber(phone) {
           <div class="chat-statue">참여중</div>
         </div>
       </div>
+
+      <!-- 페이지네이션 버튼 -->
+      <div class="pagination">
+        <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">이전</button>
+        <span>페이지 {{ currentPage }} / {{ totalPages }}</span>
+        <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">다음</button>
+      </div>
     </div>
   </div>
 </template>
+
 <style scoped>
+/* 기존 스타일 유지 */
 .chat-list-line {
   display: flex;
   justify-content: space-evenly;
@@ -147,6 +173,7 @@ function formatPhoneNumber(phone) {
   margin: 15px;
   border-bottom: 2px var(--gray-font) solid;
   padding-bottom: 10px;
+  width: 100%;
 }
 
 .chat-statue {
@@ -206,6 +233,7 @@ function formatPhoneNumber(phone) {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .yellow {
@@ -313,5 +341,27 @@ img {
   color: var(--text-color);
   border: none;
   border-radius: 20px;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0; /* 위아래 여백 */
+}
+
+.pagination button {
+  margin: 0 10px; /* 좌우 여백 */
+  padding: 10px 15px;
+  background-color: var(--basic-yellow);
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #ccc; /* 비활성화된 버튼 색상 */
+  cursor: not-allowed;
 }
 </style>

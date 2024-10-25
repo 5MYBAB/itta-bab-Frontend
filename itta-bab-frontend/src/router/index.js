@@ -41,6 +41,7 @@ router.beforeEach((to, from, next) => {
         next({ path: '/user/login' });
     }
     else if (authStore.accessToken && (to.path === '/user/login')) {
+        console.log('지나가욥')
         next({ path: '/' });
     } else {
         next(); // 나머지 경우는 계속 진행

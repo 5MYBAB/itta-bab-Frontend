@@ -12,6 +12,7 @@ export const useAuthStore = defineStore('auth', () => {
             accessToken.value = token;
             const payload = JSON.parse(atob(token.split('.')[1])); // JWT 토큰의 페이로드 추출
             userRole.value = payload.auth[0].slice(5);
+            console.log(userRole.value)
         }
     });
 
@@ -19,7 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
         accessToken.value = token;
         localStorage.setItem('accessToken', token);
         const payload = JSON.parse(atob(token.split('.')[1]));
-        userRole.value = payload.auth;
+        userRole.value = payload.auth[0].slice(5);
     }
 
     function logout() {

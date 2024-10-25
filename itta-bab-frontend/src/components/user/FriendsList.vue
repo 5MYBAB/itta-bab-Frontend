@@ -1,6 +1,6 @@
 <script setup>
 import '@/assets/css/resetcss.css';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import axios from "axios";
 import {computed, onMounted, ref} from "vue";
 import {useAuthStore} from "@/stores/auth.js";
@@ -54,20 +54,21 @@ function goToPage(page) {
 <template>
   <div class="display">
     <div class="title">
-      <font-awesome-icon :icon="['fas', 'user-group']" size="2x" />
+      <font-awesome-icon :icon="['fas', 'user-group']" size="2x"/>
       <div>친구 목록</div>
     </div>
   </div>
-    <div v-for="(friend, index) in paginatedData" :key="friend.friendId" class="list-container">
-      <div class="borderline"></div>
-      <div class="list-content">
-        <div class="contents">
-          <div class="text">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
-          <div class="text">{{ friend.username }}</div>
-          <div class="delete">삭제</div>
-        </div>
+  <div>
+  <div v-for="(friend, index) in paginatedData" :key="friend.friendId" class="list-container">
+    <div class="list-content">
+      <div class="contents">
+        <div class="text">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
+        <div class="text">{{ friend.username }}</div>
+        <div class="delete">삭제</div>
       </div>
     </div>
+  </div>
+  </div>
   <div class="page-named">
     <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">〈</button>
     <span
@@ -104,46 +105,48 @@ function goToPage(page) {
   color: black;
 }
 
-.borderline{
-  background-color: var(--gray-font);
-  height: 2px;
-  width: 80%;
-}
-.delete{
+.delete {
   color: var(--gray-font);
   font-size: 15px;
 }
-.contents{
+
+.contents {
   display: flex;
   justify-content: space-between;
   gap: 230px;
   margin: 15px 30px;
 }
-.text{
+
+.text {
   font-size: 20px;
   font-weight: 400;
 }
-.list-container{
+
+.list-container {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.list-content{
+
+.list-content {
   width: 80%;
   border-bottom: 1px var(--gray-font) solid;
 }
-.display{
+
+.display {
   margin-top: 50px;
   display: flex;
   justify-content: center;
 }
-.title{
+
+.title {
   display: flex;
   align-items: center;
   margin-bottom: 30px;
 }
-.title div{
+
+.title div {
   font-size: 30px;
   font-weight: 600;
   margin-left: 10px;

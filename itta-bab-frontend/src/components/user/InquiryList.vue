@@ -59,7 +59,6 @@ function goToPage(page) {
   </div>
   <div class="board-container">
     <div v-for="(inquiry, index) in paginatedData" :key="inquiry.inquiryId" class="list-container">
-      <div class="borderline"></div>
       <div class="list-content">
         <div class="inquiry-content inquiry-title">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
         <div class="inquiry-content1">
@@ -111,12 +110,6 @@ function goToPage(page) {
 .page-named .active {
   font-weight: bold;
   color: black;
-}
-
-.borderline {
-  background-color: var(--gray-font);
-  height: 2px;
-  width: 80%;
 }
 
 .line {

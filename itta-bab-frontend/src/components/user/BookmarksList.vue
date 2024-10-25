@@ -57,7 +57,6 @@ function goToPage(page) {
     </div>
   </div>
   <div v-for="(favorite, index) in paginatedData" :key="favorite.favoriteId" class="list-container">
-    <div class="borderline"></div>
     <div class="list-content">
       <div class="contents">
         <div class="text">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
@@ -70,11 +69,6 @@ function goToPage(page) {
 </template>
 
 <style scoped>
-.borderline {
-  background-color: var(--gray-font);
-  height: 2px;
-  width: 80%;
-}
 
 .delete {
   color: var(--gray-font);

@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth', () => {
         if (token) {
             accessToken.value = token;
             const payload = JSON.parse(atob(token.split('.')[1])); // JWT 토큰의 페이로드 추출
-            userRole.value = payload.auth;
+            userRole.value = payload.auth[0].slice(5);
         }
     });
 

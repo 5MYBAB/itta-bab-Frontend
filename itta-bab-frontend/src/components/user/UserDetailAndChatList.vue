@@ -1,9 +1,43 @@
 <script setup>
 import '@/assets/css/resetcss.css';
-import { useRouter } from 'vue-router'; // 라우터 사용
+import { useRouter } from 'vue-router';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import axios from "axios";
+import {useAuthStore} from "@/stores/auth.js";
+import {onMounted, ref} from "vue";
 
+const authStore = useAuthStore();
+const userData = ref(null);
 const router = useRouter();
+
+const username = ref(null);
+const phone = ref(null);
+
+const fetchUserData = async () => {
+  try {
+    if(authStore.isAuthorized('USER')) {
+      const token = authStore.accessToken;
+      const response = await axios.get('http://localhost:8003/user/mypage', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      userData.value = response.data;
+      username.value = userData.value.username;
+      phone.value = formatPhoneNumber(userData.value.phone);
+    } else {
+      alert(`권한이 없습니다.`);
+      router.push('/');
+    }
+  } catch (error) {
+    console.error('사용자 정보 가져오기 실패', error);
+  }
+
+};
+
+onMounted(() => {
+  fetchUserData();
+});
 
 // 수정 버튼 클릭 시 호출되는 함수
 const goToUpdate = () => {
@@ -14,32 +48,36 @@ const goToUpdate = () => {
 const goToDelete = () => {
   router.push('/delete-user'); // 회원정보 삭제 확인 페이지로 이동
 };
+
+function formatPhoneNumber(phone) {
+  return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+}
 </script>
 
 <template>
   <div class="top-box">
-    <div class="flex-box">
+    <div class="flex-box" >
       <img src="@/assets/icons/logo.svg">
-      <div class="name">임광택 회원님</div>
+      <div class="name">{{ username }} 회원님</div>
     </div>
     <div class="inquiry"><input type="button" value="문의하기"></div>
   </div>
 
   <div class="padding">
-    <div class="user-info-container">
+    <div class="user-info-container" v-if="userData">
       <div class="red-top">회원정보</div>
       <div class="user-info">
         <div class="list-line">
           <div class="icon"><font-awesome-icon :icon="['far', 'face-smile']" size="xl"/></div>
-          <div class="user-content">임광택</div>
+          <div class="user-content">{{ userData.username }}</div>
         </div>
         <div class="list-line">
           <div class="icon"><font-awesome-icon :icon="['far', 'map']" size="xl"/></div>
-          <div class="user-content">한화시스템 BEYOND SW 캠프 10기</div>
+          <div class="user-content">{{ userData.className }} {{ userData.seasonNum}}기</div>
         </div>
         <div class="list-line">
           <div class="icon"><font-awesome-icon :icon="['fas', 'mobile-screen']" size="xl" /></div>
-          <div class="user-content">010-1234-1234</div>
+          <div class="user-content">{{ phone }}</div>
         </div>
         <div class="list-line">
           <div class="icon"><font-awesome-icon :icon="['fas', 'user-group']" size="xl" /></div>

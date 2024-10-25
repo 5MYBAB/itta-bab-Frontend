@@ -3,6 +3,10 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import {BModal} from "bootstrap-vue-3";
+import {useAuthStore} from "@/stores/auth.js";
+import axios from "axios";
+
+let authStore = null;
 
 export default {
   components: {
@@ -27,7 +31,7 @@ export default {
         title: '',
         start: '',
         description: ''
-      }
+      },
     }
   },
   methods: {
@@ -52,9 +56,63 @@ export default {
           calendar.addEvent(eventData);
           this.showModal = false;
           this.newEvent = {title: '', start: '', description: ''};
+
+          const saveEventDB = async () => {
+            const token = authStore.accessToken;
+            await axios.post('http://localhost:8003/schedule',
+                {
+                  scheduleTitle : eventData.title,
+                  scheduleContent : eventData.description,
+                  scheduleDate : eventData.start
+                },{
+                 headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                   }
+                }
+            )
+          }
+
+
+          saveEventDB();
         }
       }
+    },
+    getEventDB: async function () {
+      const token = authStore.accessToken;
+      try {
+        const response = await axios.get('http://localhost:8003/schedule', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const calendar = this.$refs.calendar.getApi();
+        const events = response.data;
+        console.log('Fetched events:', events);
+
+        let eventData = {
+          title: '',
+          start: '',
+          description: ''
+        }
+        for(let i = 0; i<events.length ;i++) {
+          eventData = {
+            title: events[i].scheduleTitle,
+            start: events[i].scheduleDate,
+            description: events[i].scheduleContent
+          };
+          calendar.addEvent(eventData);
+        }
+
+
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
     }
+  },
+  mounted() {
+    authStore = useAuthStore();
+    this.getEventDB();
   }
 }
 </script>
@@ -87,6 +145,7 @@ export default {
   padding: 5px; /* 패딩 추가하여 크기 증가 */
   font-size: 1.2em; /* 글자 크기 증가 */
 }
+
 .container {
   background-color: #FFFFFF;
 }

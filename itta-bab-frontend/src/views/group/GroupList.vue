@@ -7,7 +7,7 @@ import BottomPageButton from "@/components/common/BottomPageButton.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
 
-// 보안
+// 로그인 사용자 정보
 const authStore = useAuthStore();       // 로그인 토큰
 
 // DB 데이터

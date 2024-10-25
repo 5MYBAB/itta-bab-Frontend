@@ -1,10 +1,10 @@
 <script setup>
-import ResultDetail from "@/components/user/ResultDetail.vue";
+import SignUpResultDetail from "@/components/user/SignUpResultDetail.vue";
 </script>
 
 <template>
   <div class="back">
-    <ResultDetail/>
+    <SignUpResultDetail/>
   </div>
 </template>
 

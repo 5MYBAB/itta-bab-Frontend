@@ -8,7 +8,6 @@ import MenuUpdate from "@/views/store/MenuUpdate.vue";
 import ReviewMain from "@/views/store/ReviewMain.vue";
 import AdminStoreDetail from "@/views/store/AdminStoreDetail.vue";
 
-
 export default [
     {
         path: '/store',

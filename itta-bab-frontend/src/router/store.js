@@ -10,6 +10,7 @@ import ReviewMain from "@/views/store/ReviewMain.vue";
 export default [
     {
         path: '/store',
+            name: 'StoreMain',
         component: StoreMain
     },
     {
@@ -21,11 +22,12 @@ export default [
         component: StoreCreate
     },
     {
-        path: '/store/:id/update',
+        path: '/store/update/:storeId',
+        name: 'StoreUpdate',
         component: StoreUpdate
     },
     {
-        path: '/store/:storeId/menu',
+        path: '/store/menu/:storeId/:storeName',
         name : 'MenuMain',
         component: MenuMain
     },
@@ -35,7 +37,7 @@ export default [
         component: MenuCreate
     },
     {
-        path: '/store/menu/:id/update',
+        path: '/store/menu/update/:storeId/:menuId',
         name: 'MenuUpdate',
         component: MenuUpdate,
     },

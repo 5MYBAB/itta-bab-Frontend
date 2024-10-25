@@ -10,9 +10,9 @@ const authStore = useAuthStore();
 const reportTitle = ref('');
 const reportContent = ref('');
 const createDate = new Date().toISOString();
-const targetId = route.query.groupId; // URL 쿼리에서 groupId 가져오기
+const targetId = route.query.targetId; // URL 쿼리에서 groupId 가져오기
 const reportTarget = route.query.target; // URL 쿼리에서 target 가져오기
-console.log('groupId:', targetId, 'target:', reportTarget);
+console.log('targetId:', targetId, 'target:', reportTarget);
 const submitReport = async (event) => {
   event.preventDefault(); // 기본 제출 동작 방지
   try {
@@ -28,7 +28,7 @@ const submitReport = async (event) => {
       }
     });
     alert("신고가 성공적으로 제출되었습니다.");
-    reportTitle.value = '';
+    reportTitle.value = '';targetId
     reportContent.value = '';
   } catch (error) {
     if (error.response) {

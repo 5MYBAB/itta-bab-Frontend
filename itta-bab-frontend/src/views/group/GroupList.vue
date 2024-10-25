@@ -57,14 +57,14 @@ function selectItem(groupId) {
     name: 'ReportCreate',
     query: {
       target: selectedItemId.value.target,
-      groupId: selectedItemId.value.groupId
+      targetId: selectedItemId.value.groupId
     }
   });
   router.push({
     name: 'ReportCreate',
     query: {
       target: selectedItemId.value.target,
-      groupId: selectedItemId.value.groupId
+      targetId: selectedItemId.value.groupId
     }
   });
 }

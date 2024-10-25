@@ -8,6 +8,7 @@ import FindId from "@/views/user/FindId.vue";
 import FindPassword from "@/views/user/FindPassword.vue";
 import SignUpResult from "@/views/user/SignUpResult.vue";
 import FindIdResult from "@/views/user/FindIdResult.vue";
+import FindPwdResult from "@/views/user/FindPwdResult.vue";
 
 export default [
     {
@@ -33,6 +34,10 @@ export default [
     {
         path: '/find-pwd',
         component: FindPassword
+    },
+    {
+        path: '/find-pwd/result',
+        component: FindPwdResult
     },
     {
         path: '/mypage',

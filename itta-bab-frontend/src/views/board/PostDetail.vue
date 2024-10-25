@@ -16,7 +16,7 @@
         <div class="header-item">좋아요 수</div>
         <div class="header-item">작성시간</div>
       </div>
-      <div v-for="(item, index) in paginatedData" :key="index" class="data-row">
+      <div v-for="(item, index) in paginatedData" :key="index" class="data-row" v-on:click="goToDetailPage(item)">
         <div class="data-item">{{ index + 1 }}</div>
         <div class="data-item">{{ item.title }}</div>
         <div class="data-item">{{ item.likeCount }}</div>
@@ -50,6 +50,10 @@ const itemsPerPage = 10;
 const filteredData = ref([]);
 const sortOption = ref("recent"); // 정렬 옵션 설정
 const authStore = useAuthStore();
+
+function goToDetailPage(item) {
+  router.push(`/board/post/${item.postId}`);
+}
 
 // 전체 페이지 계산
 const totalPages = computed(() => Math.ceil(filteredData.value.length / itemsPerPage));

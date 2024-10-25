@@ -3,7 +3,6 @@ import '@/assets/css/resetcss.css';
 import axios from "axios";
 import {useRouter} from "vue-router";
 import {computed, onMounted, ref, watch} from "vue";
-import './styles/SignUp.css'
 
 const loginId = ref('');
 const password = ref('');
@@ -41,7 +40,7 @@ const handleSignUp = async () => {
     });
 
     if (response.status === 201) {
-      const name = '0test';
+      const name = username.value;
       router.push({
         path: '/signup-result',
         query: {username: name}
@@ -325,8 +324,9 @@ onMounted(() => {
                   {{ course }}
                 </option>
               </select>
+              <div class="location-message">해당 부트캠프 위치 근처에 있을 시에만<br>가입이 가능합니다.</div>
             </div>
-          </div>
+             </div>
 
         </div>
       </div>
@@ -365,3 +365,248 @@ onMounted(() => {
 
   </div>
 </template>
+
+<style scoped>
+.submit {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#submit-button {
+  width: 360px;
+  height: 44px;
+  background-color: var(--basic-yellow);
+  border-radius: 52px;
+}
+
+#agree {
+  margin: 10px;
+}
+
+.agree {
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.block-border-box {
+  border-radius: 10px;
+  padding: 20px 24px;
+  border: var(--text-color) solid 2px;
+  color: var(--gray-font);
+
+}
+
+.phone-icon {
+  margin: 16px 3px;
+}
+
+.sub-notice {
+  margin-top: 20px;
+  color: var(--gray-font);
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+.border {
+  font-size: 17px;
+  font-weight: 600;
+
+}
+
+.notice-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 30px;
+  padding-bottom: 10px;
+  border-bottom: var(--gray-font) solid 2px;
+}
+
+.bootcamp {
+  width: 328px;
+  border-radius: 10px;
+  background-color: var(--gray-input);
+  color: var(--gray-font);
+  border: none;
+  height: 44px;
+  padding-left: 12px;
+  margin-right: 22px;
+}
+
+.course {
+  width: 328px;
+  border-radius: 10px;
+  background-color: var(--gray-input);
+  color: var(--gray-font);
+  padding-left: 12px;
+  border: none;
+  height: 44px;
+}
+
+.back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--background-color);
+}
+
+#phone1, #phone2, #phone3 {
+  width: 97px;
+  border-radius: 10px;
+  background-color: var(--gray-input);
+  display: flex;
+  text-align: center;
+}
+
+#email-user {
+  width: 184px;
+}
+
+.email {
+  width: 119px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: var(--gray-input);
+  border: none;
+  padding-left: 10px;
+  color: var(--gray-font);
+}
+
+.logo {
+  margin-top: 130px;
+  margin-bottom: 50px;
+}
+
+.white-box {
+  display: flex; /* Flexbox 사용 */
+  flex-direction: column; /* 수직 정렬 */
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.13) inset;
+  border-radius: 43px;
+  background-color: var(--white);
+  max-width: 800px; /* 원하는 최대 너비 설정 */
+  width: 100%; /* 너비를 100%로 설정하여 최대 너비를 활용 */
+  padding: 65px 150px;
+  margin: 0 auto; /* 수평 가운데 정렬 */
+}
+
+.top-title {
+  font-size: 25px;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 50px;
+}
+
+.email-icon {
+  display: flex;
+  align-items: center;
+  margin: 0px 4px;
+}
+
+.flex-box {
+  display: flex;
+  align-items: center;
+  width: 635px;
+  margin: 18px 4px;
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+  height: 44px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  width: 150px;
+}
+
+.small, .email-message, .location-message {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-font);
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+input[type="button"] {
+  background-color: var(--basic-yellow);
+  box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  color: var(--text-color);
+  text-align: center;
+  font-weight: 600;
+  border-radius: 10px;
+  width: 138px;
+  height: 44px;
+  border: none;
+}
+
+input[type="text"], [type="password"] {
+  border-radius: 10px;
+  background-color: var(--gray-input);
+  border: none;
+  width: 328px;
+  height: 44px;
+  padding-left: 20px;
+  color: var(--gray-font);
+  display: flex;
+  align-items: center;
+}
+
+input[type="date"], [type="number"] {
+  border-radius: 10px;
+  background-color: var(--gray-input);
+  border: none;
+  width: 328px;
+  height: 44px;
+  color: var(--gray-font);
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.inline {
+  display: flex;
+}
+
+.input-box {
+  width: 348px;
+}
+
+.success-message, .valid{
+  color: var(--active-green);
+  font-size: 14px;
+  font-weight: 500;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.error-message, .invalid {
+  color: var(--real-red);
+  font-size: 14px;
+  font-weight: 500;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.email-box, .email-and-button {
+  display: flex;
+}
+
+.bootcamp-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#phone1, #phone2, #phone3 {
+  display: flex;
+  padding-right: 20px;
+}
+</style>

@@ -1,73 +1,60 @@
 <script setup>
-import { ref } from 'vue';
-import axios from 'axios';
 import Header from "@/App.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
-import { useAuthStore } from '@/stores/auth'; // authStore를 가져옵니다.
+import axios from "axios";
+import { useAuthStore } from "@/stores/auth.js";
+import { useRouter } from "vue-router";
+import { ref, computed } from "vue";
 
 const authStore = useAuthStore();
-// 폼 데이터 상태
-const inquiryTitle = ref('');
-const inquiryContent = ref('');
+const router = useRouter();
+const token = authStore.accessToken;
+// formData에 문의 내용을 저장하고, 현재 시간을 createDate에 저장
+const formData = ref({
+  inquiryContent: "",
+  createDate: new Date().toISOString()
+});
 
-function getUserIdFromToken() {
-  if (!authStore.accessToken) return null;
+const isFormValid = computed(() => {
+  return formData.value.inquiryContent.trim() !== "";
+});
 
+const handleInquiryCreate = async () => {
+  if (!isFormValid.value) return; // 폼이 유효하지 않으면 함수 종료
   try {
-    const payload = JSON.parse(atob(authStore.accessToken.split('.')[1])); // JWT 토큰의 페이로드를 디코딩
-    console.log('Payload 작동하는지 테스트:', payload);
-    return payload.sub; // 페이로드에서 userId 추출
-  } catch (error) {
-    console.error('Failed to decode token:', error);
-    return null;
-  }
-}
-// 문의 등록 함수
-async function submitInquiry() {
-  // 입력 값이 비어 있는지 확인
-  if (!inquiryContent.value) {
-    alert('내용을 입력해주세요.');
-    return;
-  }
-
-  const inquiryData = {
-    inquiryContent: inquiryContent.value,
-    createDate: new Date().toISOString() // 현재 시간을 ISO 8601 형식으로 추가
-  };
-
-  try {
-    const response = await axios.post('http://localhost:8003/inquiry/user', inquiryData, {
+    await axios.post("http://localhost:8003/inquiry/user", formData.value, {
       headers: {
-        Authorization: `Bearer ${authStore.accessToken}`
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
       }
     });
-    console.log('문의 등록 성공:', response.data);
-    alert('문의가 성공적으로 등록되었습니다.');
-    // 성공 시 폼 초기화
-
-    inquiryContent.value = '';
+    router.push("/mypage");
   } catch (error) {
-    console.error('문의 등록 실패:', error);
-    alert('문의 등록에 실패했습니다.');
+    console.log("문의 등록 중 오류 발생: ", error);
   }
-}
+};
 </script>
 
 <template>
+  <PageTitleTop />
   <main class="post-detail">
     <br />
     <div class="post-write-container">
       <h2>문의 하기</h2>
-      <form @submit.prevent="submitInquiry">
-        <div class="form-group">
-<!--          <label for="title">문의</label>
-          <input type="text" id="title" v-model="inquiryTitle" placeholder="제목을 입력하세요" />-->
-        </div>
+
+      <!-- @submit.prevent로 폼 제출 시 새로고침 방지 -->
+      <form @submit.prevent="handleInquiryCreate">
         <div class="form-group">
           <label for="content">문의 내용</label>
-          <textarea id="content" v-model="inquiryContent" placeholder="내용을 입력하세요"></textarea>
+          <textarea
+              id="content"
+              placeholder="내용을 입력하세요"
+              v-model="formData.inquiryContent"
+          ></textarea>
+
         </div>
-        <button type="submit" class="submit-button">작성 완료</button>
+        <!-- isFormValid에 따라 버튼 비활성화 -->
+        <button type="submit" class="submit-button" :disabled="!isFormValid">작성 완료</button>
       </form>
     </div>
   </main>

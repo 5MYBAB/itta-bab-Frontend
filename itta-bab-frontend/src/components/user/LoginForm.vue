@@ -16,9 +16,19 @@ const handleLogin = async () => {
       pwd: pwd.value
     });
 
+    console.log(response.status);
     if(response.status === 200) {
       authStore.login(response.headers.token);
-      router.push('/');
+      // window.location.reload();
+      console.log(authStore.userRole)
+      if(authStore.isAuthorized('USER')){
+        console.log('유저')
+        router.push('/');
+      }else if(authStore.isAuthorized('ADMIN')){
+        console.log('어드민')
+        router.push('/admin')
+      }
+
     }
 
   } catch (error) {

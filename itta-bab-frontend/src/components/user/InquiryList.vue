@@ -2,12 +2,10 @@
 import '@/assets/css/resetcss.css';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import axios from "axios";
-import {computed, onMounted, reactive, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useAuthStore} from "@/stores/auth.js";
-import {useRouter} from "vue-router";
 
 const authStore = useAuthStore();
-const router = useRouter();
 
 const inquiryList = ref([]);
 

@@ -74,9 +74,11 @@ const sendData = async () => {
     });
 
     if (request.status === 200) {
-      console.log(request.status);
+      alert("새로운 모임을 등록하였습니다.");
     } else {
-      alert("어라라?" + request.status);
+      alert("새로운 모임을 등록에 실패하였습니다.");
+      console.log(`모임 등록 실패
+      상태코드 = ${request.valueOf()}`);
     }
     router.push("/group");
 
@@ -84,7 +86,6 @@ const sendData = async () => {
     console.log("어라라?\n" + error);
   }
 }
-
 
 const register = () => {
   // 카테고리 값 추가

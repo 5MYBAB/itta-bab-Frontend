@@ -13,7 +13,7 @@ const checkInput = () => {
   } else {
     errorMessage.value = '';
     alert('회원 탈퇴가 완료되었습니다.');
-    router.push({ name: 'DeleteUserResult' });
+    router.push({name: 'DeleteUserResult'});
   }
 };
 
@@ -44,6 +44,7 @@ input::placeholder {
   text-align: center;
   color: var(--gray-font);
 }
+
 input[type="text"] {
   height: 70px;
   background-color: var(--gray-input);
@@ -52,6 +53,7 @@ input[type="text"] {
   width: 670px;
   padding: 0px 60px;
 }
+
 input[type="button"] {
   margin-top: 30px;
   border-radius: 52px;
@@ -63,11 +65,13 @@ input[type="button"] {
   height: 44px;
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.50));
 }
+
 .title {
   font-weight: 600;
   font-size: 25px;
   padding-bottom: 80px;
 }
+
 .white-box {
   background-color: var(--white);
   box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.13) inset;
@@ -80,9 +84,11 @@ input[type="button"] {
   align-items: center;
   flex-direction: column;
 }
+
 .back img {
   width: 66px;
 }
+
 .back {
   background-color: var(--background-color);
   display: flex;
@@ -91,6 +97,7 @@ input[type="button"] {
   flex-direction: column;
   align-items: center;
 }
+
 .error-message {
   color: var(--real-red);
   font-size: 16px;

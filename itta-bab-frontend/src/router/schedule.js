@@ -7,7 +7,7 @@ export default [
         component: ScheduleCreate
     },
     {
-        path: '/schedule/update',
+        path: '/schedule/:id',
         component: ScheduleUpdate
-    },
+    }
 ];

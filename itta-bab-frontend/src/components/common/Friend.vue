@@ -47,7 +47,7 @@ const handleRequestClick = async () => {
 <template>
   <div class="notification-dropdown">
     <div @click="toggleDropdown" id="notification-button" class="custom-cursor">
-      임광택 <!-- 클릭 시 이 값을 username에 할당 -->
+      티즐 <!-- 클릭 시 이 값을 username에 할당 -->
     </div>
     <div v-if="isDropdownVisible" class="container">
       <div
@@ -79,9 +79,11 @@ const handleRequestClick = async () => {
   background-color: var(--gray-input);
   left: 0;
   z-index: 10;
+  width: 100%;
+  height: 50px;
   border-radius: 20px;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 }
 

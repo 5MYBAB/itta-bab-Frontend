@@ -1,5 +1,5 @@
 <template>
-  <PageTitleTop />
+  <PageTitleTop/>
   <div class="post-detail">
     <!-- 게시글 부분 -->
     <div class="post-content-wrapper">
@@ -13,7 +13,7 @@
           />
         </button>
       </div>
-      <br />
+      <br/>
       <p class="post-date">{{ createdAt }}</p> <!-- postDate -> createdAt -->
       <p class="post-content">{{ content }}</p> <!-- postContent -> content -->
     </div>
@@ -24,7 +24,7 @@
         <div class="comments-header">
           <h5>댓글 {{ comments.length }}</h5>
         </div>
-        <hr />
+        <hr/>
 
         <!-- 댓글 및 대댓글 표시 -->
         <div v-for="comment in comments" :key="comment.postCommentId" class="comment">
@@ -35,25 +35,29 @@
             </div>
             <div class="comment-actions">
               <button class="reply-button" @click="replyToComment(comment.postCommentId)">대댓글 작성</button>
-              <ReportButton  @click="reportComment(comment.postCommentId)"/>
+              <ReportButton @click="reportComment(comment.postCommentId)"/>
             </div>
           </div>
 
           <div v-for="reply in comment.replies" :key="reply.postCommentId" class="reply">
             <div class="reply-content">
-              <div class="arrow"><font-awesome-icon :icon="['fas', 'arrow-turn-up']" rotation=90 /></div>
-              <div style="display: flex;">
-                <p class="reply-author"> {{  reply.author }}</p>
-                <p class="reply-text"> {{  reply.commentContent }}</p>
+              <div class="arrow">
+                <font-awesome-icon :icon="['fas', 'arrow-turn-up']" :rotation="90"/>
               </div>
-              <div style="margin-right: 0px"><ReportButton  @click="reportComment(comment.postCommentId)"/></div>
+              <div style="display: flex;">
+                <p class="reply-author"> {{ reply.author }}</p>
+                <p class="reply-text"> {{ reply.commentContent }}</p>
+              </div>
+              <div style="margin-right: 0px">
+                <ReportButton @click="reportComment(comment.postCommentId)"/>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- New Comment Section -->
         <div class="new-comment">
-          <input type="text" placeholder="댓글을 작성하세요." v-model="newCommentText" />
+          <input type="text" placeholder="댓글을 작성하세요." v-model="newCommentText"/>
           <button @click="addComment">등록</button>
         </div>
       </div>
@@ -63,12 +67,12 @@
 
 <script setup>
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import router from "@/router/index.js";
 import axios from 'axios';
-import { ref, onMounted } from "vue";
-import { useAuthStore } from "@/stores/auth.js";
-import { useRoute } from "vue-router";
+import {onMounted, ref} from "vue";
+import {useAuthStore} from "@/stores/auth.js";
+import {useRoute} from "vue-router";
 import ReportButton from "@/components/common/ReportButton.vue";
 
 const authStore = useAuthStore();
@@ -100,10 +104,10 @@ const fetchComments = async () => {
       acc.counter += 1;
 
       if (!comment.parentCommentId) {
-        acc.push({ ...comment, author: authorName, replies: [] });
+        acc.push({...comment, author: authorName, replies: []});
       } else {
         const parentComment = acc.find(c => c.postCommentId === comment.parentCommentId);
-        if (parentComment) parentComment.replies.push({ ...comment, author: authorName });
+        if (parentComment) parentComment.replies.push({...comment, author: authorName});
       }
       return acc;
     }, []);
@@ -134,9 +138,31 @@ const fetchPostData = async () => {
   }
 };
 
+const fetchPostLike = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8003/post?target=POST&targetId=${postId}`, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
+    });
+
+    if (response === 200) {
+      postLiked.value = true;
+    } else {
+      postLiked.value = false;
+    }
+
+  } catch (error) {
+    postLiked.value = false;
+    console.error('게시물 데이터를 가져오는 중 오류가 발생했습니다:', error.response ? error.response.data : error.message);
+  }
+};
+
+
 onMounted(() => {
   fetchComments();
   fetchPostData();
+  fetchPostLike();
 });
 
 // 새 댓글 작성 함수
@@ -181,7 +207,7 @@ const replyToComment = async (parentCommentId) => {
 
       const parentComment = comments.value.find(c => c.postCommentId === parentCommentId);
       if (parentComment) {
-        parentComment.replies.push({ ...response.data });
+        parentComment.replies.push({...response.data});
       }
     } catch (error) {
       console.error('대댓글 추가 중 오류가 발생했습니다:', error.response ? error.response.data : error.message);

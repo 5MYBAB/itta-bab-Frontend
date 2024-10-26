@@ -121,7 +121,7 @@ const addComment = async () => {
   if (newCommentText.value.trim()) {
     try {
       await axios.post(
-          `http://localhost:8003/groupComment/${groupId}`,
+          `http://localhost:8003/groupComment`,
           {
             groupId: groupId,
             commentContent: newCommentText.value,

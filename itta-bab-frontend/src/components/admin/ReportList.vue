@@ -1,11 +1,13 @@
 <script setup>
 import '@/assets/css/resetcss.css';
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import {useAuthStore} from "@/stores/auth.js";
-import {computed, onMounted, ref} from "vue";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { useAuthStore } from "@/stores/auth.js";
+import { computed, onMounted, ref } from "vue";
 import axios from "axios";
+import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
+const router = useRouter();
 
 const reportList = ref([]);
 
@@ -17,6 +19,7 @@ const fetchReportList = async () => {
       }
     });
     reportList.value = response.data;
+    console.log(response.data);
   } catch (error) {
     console.error('문의 목록을 불러오는 중 에러가 발생했습니다.', error.response ? error.response.data : error.message);
   }
@@ -47,6 +50,31 @@ function goToPage(page) {
   }
 }
 
+// 신고 처리 버튼 클릭 시 호출되는 함수
+// 신고 처리 함수
+const handleReportProcess = async (report) => {
+  const confirmed = confirm(`정말로 '${report.reportTitle}' 신고를 처리하시겠습니까?`);
+
+  if (confirmed) {
+    try {
+      await axios.post(`http://localhost:8003/report/admin/${report.reportId}`, {
+        reportId: report.reportId,
+        reportTarget: report.target
+      }, {
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`
+        }
+      });
+
+      alert('신고 처리가 완료되었습니다.');
+      fetchReportList(); // 목록을 새로 고침하여 상태 반영
+    } catch (error) {
+      alert('신고 처리 중 오류가 발생했습니다.');
+      console.error(error);
+    }
+  }
+};
+
 </script>
 
 <template>
@@ -74,7 +102,14 @@ function goToPage(page) {
           <span v-else-if="report.target === 'COMMENT'">댓글</span>
           <span v-else-if="report.target === 'GROUP'">그룹</span>
         </div>
-        <div>신고 처리</div>
+        <!-- 신고 처리 버튼 또는 완료 메시지 -->
+        <div v-if="report.isResolved === false">
+          <button @click="handleReportProcess(report)">신고 처리</button>
+        </div>
+        <div v-else-if="report.isResolved === true">
+          신고 처리 완료
+        </div>
+
       </div>
     </div>
   </div>
@@ -93,8 +128,7 @@ function goToPage(page) {
 </template>
 
 <style scoped>
-
-
+/* 스타일 관련 코드는 그대로 유지합니다. */
 .page-named {
   display: flex;
   justify-content: center;
@@ -145,7 +179,7 @@ function goToPage(page) {
   display: flex;
   justify-content: space-between;
   margin: 15px 30px;
-  align-items: center
+  align-items: center;
 }
 
 .text {

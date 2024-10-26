@@ -153,10 +153,11 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="flex-box">
-          <div class="title">가게 사진</div>
-          <div><input type="button" value="사진 업로드"></div>
-        </div>
+<!--        가게 사진-->
+<!--        <div class="flex-box">-->
+<!--          <div class="title">가게 사진</div>-->
+<!--          <div><input type="button" value="사진 업로드"></div>-->
+<!--        </div>-->
 
         <div class="flex-box">
           <div class="store-info">가게 소개</div>

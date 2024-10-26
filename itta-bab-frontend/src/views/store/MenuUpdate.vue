@@ -102,10 +102,10 @@ async function updateMenu() {
         </div>
 
         <!-- 메뉴 사진 업로드 -->
-        <div class="flex-box">
-          <div class="title">메뉴 사진</div>
-          <input type="button" value="사진 업로드">
-        </div>
+<!--        <div class="flex-box">-->
+<!--          <div class="title">메뉴 사진</div>-->
+<!--          <input type="button" value="사진 업로드">-->
+<!--        </div>-->
 
         <!-- 메뉴 카테고리 입력 -->
         <div class="flex-box">

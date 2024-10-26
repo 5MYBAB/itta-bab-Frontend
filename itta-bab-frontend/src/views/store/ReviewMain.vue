@@ -75,7 +75,12 @@ const paginatedData = computed(() => {
   return jsonReviewData.value.slice(start, end);
 });
 
+function goToStoreReviewCreate(storeId){
+  router.push({ name: 'ReviewCreate', params: { storeId }});
+}
 
+const userId = authStore;
+console.log(userId);
 
 </script>
 
@@ -85,6 +90,10 @@ const paginatedData = computed(() => {
     <div class="title">
       <div class="section-title">가게 리뷰</div>
     </div>
+
+    <button class="edit-store-btn"
+            @click = "goToStoreReviewCreate(storeId)"
+    ><font-awesome-icon :icon="['far', 'pen-to-square']" /> 리뷰 등록</button>
 
     <div class="total-container">
       <div class="header-row">
@@ -98,12 +107,9 @@ const paginatedData = computed(() => {
              :key="review.storeId"
              class="review-row"
         >
-          <!--          <img :src="review.userImageUrl" alt="User Image" class="user-image" />-->
+
           <div class="review-content">
             <div class="review-text">{{ review.reviewContent }}</div>
-            <!--            <div class="review-tags">-->
-            <!--              <span v-for="tag in review.tags" :key="tag" class="review-tag">{{ tag }}</span>-->
-            <!--            </div>-->
             <div class="review-info">
               <span class="review-rating">평점:
                 <span v-for="n in 5" :key="n" class="star">{{ n <= review.rating ? '⭐' : '' }}</span>
@@ -127,6 +133,15 @@ const paginatedData = computed(() => {
 </template>
 
 <style scoped>
+/* 리뷰 등록 버튼 */
+.edit-store-btn {
+  background-color: var(--basic-yellow);
+  border-radius: 20px;
+  border: none;
+  margin-bottom: 30px;
+  width: 120px;
+  height: 40px;
+}
 
 .background {
   display: flex; /* Flexbox 사용 */
@@ -211,17 +226,6 @@ const paginatedData = computed(() => {
   margin-bottom: 5px;
 }
 
-.review-tags {
-  margin-bottom: 5px;
-}
-
-.review-tag {
-  background-color: #f1f1f1;
-  padding: 2px 6px;
-  margin-right: 5px;
-  border-radius: 4px;
-  font-size: 12px;
-}
 
 .review-info {
   font-size: 12px;

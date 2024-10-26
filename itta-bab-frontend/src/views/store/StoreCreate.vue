@@ -73,8 +73,6 @@ const submitForm = async () => {
 
 
 
-
-
 // '뒤로 가기' 버튼을 클릭하면 이전 페이지로 이동하는 함수
 function goBack() {
   window.history.back();

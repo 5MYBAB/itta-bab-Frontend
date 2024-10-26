@@ -7,6 +7,7 @@ import MenuMain from "@/views/store/MenuMain.vue";
 import MenuUpdate from "@/views/store/MenuUpdate.vue";
 import ReviewMain from "@/views/store/ReviewMain.vue";
 import AdminStoreDetail from "@/views/store/AdminStoreDetail.vue";
+import ReviewCreate from "@/views/store/ReviewCreate.vue";
 
 export default [
     {
@@ -50,11 +51,19 @@ export default [
         name: 'ReviewMain',
         component: ReviewMain
 
-    }, {
+    },
+    {
+        path: `/store/review/:storeId`,
+        name: 'ReviewCreate',
+        component: ReviewCreate
+
+    },
+    {
         path: "/admin/store/:id",
         component: AdminStoreDetail
 
-    }
+    },
+
 
 
 

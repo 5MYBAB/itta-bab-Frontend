@@ -34,7 +34,7 @@ const checkInput = async () => {
     }
 
   } catch (error) {
-    console.error('회원정보 수정 실패', error);
+    console.error('회원정보 삭제 실패', error);
   }
 };
 

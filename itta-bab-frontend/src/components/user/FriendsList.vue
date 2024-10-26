@@ -48,6 +48,26 @@ function goToPage(page) {
   }
 }
 
+const handleDeleteClick = async () => {
+  try {
+    const userId = 3;
+
+    const response = await axios.delete(
+        'http://localhost:8003/friend',
+        {
+          data: { friendUserId: userId },
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`
+          }
+        }
+    );
+
+    fetchFriendList();
+
+  } catch (error) {
+    console.error('친구 삭제 실패', error);
+  }
+}
 
 </script>
 
@@ -59,15 +79,15 @@ function goToPage(page) {
     </div>
   </div>
   <div>
-  <div v-for="(friend, index) in paginatedData" :key="friend.friendId" class="list-container">
-    <div class="list-content">
-      <div class="contents">
-        <div class="text">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
-        <div class="text">{{ friend.username }}</div>
-        <div class="delete">삭제</div>
+    <div v-for="(friend, index) in paginatedData" :key="friend.friendId" class="list-container">
+      <div class="list-content">
+        <div class="contents">
+          <div class="text">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
+          <div class="text">{{ friend.username }}</div>
+          <div class="delete" @click="handleDeleteClick">삭제</div>
+        </div>
       </div>
     </div>
-  </div>
   </div>
   <div class="page-named">
     <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">〈</button>
@@ -108,6 +128,7 @@ function goToPage(page) {
 .delete {
   color: var(--gray-font);
   font-size: 15px;
+  cursor: pointer;
 }
 
 .contents {

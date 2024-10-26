@@ -202,6 +202,14 @@
 ![](/images/mypage/morenotification.gif)
 </details>
 
+<br>
+
+<details>
+<summary><strong>회원정보 수정</strong></summary>
+
+![](/images/mypage/updateuser.gif)
+</details>
+
 ### 📗 좋아요
 <details>
 <summary><strong>좋아요</strong></summary>

@@ -4,6 +4,7 @@ import {ref} from 'vue';
 import axios from 'axios';
 import {useRouter, useRoute} from 'vue-router';
 import { useAuthStore } from "@/stores/auth.js";
+import PageTitleTop from "@/components/common/PageTitleTop.vue";
 
 const router = useRouter(); // 라우터 이동을 위한 설정
 
@@ -51,6 +52,7 @@ async function registerMenu() {
 </script>
 
 <template>
+<!--  <PageTitleTop/>-->
   <div class="page-container">
     <div class="page-top-title">메뉴 등록</div>
   </div>

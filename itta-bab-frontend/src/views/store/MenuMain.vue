@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter, useRoute } from 'vue-router';
 import {useAuthStore} from "@/stores/auth.js";
 import Page from "@/components/common/Page.vue";
+import PageTitleTop from "@/components/common/PageTitleTop.vue";
 
 // 인증 토큰 가져오기
 const authStore = useAuthStore();
@@ -100,6 +101,7 @@ function goToStoreMenuUpdate(storeId, menuId) {
 
 
 <template>
+  <PageTitleTop/>
   <div class="background">
     <div class="page-container">
       <div class="page-top-title">가게 메뉴</div>
@@ -158,7 +160,7 @@ function goToStoreMenuUpdate(storeId, menuId) {
 <style scoped>
 
 .page-container{
-  padding-top:130px;
+  padding-top:50px;
   padding-bottom: 20px;
   display: flex;
   justify-content: center;

@@ -5,6 +5,7 @@ import {computed, provide ,ref, onMounted} from "vue";
 import Page from "@/components/common/Page.vue";
 import { useRouter, useRoute } from 'vue-router';
 import {useAuthStore} from "@/stores/auth.js";
+import PageTitleTop from "@/components/common/PageTitleTop.vue";
 
 
 
@@ -88,14 +89,15 @@ function goToStoreMenu(storeId, storeName) {
   router.push({ name: 'MenuMain', params: { storeId, storeName } });
 }
 
-function goToStoreUpdate(storeId) {
-  router.push({ name: 'StoreUpdate', params: { storeId }});
+function goToStoreDetail(storeId) {
+  router.push({ name: 'StoreDetail', params: { storeId }});
 }
 
 
 </script>
 
 <template>
+  <PageTitleTop/>
   <div class="post-detail">
     <StoreSearchBarAndSort @search="filter"/>
     <div class="white-box">
@@ -121,10 +123,10 @@ function goToStoreUpdate(storeId) {
           </div>
           <div class="store-open-info">
             <span class="week">{{ item.storeWeek }}&nbsp;&nbsp;</span>
-            <span class="time">{{ item.storeOpenTime }} ~ {{ item.storeEndTime }}</span>
+            <span class="time">{{ item.storeOpenTime }} ~ {{ item.storeEndTime }}<br></span>
             <input id="update"
-                   type="button" value="가게 수정"
-                   @click = "goToStoreUpdate(item.storeId)"
+                   type="button" value="더보기"
+                   @click = "goToStoreDetail(item.storeId)"
             >
           </div>
         </div>
@@ -224,7 +226,6 @@ input[type="button"] {
 }
 
 .store-open-info {
-  display: inline-flex;
   color: #555;
   font-size: 14px;
   margin-right: 50px;
@@ -271,8 +272,11 @@ input[type="button"] {
 }
 
 #update {
-  margin-top: 20px;
-  text-align: right;
+  width: 100px;
+  height: 40px;
+  margin-top: 30px;
+  text-align: center;
+  background-color: var(--basic-yellow);
 }
 
 .add-store-btn button {

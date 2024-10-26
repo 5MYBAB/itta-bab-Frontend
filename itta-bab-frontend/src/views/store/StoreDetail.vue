@@ -1,46 +1,139 @@
 <script setup>
 import MenuList from "@/components/store/MenuList.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { useRouter, useRoute } from 'vue-router';
+import {useAuthStore} from "@/stores/auth.js";
+import axios from "axios";
+import Page from "@/components/common/Page.vue";
+
+// 라우터 이동을 위한 설정
+const router = useRouter();
+
+// 인증 토큰 가져오기
+const authStore = useAuthStore();
+
+// 가게 id 가져오기
+const route = useRoute();
+const storeId = route.params.storeId;
+
+
+// const storeList = ref([]); // 서버에서 가져올 가게 데이터
+const storeName = ref('');
+const storeLocation = ref('');
+const storeOpenTime = ref('');
+const storeEndTime = ref('');
+const storeWeek = ref('');
+const storeInfo = ref('');
+const storeStatus = ref('');
+
+
+// 서버로부터 데이터를 가져오는 함수
+async function fetchStoreList() {
+  try {
+    const token = authStore.accessToken;
+    const response = await axios.get(`http://localhost:8003/store/detail/${storeId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+
+
+    const data = response.data;
+
+    // 필드에 가져온 데이터를 초기화
+    storeName.value = data.storeName;
+    storeLocation.value = data.storeLocation;
+    storeWeek.value = data.storeWeek;
+    storeOpenTime.value = data.storeOpenTime;
+    storeEndTime.value = data.storeEndTime;
+    storeInfo.value = data.storeInfo;
+    storeStatus.value = data.storeStatus;
+
+  } catch (error) {
+    console.error('가게 데이터를 불러오는데 에러가 발생했습니다', error);
+  }
+}
+
+// 메뉴 데이터 가져오기
+const jsonMenuData = ref([]); // 서버에서 가져올 메뉴 데이터를 저장할 변수
+
+
+const currentPage = ref(1);
+const itemsPage = 3;
+const totalPages = computed(() => {
+  return Math.ceil(jsonMenuData.value.length / itemsPage);
+});
+
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPage;
+  const end = start + itemsPage;
+  return jsonMenuData.value.slice(start, end);
+});
+
+// 서버에서 메뉴 데이터 가져오기
+async function fetchMenuData() {
+  try {
+    const token = authStore.accessToken;
+    const response = await axios.get(`http://localhost:8003/store/menu/list/${storeId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    jsonMenuData.value = await response.data;
+  } catch (error) {
+    console.error("메뉴 데이터를 불러오는데 에러가 발생했습니다: fetch Error:", error);
+  }
+}
+
+
+// 컴포넌트가 마운트되면 자동으로 데이터 조회
+onMounted(() => {
+  fetchStoreList();
+  fetchMenuData();
+});
+
+
 
 // 데이터 설정
-const store = {
-  imageUrl: 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAzMDZfMjA2%2FMDAxNzA5NjYyMzU3OTMw.S59QAzo4zrcqiDBw2PcRmyiLkQncKrjBnBC9FOQflpAg.4MsQTaJf59MVUq_Ha3YV6li5ew1aOa91cU8zojtygfsg.JPEG%2Foutput_1415662850.jpg&type=a340',
-  name: '가게 이름',
-  description: '가게가게가게가게가게가게가게가게가게가게 설명',
-  location: '서울시 강남구',
-  openingHours: '월-금 10:00 - 22:00',
-  menus: [
-    { id: 1, name: '김치찌개', price: 8000 },
-    { id: 2, name: '된장찌개', price: 7000 },
-    { id: 3, name: '비빔밥', price: 9000 },
-  ],
-};
-
-// 리뷰 데이터 설정
-const reviews = ref([
-  {
-    id: 1,
-    username: '익명1',
-    date: '2024-10-15',
-    text: '음식이 정말 맛있어요!',
-    tags: ['맛있음', '친절함'],
-    rating: 5,
-    isLiked: false,
-    userImageUrl: 'https://via.placeholder.com/50',
-  },
-  {
-    id: 2,
-    username: '익명2',
-    date: '2024-10-16',
-    text: '가격이 조금 비싸지만 만족스러웠습니다.',
-    tags: ['가격 비쌈'],
-    rating: 4,
-    isLiked: true,
-    userImageUrl: 'https://via.placeholder.com/50',
-  },
-]);
+// const store = {
+//   imageUrl: 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAzMDZfMjA2%2FMDAxNzA5NjYyMzU3OTMw.S59QAzo4zrcqiDBw2PcRmyiLkQncKrjBnBC9FOQflpAg.4MsQTaJf59MVUq_Ha3YV6li5ew1aOa91cU8zojtygfsg.JPEG%2Foutput_1415662850.jpg&type=a340',
+//   name: '가게 이름',
+//   description: '가게가게가게가게가게가게가게가게가게가게 설명',
+//   location: '서울시 강남구',
+//   openingHours: '월-금 10:00 - 22:00',
+//   menus: [
+//     { id: 1, name: '김치찌개', price: 8000 },
+//     { id: 2, name: '된장찌개', price: 7000 },
+//     { id: 3, name: '비빔밥', price: 9000 },
+//   ],
+// };
+//
+// // 리뷰 데이터 설정
+// const reviews = ref([
+//   {
+//     id: 1,
+//     username: '익명1',
+//     date: '2024-10-15',
+//     text: '음식이 정말 맛있어요!',
+//     tags: ['맛있음', '친절함'],
+//     rating: 5,
+//     isLiked: false,
+//     userImageUrl: 'https://via.placeholder.com/50',
+//   },
+//   {
+//     id: 2,
+//     username: '익명2',
+//     date: '2024-10-16',
+//     text: '가격이 조금 비싸지만 만족스러웠습니다.',
+//     tags: ['가격 비쌈'],
+//     rating: 4,
+//     isLiked: true,
+//     userImageUrl: 'https://via.placeholder.com/50',
+//   },
+// ]);
 
 const isBookmarked = ref(false); // 북마크 상태 추가
 
@@ -53,12 +146,32 @@ const toggleBookmark = () => {
   isBookmarked.value = !isBookmarked.value; // 클릭할 때마다 상태 변경
 };
 
-const toggleLike = (reviewId) => {
-  const review = reviews.value.find((r) => r.id === reviewId);
-  if (review) {
-    review.isLiked = !review.isLiked;
+// const toggleLike = (reviewId) => {
+//   const review = reviews.value.find((r) => r.id === reviewId);
+//   if (review) {
+//     review.isLiked = !review.isLiked;
+//   }
+// };
+
+function goToPage(page) {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
   }
-};
+}
+
+function goToStoreUpdate(storeId) {
+  router.push({ name: 'StoreUpdate', params: { storeId }});
+}
+
+function goToStoreMenu(storeId, storeName) {
+  router.push({ name: 'MenuMain', params: { storeId, storeName } });
+}
+
+
+// function goToStoreMenuUpdate(storeId, menuId) {
+//   router.push(`/store/menu/update/${storeId}/${menuId}`);
+// }
+
 </script>
 
 <template>
@@ -69,16 +182,18 @@ const toggleLike = (reviewId) => {
     <div class="store-detail-container">
       <div class="page-title">
         <div class="section-title">가게 상세</div>
-        <button class="edit-store-btn"><font-awesome-icon :icon="['far', 'pen-to-square']" /> 가게 수정하기</button>
+        <button class="edit-store-btn"
+                @click = "goToStoreUpdate(storeId)"
+        ><font-awesome-icon :icon="['far', 'pen-to-square']" /> 가게 수정하기</button>
       </div>
       <div class="light-yellow-box">
           <div class="store-left">
-            <img :src="store.imageUrl" alt="Store Image" class="store-image" />
+<!--            <img :src="store.imageUrl" alt="Store Image" class="store-image" />-->
             <div class="store-meta">
               <div class="store-title">
-                <h3>{{ store.name }}</h3>
+                <h3>{{ storeName }}</h3>
                 <div style="display: flex; gap: 20px">
-                  <div class="store-state">영업중</div>
+                  <div class="store-state">{{ storeStatus }}</div>
                   <div @click="toggleBookmark" style="cursor: pointer;">
                     <font-awesome-icon
                         :icon="[isBookmarked ? 'fas' : 'far', 'bookmark']"
@@ -88,15 +203,49 @@ const toggleLike = (reviewId) => {
                   </div>
                 </div>
               </div>
-              <p>{{ store.description }}</p>
-              <p><font-awesome-icon :icon="['fas', 'location-dot']" />&nbsp;&nbsp;{{ store.location }}</p>
-              <p><font-awesome-icon :icon="['far', 'calendar-days']" />&nbsp;&nbsp;{{ store.openingHours }}</p>
+              <br>
+              <p><font-awesome-icon :icon="['fas', 'location-dot']" />&nbsp;&nbsp;{{ storeLocation }}</p>
+              <p><font-awesome-icon :icon="['far', 'calendar-days']" />&nbsp;&nbsp;{{ storeWeek }}<br>&emsp;&ensp;{{ storeOpenTime }} ~ {{ storeEndTime }}</p>
+              <p>{{ storeInfo }}</p>
             </div>
           </div>
           <div class="store-right">
-            <MenuList/>
+
+            <!-- 가게 메뉴 -->
+            <!-- 가게 리스트 -->
+            <div class="list-style">
+              <div
+                  v-for="item in paginatedData"
+                  :key="item.menuId"
+                  class="data-row"
+              >
+<!--                <img :src="item.userImageUrl" alt="Menu Image" class="menu-image" />-->
+                <div class="data-item">
+                  <div class="item_name">{{ item.menuName }}</div>
+                  <div class="item_price">{{ item.menuPrice }}원</div>
+
+                </div>
+
+<!--                <input id="update"-->
+<!--                       type="button" value="메뉴 수정"-->
+<!--                       @click = "goToStoreMenuUpdate(storeId, item.menuId)"-->
+<!--                >-->
+
+              </div>
+
+
+
+              <Page
+                  :currentPage="currentPage"
+                  :totalPages="totalPages"
+                  @changePage="goToPage"
+              />
+            </div>
+            <!-- 가게 리스트 -->
             <div class="menu-list">
-              <button class="more-btn">더보기 &gt;</button>
+              <button class="more-btn"
+                      @click="goToStoreMenu(storeId, storeName)"
+              >더보기 &gt;</button>
             </div>
           </div>
       </div>
@@ -341,6 +490,62 @@ body {
 
 .more-btn:hover {
   background-color: #e0b030;
+}
+
+/* 가게 리스트 */
+.item_name{
+  font-size: 20px;
+  font-weight: 600;
+}
+.item_price{
+  font-size: 15px;
+}
+.menu-image {
+  width: 107px;
+  height: 107px;
+  margin:20px
+}
+.data-row {
+  display: flex;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+.data-item {
+  flex: 1;
+  text-align: left;
+  margin-left: 10px;
+  margin-top: 20px;
+}
+
+.page-named span {
+  cursor: pointer;
+  padding: 5px 13px;
+  border: 1px solid var(--white);
+  background-color: var(--white);
+}
+
+.page-named .active {
+  font-weight: bold;
+  color: black;
+}
+
+.list-style {
+  border-radius: 0 0 10px 10px;
+}
+.bottom-container button {
+  justify-content: flex-end;
+}
+
+#update {
+  width: 120px;
+  height: 44px;
+  background-color: var(--basic-yellow);
+  border-radius: 52px;
+  border: none;
+  font-weight: 600;
+  text-align: center;
+  margin-right: 50px;
 }
 
 </style>

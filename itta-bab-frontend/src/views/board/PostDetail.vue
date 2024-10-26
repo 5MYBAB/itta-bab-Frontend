@@ -2,7 +2,7 @@
   <div class="post-detail">
     <PageTitleTop />
     <div class="title">
-      <h1>게시판</h1>
+      <h1>익명 커뮤니티</h1>
     </div>
     <br />
     <div class="parent-container">

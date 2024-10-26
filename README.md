@@ -118,10 +118,42 @@
 
 ### 📗 회원
 <details>
-<summary><strong>회원</strong></summary>
+<summary><strong>회원가입</strong></summary>
+
+![](/images/user/signup.gif)
+</details>
+
+<details>
+<summary><strong>로그인</strong></summary>
+
+![](/images/user/login.gif)
+</details>
+
+<details>
+<summary><strong>로그아웃</strong></summary>
+
+![](/images/user/logout.gif)
+</details>
+
+<details>
+<summary><strong>아이디 찾기</strong></summary>
+
+![](/images/user/findid.gif)
+</details>
+
+<details>
+<summary><strong>비밀번호 찾기</strong></summary>
+
+![](/images/user/findpwd.gif)
+</details>
+
+### 📗 마이페이지
+<details>
+<summary><strong>마이페이지</strong></summary>
 
 ![](/images/)
 </details>
+
 
 ### 📗 좋아요
 <details>

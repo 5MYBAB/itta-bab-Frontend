@@ -217,9 +217,9 @@
 
 ### 📗 관리자
 <details>
-<summary><strong>관리자</strong></summary>
+<summary><strong>관리자 문의 답변</strong></summary>
 
-![](/images/)
+![](/images/inquiry/inquiryAnswerAdmin1.gif)
 </details>
 
 ### 📗 좋아요
@@ -231,16 +231,21 @@
 
 ### 📗 문의
 <details>
-<summary><strong>문의</strong></summary>
+<summary><strong>문의하기</strong></summary>
 
-![](/images/)
+![](/images/inquiry/inquiryCreate.gif)
 </details>
 
 ### 📗 신고
 <details>
-<summary><strong>신고</strong></summary>
+<summary><strong>신고하기</strong></summary>
 
-![](/images/)
+![](/images/report/ReportOK.gif)
+</details>
+<details>
+<summary><strong>신고하기(예외)</strong></summary>
+
+![](/images/report/ReportSamePerson.gif)
 </details>
 
 ### 📗 일정

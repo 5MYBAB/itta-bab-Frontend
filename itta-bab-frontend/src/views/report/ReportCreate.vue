@@ -28,8 +28,9 @@ const submitReport = async (event) => {
       }
     });
     alert("신고가 성공적으로 제출되었습니다.");
-    reportTitle.value = '';targetId
+    reportTitle.value = '';
     reportContent.value = '';
+    router.push('/')
   } catch (error) {
     if (error.response) {
       if (error.response.status === 400) {

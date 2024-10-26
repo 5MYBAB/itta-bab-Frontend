@@ -283,11 +283,40 @@
 
 ### 📙 가게
 <details>
-<summary><strong>가게</strong></summary>
+<summary><strong>지도 API</strong></summary>
 
-![](/images/)
+![](/images/store/Map.gif)
 </details>
+<details>
+<summary><strong>검색 및 정렬</strong></summary>
 
+![](/images/store/storeSearch.gif)
+</details>
+<details>
+<summary><strong>가게 메뉴 추가</strong></summary>
+
+![](/images/store/storeMenuCreate.gif)
+</details>
+<details>
+<summary><strong>가게 메뉴 수정</strong></summary>
+
+![](/images/store/storeMenuUpdate.gif)
+</details>
+<details>
+<summary><strong>가게 수정</strong></summary>
+
+![](/images/store/storeUpdate.gif)
+</details>
+<details>
+<summary><strong>가게 즐겨찾기 추가, 삭제</strong></summary>
+
+![](/images/store/storeFavoriteCreateDelete.gif)
+</details>
+<details>
+<summary><strong>리뷰 등록 및 조회</strong></summary>
+
+![](/images/store/reviewList.gif)
+</details>
 ## 🍀 팀 회고
 
 ---

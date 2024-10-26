@@ -14,9 +14,10 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 // 가게 id 가져오기
-// const route = useRoute();
-// const storeId = route.params.storeId;
-const storeId = 3; //임시값 1
+const route = useRoute();
+const storeId = route.params.storeId;
+const storeName = route.params.storeName;
+// const storeId = 3; //임시값 1
 
 // const reviewContent = ref('');
 // const rating = ref(0);
@@ -80,13 +81,14 @@ const paginatedData = computed(() => {
 
 <template>
   <div class="background">
+
     <div class="title">
-      <font-awesome-icon :icon="['fas', 'list-ul']" size="2x" />
-      <div>리뷰 목록</div>
+      <div class="section-title">가게 리뷰</div>
     </div>
+
     <div class="total-container">
       <div class="header-row">
-        <div class="header-item">우리 할매 국밥</div>
+        <div class="header-item">{{ storeName }}</div>
       </div>
 
 
@@ -126,7 +128,6 @@ const paginatedData = computed(() => {
 
 <style scoped>
 
-
 .background {
   display: flex; /* Flexbox 사용 */
   flex-direction: column; /* 세로 방향으로 정렬 */
@@ -140,8 +141,11 @@ const paginatedData = computed(() => {
 
 .title{
   display: flex;
-  align-items: center;
-  margin-bottom: 30px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 600;
 }
 
 .header-row {

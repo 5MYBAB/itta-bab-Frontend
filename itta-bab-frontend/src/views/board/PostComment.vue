@@ -4,7 +4,7 @@
     <!-- 게시글 부분 -->
     <div class="post-content-wrapper">
       <div class="post-header">
-        <h1>{{ postTitle }}</h1>
+        <h3>{{ title }}</h3> <!-- postTitle -> title -->
         <button class="like-button" @click="togglePostLike">
           <font-awesome-icon
               :icon="postLiked ? ['fas', 'heart'] : ['far', 'heart']"
@@ -14,13 +14,12 @@
         </button>
       </div>
       <br />
-      <p class="post-date">{{ postDate }}</p>
-      <p class="post-content">{{ postContent }}</p>
+      <p class="post-date">{{ createdAt }}</p> <!-- postDate -> createdAt -->
+      <p class="post-content">{{ content }}</p> <!-- postContent -> content -->
     </div>
 
     <!-- 댓글 부분 -->
     <div class="post-detail">
-      <!-- 댓글 부분 -->
       <div class="comments-section">
         <div class="comments-header">
           <h5>댓글 {{ comments.length }}</h5>
@@ -30,7 +29,6 @@
         <!-- 댓글 및 대댓글 표시 -->
         <div v-for="comment in comments" :key="comment.postCommentId" class="comment">
           <div v-if="!comment.parentCommentId" class="comment-container">
-            <!-- 기본 댓글 -->
             <div class="comment-content">
               <p class="comment-author inline-text">{{ comment.author }}</p>
               <p class="comment-text inline-text">{{ comment.commentContent }}</p>
@@ -41,7 +39,6 @@
             </div>
           </div>
 
-          <!-- 대댓글 표시 -->
           <div v-for="reply in comment.replies" :key="reply.postCommentId" class="reply">
             <div class="reply-content">
               <div class="arrow"><font-awesome-icon :icon="['fas', 'arrow-turn-up']" rotation=90 /></div>
@@ -56,7 +53,7 @@
 
         <!-- New Comment Section -->
         <div class="new-comment">
-          <input type="text" placeholder="댓글을 작성하세요." v-model="newCommentText"  />
+          <input type="text" placeholder="댓글을 작성하세요." v-model="newCommentText" />
           <button @click="addComment">등록</button>
         </div>
       </div>
@@ -78,10 +75,14 @@ const authStore = useAuthStore();
 const route = useRoute();
 const postId = route.params.id;
 
-const comments = ref([]); // 댓글 목록을 반응형으로 관리합니다.
-const newCommentText = ref(''); // 새 댓글 입력 필드
-const postLiked = ref(false); // 게시물의 좋아요 상태
+// 게시물 데이터
+const title = ref(''); // postTitle -> title
+const createdAt = ref(''); // postDate -> createdAt
+const content = ref(''); // postContent -> content
 
+const comments = ref([]); // 댓글 목록
+const newCommentText = ref(''); // 새 댓글 입력 필드
+const postLiked = ref(false); // 좋아요 상태
 
 // 댓글 데이터 가져오기
 const fetchComments = async () => {
@@ -92,10 +93,11 @@ const fetchComments = async () => {
       },
     });
 
-    // 대댓글과 댓글 구분해서 정리
     const commentData = response.data.reduce((acc, comment) => {
-      const userId = comment.userId || ""; // userId가 존재하지 않으면 빈 문자열로 설정
-      const authorName = `익명${userId}`; // 익명+userId 형식으로 설정
+      if (!acc.counter) acc.counter = 1; // 전체 카운터 초기화
+
+      const authorName = `익명${acc.counter}`;
+      acc.counter += 1;
 
       if (!comment.parentCommentId) {
         acc.push({ ...comment, author: authorName, replies: [] });
@@ -106,21 +108,42 @@ const fetchComments = async () => {
       return acc;
     }, []);
 
+    commentData.forEach(item => delete item.counter);
+
     comments.value = commentData;
   } catch (error) {
     console.error('댓글 데이터를 불러오는 중 오류가 발생했습니다:', error.response ? error.response.data : error.message);
   }
 };
 
+// 게시물 데이터 가져오기
+const fetchPostData = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8003/post/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
+    });
+
+    const postData = response.data;
+    title.value = postData.title; // postTitle -> title
+    createdAt.value = postData.createdAt; // postDate -> createdAt
+    content.value = postData.content; // postContent -> content
+  } catch (error) {
+    console.error('게시물 데이터를 가져오는 중 오류가 발생했습니다:', error.response ? error.response.data : error.message);
+  }
+};
+
 onMounted(() => {
   fetchComments();
+  fetchPostData();
 });
 
 // 새 댓글 작성 함수
 const addComment = async () => {
   if (newCommentText.value.trim()) {
     try {
-      const response = await axios.post(
+      await axios.post(
           "http://localhost:8003/postComment",
           {
             postId: postId,
@@ -133,10 +156,7 @@ const addComment = async () => {
           }
       );
 
-      // 댓글 작성 후 댓글 리스트 갱신
       fetchComments();
-
-      // 댓글 작성 완료 후 입력 필드 초기화
       newCommentText.value = '';
     } catch (error) {
       console.error("댓글 추가 중 오류가 발생했습니다:", error.response ? error.response.data : error.message);
@@ -149,24 +169,19 @@ const replyToComment = async (parentCommentId) => {
   const replyText = prompt("대댓글을 입력하세요:");
   if (replyText) {
     try {
-      const userId = authStore.userId || ""; // authStore에서 현재 사용자의 userId를 가져옴
-      const authorName = `익명${userId}`; // 익명+userId 형식으로 설정
-
       const response = await axios.post(`http://localhost:8003/postComment/replies`, {
         postId: postId,
         commentContent: replyText,
-        parentCommentId: parentCommentId, // 부모 댓글 ID 설정
-        author: authorName,
+        parentCommentId: parentCommentId,
       }, {
         headers: {
-          Authorization: `Bearer ${authStore.accessToken}`, // 인증 헤더 추가
+          Authorization: `Bearer ${authStore.accessToken}`,
         },
       });
 
-      // 새 대댓글을 부모 댓글의 replies에 추가
       const parentComment = comments.value.find(c => c.postCommentId === parentCommentId);
       if (parentComment) {
-        parentComment.replies.push({ ...response.data, author: authorName });
+        parentComment.replies.push({ ...response.data });
       }
     } catch (error) {
       console.error('대댓글 추가 중 오류가 발생했습니다:', error.response ? error.response.data : error.message);

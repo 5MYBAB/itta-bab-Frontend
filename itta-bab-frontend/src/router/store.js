@@ -12,7 +12,7 @@ import ReviewCreate from "@/views/store/ReviewCreate.vue";
 export default [
     {
         path: '/store',
-            name: 'StoreMain',
+        name: 'StoreMain',
         component: StoreMain
     },
     {

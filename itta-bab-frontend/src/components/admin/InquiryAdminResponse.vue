@@ -60,7 +60,7 @@ const registerReply = async () => {
     alert('답변이 완료되었습니다.');
     replyContent.value = ""; // 답변 등록 후 내용 초기화
     formData.value.inquiryReply = ""; // formData도 초기화'
-    router.push('/inquiry/admin');
+    router.push('/admin');
   } catch (error) {
     console.error('답변 등록 중 오류가 발생했습니다:', error);
     alert('답변 등록에 실패했습니다. 다시 시도하세요.');

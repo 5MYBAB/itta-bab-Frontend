@@ -3,9 +3,13 @@ import '@/assets/css/resetcss.css';
 import axios from 'axios';
 import { ref } from 'vue';
 import {useAuthStore} from "@/stores/auth.js";
+import {useRouter} from "vue-router";
 
 // 데이터를 저장할 상태 변수
 const storeList = ref([]);
+
+// 라우터 이동을 위한 설정
+const router = useRouter();
 
 // 인증 토큰 가져오기
 const authStore = useAuthStore();
@@ -65,6 +69,7 @@ const submitForm = async () => {
     });
     console.log('가게가 성공적으로 등록되었습니다:', response.data);
     alert('가게 등록이 완료되었습니다!');
+    router.push({name: 'StoreMain'}); // 등록 성공 후 이동
   } catch (error) {
     console.error('가게 등록 중 오류가 발생했습니다:', error);
     alert('가게 등록에 실패했습니다. 다시 시도해주세요.');
@@ -122,10 +127,11 @@ function goBack() {
         </div>
 
 
-        <div class="flex-box">
-          <div class="title">가게 사진</div>
-          <div><input type="button" value="사진 업로드"></div>
-        </div>
+<!--        <div class="flex-box">-->
+<!--          <div class="title">가게 사진</div>-->
+<!--          <div><input type="button" value="사진 업로드"></div>-->
+<!--        </div>-->
+
         <div class="flex-box">
           <div class="store-info">가게 소개</div>
           <div class="input-box">

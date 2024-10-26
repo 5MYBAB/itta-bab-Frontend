@@ -148,7 +148,8 @@ onMounted(() => {
     <!-- Header Section -->
     <header class="header">
       <img v-bind:src="logo" alt="Logo"/>
-      <h1>소속 부트캠프명</h1>
+      <h1>한화시스템 BEYOND SW 캠프</h1>
+<!--      <h1>{{ data.courseId }}</h1>-->
     </header>
 
     <div class="content-wrapper">
@@ -160,7 +161,8 @@ onMounted(() => {
         <!-- 내용 -->
         <div class="left">
           <div class="title-section">
-            <p>작성자 : {{ data.userId }}</p>
+            <p>작성자 : 유근웅(test01)</p>
+<!--            <p>작성자 : {{ data.userId }}</p>-->
             <div class="plz-end">
               <ReportButton v-on:click="reporting(data.groupId)"/>
               <button class="like-button" @click="togglePostLike">

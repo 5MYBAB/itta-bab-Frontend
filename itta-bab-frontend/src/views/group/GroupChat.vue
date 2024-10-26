@@ -52,17 +52,17 @@ import logo from "@/assets/icons/itta-bab_logo.svg";
 const chatMessages = ref([]); // 채팅 메시지를 저장할 ref
 const newMessage = ref(''); // 새 메시지 입력
 const route = useRoute();
-const username = "유근웅";
+const username = "유근웅"; // 사용자 이름
 const authStore = useAuthStore();
 
 let websocket;
 const isWebSocketOpen = ref(false); // 웹소켓 연결 상태
 
-// 웹소켓 연결
+// 웹소켓 연결 함수
 const connectWebSocket = () => {
-  const token = authStore.accessToken;
-  const websocket = new WebSocket(`ws://localhost:8003/group/${route.params.id}/chat`);
 
+  const token = authStore.accessToken; // 인증 토큰 가져오기
+  const websocket = new WebSocket(`ws://localhost:8003/group/${route.params.id}/chat?token=${token}`);
 
   websocket.onopen = () => {
     console.log('웹소켓 연결 성공');
@@ -95,15 +95,6 @@ const connectWebSocket = () => {
 
   websocket.onerror = (error) => {
     console.error('웹소켓 오류 발생:', error);
-    console.error('오류 세부정보:', {
-      message: error.message,
-      name: error.name,
-      type: error.type,
-      target: error.target,
-      currentTarget: error.currentTarget,
-      eventPhase: error.eventPhase,
-      timeStamp: error.timeStamp
-    });
   };
 };
 
@@ -132,6 +123,7 @@ onBeforeUnmount(() => {
     websocket.close();
   }
 });
+
 </script>
 
 <style scoped>

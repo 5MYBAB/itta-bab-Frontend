@@ -1,35 +1,81 @@
 <script setup>
-import { ref, computed } from 'vue';
+import PageTitleTop from "@/components/common/PageTitleTop.vue";
+import { ref, computed, onMounted } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import MenuList from "@/components/store/MenuList.vue";
-import ReviewList from "@/components/store/ReviewList.vue";
-import ReviewsList from "@/components/user/ReviewsList.vue";
+import { useRouter, useRoute } from 'vue-router';
+import {useAuthStore} from "@/stores/auth.js";
+import axios from "axios";
+import Page from "@/components/common/Page.vue";
 
-// 리뷰 데이터 설정
-const jsonData = ref([
-  {
-    id: 1,
-    store_id: '익명1',
-    user_id: '1',
-    review_content: '음식이 정말 맛있어요!',
-    tags: ['맛있음', '친절함'],
-    rating: 5,
-    create_date: '2024-10-15',
-    update_date: false,
-    userImageUrl: 'https://via.placeholder.com/50',
-  },
-  {
-    id: 2,
-    store_id: '익명2',
-    user_id: '2',
-    review_content: '가격이 조금 비싸지만 만족스러웠습니다.',
-    tags: ['가격 비쌈'],
-    rating: 4,
-    create_date: '2024-10-16',
-    update_date: false,
-    userImageUrl: 'https://via.placeholder.com/50',
-  },
-]);
+// 라우터 이동을 위한 설정
+const router = useRouter();
+
+// 인증 토큰 가져오기
+const authStore = useAuthStore();
+
+// 가게 id 가져오기
+// const route = useRoute();
+// const storeId = route.params.storeId;
+const storeId = 3; //임시값 1
+
+// const reviewContent = ref('');
+// const rating = ref(0);
+// const createDate = ref('');
+// const updateDate = ref('');
+
+// 서버에서 가져올 데이터를 저장할 변수
+const jsonReviewData = ref([]);
+
+
+
+
+
+
+// 서버로부터 데이터를 가져오는 함수
+async function fetchStoreReviewList() {
+  try {
+    const token = authStore.accessToken;
+    const response = await axios.get(`http://localhost:8003/store/review/${storeId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+
+    jsonReviewData.value = await response.data;
+
+  } catch (error){
+    console.error('리뷰 데이터를 불러오는데 에러가 발생했습니다', error);
+  }
+}
+
+
+
+function goToPage(page) {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+}
+
+onMounted(() => {
+  fetchStoreReviewList();
+});
+
+// 페이징
+const currentPage = ref(1);
+const itemsPerPage = 3;
+const totalPages = computed(() => {
+  return Math.ceil(jsonReviewData.value.length / itemsPerPage);
+});
+
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return jsonReviewData.value.slice(start, end);
+});
+
+
+
 </script>
 
 <template>
@@ -42,8 +88,37 @@ const jsonData = ref([
       <div class="header-row">
         <div class="header-item">우리 할매 국밥</div>
       </div>
-      <ReviewList/>
 
+
+      <!-- 리뷰 리스트 -->
+      <div class="review-list">
+        <div v-for="review in paginatedData"
+             :key="review.storeId"
+             class="review-row"
+        >
+          <!--          <img :src="review.userImageUrl" alt="User Image" class="user-image" />-->
+          <div class="review-content">
+            <div class="review-text">{{ review.reviewContent }}</div>
+            <!--            <div class="review-tags">-->
+            <!--              <span v-for="tag in review.tags" :key="tag" class="review-tag">{{ tag }}</span>-->
+            <!--            </div>-->
+            <div class="review-info">
+              <span class="review-rating">평점:
+                <span v-for="n in 5" :key="n" class="star">{{ n <= review.rating ? '⭐' : '' }}</span>
+              </span>
+              <span class="review-date">작성일: {{ review.createDate }}</span>
+              <span class="review-date" v-if="review.updateDate"> 수정일: {{ review.updateDate }}</span>
+            </div>
+          </div>
+        </div>
+
+        <Page
+            :currentPage="currentPage"
+            :totalPages="totalPages"
+            @changePage="goToPage"
+        />
+      </div>
+      <!-- 리뷰 리스트 -->
 
     </div>
   </div>
@@ -101,5 +176,71 @@ const jsonData = ref([
 
 .bottom-container button{
   justify-content: flex-end; /* 글쓰기 버튼을 오른쪽 끝 정렬 */
+}
+
+/* 리뷰 리스트 */
+.review-list {
+  padding: 20px;
+  background-color: var(--white);
+}
+
+.review-row {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+}
+
+.user-image {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
+
+.review-content {
+  flex: 1;
+}
+
+.review-text {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.review-tags {
+  margin-bottom: 5px;
+}
+
+.review-tag {
+  background-color: #f1f1f1;
+  padding: 2px 6px;
+  margin-right: 5px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.review-info {
+  font-size: 12px;
+  color: #888;
+}
+
+.review-rating {
+  margin-right: 10px;
+}
+
+.review-date {
+  color: #888;
+}
+
+.page-named span {
+  cursor: pointer;
+  padding: 5px 13px;
+  border: 1px solid var(--white);
+  background-color: var(--white);
+}
+
+.page-named .active {
+  font-weight: bold;
+  color: black;
 }
 </style>

@@ -149,11 +149,58 @@
 
 ### 📗 마이페이지
 <details>
-<summary><strong>마이페이지</strong></summary>
+<summary><strong>내 친구 목록</strong></summary>
 
-![](/images/)
+![](/images/mypage/myfriend.gif)
 </details>
 
+<details>
+<summary><strong>내 문의 목록</strong></summary>
+
+![](/images/mypage/myfriend.gif)
+</details>
+
+<details>
+<summary><strong>내 작성글 목록</strong></summary>
+
+![](/images/mypage/mypost.gif)
+</details>
+
+<details>
+<summary><strong>내 즐겨찾기 목록</strong></summary>
+
+![](/images/mypage/mybookmark.gif)
+</details>
+
+<details>
+<summary><strong>내 신고 목록</strong></summary>
+
+![](/images/mypage/myreport.gif)
+</details>
+
+<details>
+<summary><strong>내 리뷰 목록</strong></summary>
+
+![](/images/mypage/myreview.gif)
+</details>
+
+<details>
+<summary><strong>내 작성 댓글 목록</strong></summary>
+
+![](/images/mypage/mycomment.gif)
+</details>
+
+<details>
+<summary><strong>내 알림 목록</strong></summary>
+
+![](/images/mypage/mynotification.gif)
+</details>
+
+<details>
+<summary><strong>내 알림 더보기</strong></summary>
+
+![](/images/mypage/morenotification.gif)
+</details>
 
 ### 📗 좋아요
 <details>

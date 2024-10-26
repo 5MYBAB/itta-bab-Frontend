@@ -1,5 +1,5 @@
 import ReportCreate from "@/views/report/ReportCreate.vue";
-import ReportList from "@/views/report/ReportList.vue";
+import ReportList from "@/components/admin/ReportList.vue";
 
 
 export default [

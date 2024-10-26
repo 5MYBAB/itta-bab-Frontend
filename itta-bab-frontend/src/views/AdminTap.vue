@@ -6,7 +6,7 @@ import Inquiry from "@/views/inquiry/Inquiry.vue";
 import InquiryAdminResponse from "@/components/admin/InquiryAdminResponse.vue";
 import InquiryList from "@/components/admin/InquiryList.vue";
 import WrittenPostsList from "@/components/user/WrittenPostsList.vue";
-import ReportList from "@/views/report/ReportList.vue";
+import ReportList from "@/components/admin/ReportList.vue";
 
 // Vue Router 사용
 const router = useRouter();

@@ -1,20 +1,33 @@
 <script setup>
 import {computed, ref} from 'vue';
 import '@/assets/css/resetcss.css';
+import axios from "axios";
+import {useAuthStore} from "@/stores/auth.js";
+import {useRouter} from "vue-router";
 
 const password = ref('');
 const confirmPassword = ref('');
 
-const errorMessage = ref('');
+const authStore = useAuthStore();
+const router = useRouter();
 
-const checkPasswords = () => {
-  if (password.value !== confirmPassword.value) {
-    errorMessage.value = '비밀번호가 일치하지 않습니다.';
-  } else {
-    errorMessage.value = '';
+const handleUpdateClick = async () => {
+  try {
+    const response = await axios.put('http://localhost:8003/user/mypage',
+    { pwd: password.value },
+    {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
+    });
+
     alert('회원 정보가 수정되었습니다.');
+    router.push('/mypage');
+
+  } catch (error) {
+    console.error('회원정보 수정 실패', error);
   }
-};
+}
 
 const passwordCheckMessage = ref('');
 
@@ -69,8 +82,7 @@ const passwordMatch = computed(() => {
           </div>
         </div>
       </div>
-      <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
-      <input type="button" value="수정하기" @click="checkPasswords">
+      <input type="button" value="수정하기" @click="handleUpdateClick">
     </div>
   </div>
 </template>

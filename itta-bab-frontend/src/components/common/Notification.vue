@@ -1,47 +1,53 @@
 <script setup>
 
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import alarmReviewIcon from '@/assets/icons/alarm-review-gray.svg'
 import alarmPostIcon from '@/assets/icons/alarm-post-gray.svg'
 import alarmGroupIcon from '@/assets/icons/alarm-group-gray.svg'
 import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth.js";
+import axios from "axios";
 
 const isDropdownVisible = ref(false);
 const redDotStates = ref([false, false, false]);
 
-const notifications = ref([
-  {
-    icon: alarmReviewIcon,
-    title: "리뷰",
-    content: "리뷰가 등록되었습니다: 버거킹 신대방삼거리점",
-    time: "10/24 12:19",
-  },
-  {
-    icon: alarmPostIcon,
-    title: "익명 게시판",
-    content: "글이 등록되었습니다: 소통해요!",
-    time: "10/02 17:34",
-  },
-  {
-    icon: alarmGroupIcon,
-    title: "모임",
-    content: "임광택(pangtaek)님의 모임이 등록되었습니다: 저랑 컵밥 시키실 분",
-    time: "09/22 13:01",
-  },
-  {
-    icon: alarmReviewIcon,
-    title: "리뷰",
-    content: "새로운 리뷰가 등록되었습니다!",
-    time: "10/20 10:00",
-  },
-  {
-    icon: alarmPostIcon,
-    title: "익명 게시판",
-    content: "새 글이 등록되었습니다: 소통해요!",
-    time: "10/15 14:00",
-  },
-]);
+const notifications = ref([]);
+const authStore = useAuthStore();
+
+const notificationList = ref([]);
+
+const fetchNotificationList = async () => {
+  try {
+    const response = await axios.get('http://localhost:8003/notification/list', {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`, // 필요한 경우 인증 토큰 추가
+      }
+    });
+
+    notificationList.value = response.data;
+    console.log(notificationList)
+
+    notifications.value = notificationList.value.map(item => ({
+      icon: item.target === 'REVIEW' ? alarmReviewIcon :
+            item.target === 'POST' ? alarmPostIcon :
+            item.target === 'GROUP' ? alarmGroupIcon :
+            alarmReviewIcon, // 기본 아이콘 설정
+      title: item.target === 'REVIEW' ? '리뷰' :
+             item.target === 'POST' ? '게시판' :
+             item.target === 'GROUP' ? '모임' :
+             '리뷰',
+      content: item.content,
+      time: item.createDate,
+    }));
+
+    console.log(notifications.value)
+    console.log(notifications.value[0])
+
+  } catch (error) {
+    console.error('알림 목록을 불러오는 중 에러가 발생했습니다.', error.response ? error.response.data : error.message);
+  }
+};
 
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value;
@@ -57,6 +63,11 @@ const goToMypage = () => {
   isDropdownVisible.value = false;
   router.push('/mypage');
 }
+
+onMounted(() => {
+  fetchNotificationList();
+});
+
 
 </script>
 
@@ -85,7 +96,7 @@ const goToMypage = () => {
             <div class="time">{{ notification.time }}</div>
           </div>
         </div>
-        <div v-if="notifications.length === 5" @click="goToMypage" id="show-more-button" class="custom-cursor">
+        <div @click="goToMypage" id="show-more-button" class="custom-cursor">
           <div class="faArrowRight"><font-awesome-icon :icon="['fas', 'angle-right']" /></div>
           <div class="text-more">더보기</div>
         </div>

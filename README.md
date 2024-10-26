@@ -215,16 +215,16 @@
 ![](/images/mypage/deleteuser.gif)
 </details>
 
-### 📗 좋아요
+### 📗 관리자
 <details>
-<summary><strong>좋아요</strong></summary>
+<summary><strong>관리자</strong></summary>
 
 ![](/images/)
 </details>
 
-### 📗 사진
+### 📗 좋아요
 <details>
-<summary><strong>사진</strong></summary>
+<summary><strong>좋아요</strong></summary>
 
 ![](/images/)
 </details>

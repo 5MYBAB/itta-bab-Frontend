@@ -25,7 +25,7 @@ const selectMenu = (menuName) => {
       <aside class="sidebar">
         <ul>
           <li>
-            <div class="menu-button" :class="{ 'active': selectedMenu === 'bootcamp' }" @click="(selectMenu('bootcamp'))">
+            <div>
               부트캠프 관리
             </div>
             <ul>
@@ -37,7 +37,7 @@ const selectMenu = (menuName) => {
             </ul>
           </li>
           <li>
-            <div class="menu-button" :class="{ 'active': selectedMenu === 'user-management' }" @click="(selectMenu('user-management'))">
+            <div>
               회원 관리
             </div>
             <ul>
@@ -49,7 +49,7 @@ const selectMenu = (menuName) => {
             </ul>
           </li>
           <li>
-            <div class="menu-button" :class="{ 'active': selectedMenu === 'store-management' }" @click="(selectMenu('store-management'))">
+            <div>
               가게 관리
             </div>
             <ul>
@@ -61,7 +61,7 @@ const selectMenu = (menuName) => {
             </ul>
           </li>
           <li>
-            <div class="menu-button" :class="{ 'active': selectedMenu === 'menu-management' }" @click="(selectMenu('menu-management'))">
+            <div>
               메뉴 관리
             </div>
             <ul>
@@ -78,7 +78,7 @@ const selectMenu = (menuName) => {
             </ul>
           </li>
           <li>
-            <div class="menu-button" :class="{ 'active': selectedMenu === 'report-management' }" @click="(selectMenu('report-management'))">
+            <div>
               신고 관리
             </div>
             <ul>
@@ -90,7 +90,7 @@ const selectMenu = (menuName) => {
             </ul>
           </li>
           <li>
-            <div class="menu-button" :class="{ 'active': selectedMenu === 'suspension-management' }" @click="(selectMenu('suspension-management'))">
+            <div>
               정지 관리
             </div>
             <ul>
@@ -102,7 +102,7 @@ const selectMenu = (menuName) => {
             </ul>
           </li>
           <li>
-            <div class="menu-button" :class="{ 'active': selectedMenu === 'inquiry-management' }" @click="selectMenu('inquiry-management')">
+            <div>
               문의 관리
             </div>
             <ul>
@@ -114,7 +114,7 @@ const selectMenu = (menuName) => {
             </ul>
           </li>
           <li>
-            <div class="menu-button" :class="{ 'active': selectedMenu === 'meeting-management' }" @click="(selectMenu('meeting-management'))">
+            <div>
               모임 관리
             </div>
             <ul>

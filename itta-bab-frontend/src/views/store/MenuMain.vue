@@ -123,7 +123,7 @@ function goToStoreMenuUpdate(storeId, menuId) {
             :key="item.menuId"
             class="data-row"
         >
-          <img :src="item.userImageUrl" alt="Menu Image" class="menu-image" />
+
           <div class="data-item">
             <div class="item_name">{{ item.menuName }}</div>
             <div class="item_price">{{ item.menuPrice }}원</div>
@@ -262,8 +262,8 @@ function goToStoreMenuUpdate(storeId, menuId) {
 .data-item {
   flex: 1;
   text-align: left;
-  margin-left: 10px;
-  margin-top: 20px;
+  margin-left: 50px;
+  margin-top: 30px;
 }
 
 .page-named span {
@@ -296,6 +296,7 @@ function goToStoreMenuUpdate(storeId, menuId) {
   text-align: center;
   margin-right: 50px;
   margin-top: 40px;
+  margin-bottom: 30px;
 }
 
 

@@ -17,10 +17,9 @@ const onSearch = (event) => {
       />
     </div>
     <div class="sort-dropdown">
-      <select>
-        <option value="latest">최신순</option>
-        <option value="mostHated">좋아요 적은순</option>
-        <option value="mostLiked">좋아요 많은 순</option>
+      <select @change="$emit('sort', $event.target.value)">
+        <option value="open">영업중</option>
+        <option value="popular">인기순</option>
       </select>
     </div>
   </div>

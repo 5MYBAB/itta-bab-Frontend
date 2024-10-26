@@ -124,6 +124,10 @@ const reviewPaginatedData = computed(() => {
 });
 
 
+// 사진을 등록하는 함수
+// const
+
+
 
 
 // 컴포넌트가 마운트되면 자동으로 데이터 조회
@@ -167,6 +171,7 @@ async function addBookmark(storeId) {
       },
     });
     console.log("북마크 추가 완료");
+    alert('가게 즐겨찾기 등록 완료')
   } catch (error) {
     console.error("북마크 추가 오류 발생:", error);
     isBookmarked.value = true; // 오류 시 상태 복구
@@ -184,6 +189,7 @@ async function removeBookmark(storeId) {
       },
     });
     console.log("북마크 삭제 완료");
+    alert('가게 즐겨찾기 삭제 완료')
   } catch (error) {
     console.error("북마크 삭제 오류 발생:", error);
     isBookmarked.value = false; // 오류 시 상태 복구
@@ -221,6 +227,10 @@ function goToStoreMenu(storeId, storeName) {
 function goToStoreReview(storeId, storeName) {
   router.push({ name: 'ReviewMain', params: { storeId, storeName } });
 }
+
+
+// 사진 가져오는 함수
+
 
 
 </script>

@@ -6,6 +6,7 @@ import Page from "@/components/common/Page.vue";
 import { useRouter, useRoute } from 'vue-router';
 import {useAuthStore} from "@/stores/auth.js";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
+import axios from "axios";
 
 
 
@@ -17,48 +18,56 @@ const storeList = ref([]);
 // 인증 토큰 가져오기
 const authStore = useAuthStore();
 
-// 서버로부터 데이터를 가져오는 함수
-async function fetchStoreList() {
-  try {
-    const token = authStore.accessToken;
-    const response = await fetch('http://localhost:8003/store/list', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`  // 여기에 실제 인증 토큰을 넣어야 합니다.
-      },
-    });
 
-    if (!response.ok) {
-      throw new Error('데이터를 가져오는 데 실패했습니다.');
-    }
-
-    const jsonData = await response.json();
-    storeList.value = jsonData;  // 가져온 데이터를 storeList에 저장
-  } catch (error) {
-    console.error('에러 발생:', error);
-  }
-}
-
-// 컴포넌트가 마운트되면 자동으로 데이터 조회
-onMounted(() => {
-  fetchStoreList();
-});
-
-
-const filteredData = ref(storeList); // 필터링된 데이터를 저장할 ref
+// 데이터 관련 상태
 const currentPage = ref(1);
 const itemsPerPage = 5;
+const filteredData = ref([]);
+const sortOption = ref("open"); // 정렬 옵션 설정
 
+function goToDetailPage(item) {
+  router.push(`/store/detail/${item.storeId}`);
+}
+
+
+// 전체 페이지 계산
 const totalPages = computed(() => Math.ceil(filteredData.value.length / itemsPerPage));
 
+// 페이지네이션에 따른 데이터 계산
 const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   const end = start + itemsPerPage;
-
-  return filteredData.value.slice(start, end); // 필터링된 데이터에서 페이지네이션
+  return filteredData.value.slice(start, end);
 });
 
+// 데이터 가져오기
+const fetchData = async () => {
+  let url = "";
+
+  // 정렬 옵션에 따라 URL 설정
+  if (sortOption.value === "open") {
+    url = "http://localhost:8003/store/list";
+  } else if (sortOption.value === "popular") {
+    url = "http://localhost:8003/store/popular";
+  }
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`
+      }
+    });
+
+    storeList.value = response.data; // 전체 데이터를 저장
+    filteredData.value = [...storeList.value]; // 필터링 데이터 초기화
+
+    currentPage.value = 1;
+  } catch (error) {
+    console.error("데이터를 가져오는 중 오류가 발생했습니다:", error);
+  }
+};
+
+// 페이지 변경
 function goToPage(page) {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page;
@@ -66,32 +75,43 @@ function goToPage(page) {
 }
 
 
-function goToRegisterPage() {
-  window.location.href = '/store/regist'; // 가게 추가 페이지로 이동
-}
-
+// 필터링 함수
 const filter = (searchTerm) => {
-  if (searchTerm.trim() === "") { // 빈칸인지 확인
-    filteredData.value = jsonData; // 검색어가 빈칸이면 전체 데이터를 보여줌
-    return;
-  }
-  // 검색어가 포함된 항목만 필터링
-  filteredData.value = storeList.value.filter(item =>
-      item.storeName.includes(searchTerm)
-  );
+  if (searchTerm.trim() === "") {
+    // 검색어가 비어있다면 전체 데이터로 복원
+    filteredData.value = [...storeList.value];
 
+  }
+
+  // 검색어에 맞는 데이터만 필터링하여 filteredData에 저장
+  filteredData.value = storeList.value.filter(item =>
+          item.storeName.toLowerCase().includes(searchTerm.toLowerCase()) // 대소문자 구분 없이 검색
+  );
+  currentPage.value = 1;
 };
 
-// filter를 제공
-provide("filter", filter);
+// 정렬 옵션이 변경될 때 데이터 다시 가져오기
+function handleSortChange(option) {
+  sortOption.value = option;
+  currentPage.value = 1;
+  fetchData();
+}
 
-// function goToStoreMenu(storeId, storeName) {
-//   router.push({ name: 'MenuMain', params: { storeId, storeName } });
-// }
+
+// 컴포넌트가 마운트되면 자동으로 데이터 조회
+onMounted(() => {
+  fetchData();
+});
+
 
 function goToStoreDetail(storeId) {
   router.push({ name: 'StoreDetail', params: { storeId }});
 }
+
+function goToRegisterPage() {
+  window.location.href = '/store/regist'; // 가게 추가 페이지로 이동
+}
+
 
 
 </script>
@@ -99,14 +119,14 @@ function goToStoreDetail(storeId) {
 <template>
   <PageTitleTop/>
   <div class="post-detail">
-    <StoreSearchBarAndSort @search="filter"/>
+    <StoreSearchBarAndSort @search="filter" @sort="handleSortChange"/>
     <div class="white-box">
       <div id="map"><StoreMapApi/></div>
       <div class="store-container">
         <div class="header-row">
           <div class="header-item">가게 이름</div>
         </div>
-        <div v-for="(item, index) in paginatedData" :key="index" class="store-item">
+        <div v-for="(item, index) in paginatedData" :key="index" class="store-item" v-on:click="goToDetailPage(item.storeId)">
           <div class="store-name">
             <span class="name">{{ item.storeName }}</span>
             <span class="status">
@@ -138,6 +158,8 @@ function goToStoreDetail(storeId) {
             :totalPages="totalPages"
             @changePage="goToPage"
         />
+
+
 
         <!-- 가게 추가 버튼 -->
         <div class="add-store-btn">

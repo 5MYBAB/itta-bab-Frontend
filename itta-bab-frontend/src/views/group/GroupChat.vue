@@ -1,45 +1,3 @@
-<script setup>
-import { ref, nextTick } from 'vue';
-import logo from "@/assets/icons/itta-bab_logo.svg";
-
-const chatMessages = ref([]); // 채팅 메시지를 저장할 ref
-const newMessage = ref(''); // 새 메시지 입력
-
-// 메시지 추가 함수
-const addMessage = () => {
-  if (newMessage.value.trim() !== '') {
-    chatMessages.value.push({
-      text: newMessage.value,
-      isUser: true, // 작성자의 메시지 여부
-    });
-    newMessage.value = ''; // 입력 필드 초기화
-
-    // 채팅 리스트 스크롤을 맨 아래로 이동
-    nextTick(() => {
-      const chatList = document.querySelector('.chat-list');
-      chatList.scrollTop = chatList.scrollHeight; // 스크롤을 맨 아래로 이동
-    });
-  }
-};
-
-// 예시 메시지 추가 (다른 사용자의 메시지)
-const addSampleMessages = () => {
-  chatMessages.value.push(
-      { text: '안녕하세요!', isUser: false },
-      { text: '반갑습니다!', isUser: false }
-  );
-
-  // 초기 로드 시에도 채팅 리스트 스크롤을 맨 아래로 이동
-  nextTick(() => {
-    const chatList = document.querySelector('.chat-list');
-    chatList.scrollTop = chatList.scrollHeight; // 스크롤을 맨 아래로 이동
-  });
-};
-
-addSampleMessages(); // 예시 메시지 추가
-</script>
-
-
 <template>
   <div class="background">
     <!-- 헤더 -->
@@ -53,16 +11,17 @@ addSampleMessages(); // 예시 메시지 추가
       <!-- 채팅창 진행 구역 -->
       <div class="chat-container">
         <!-- 채팅 내역 -->
-        <div class="chat-list">
+        <div id="msgArea" class="chat-list">
           <div v-for="(message, index) in chatMessages" :key="index"
                :class="['chat-message', { 'user-message': message.isUser, 'other-message': !message.isUser }]">
-            {{ message.text }}
+            <b>{{ message.sessionId }}: {{ message.text }}</b>
           </div>
         </div>
+
         <!-- 채팅 입력 구역 -->
         <div class="chat-input-area">
-          <textarea v-model="newMessage" placeholder="메시지를 입력하세요..."></textarea>
-          <button @click="addMessage">전송</button>
+          <input type="text" v-model="newMessage" placeholder="메시지를 입력하세요..."/>
+          <button @click="send" :disabled="!isWebSocketOpen">전송</button> <!-- 버튼 비활성화 -->
         </div>
       </div>
 
@@ -77,18 +36,103 @@ addSampleMessages(); // 예시 메시지 추가
         <div class="hr"/>
         <!-- 참여 인원 리스트 -->
         <ul class="user-list-container">
-          <div class="user-item">
-            <li>테스트 1</li>
-            <div class="action-area">
-              <font-awesome-icon v-bind:icon="['fas', 'ban']"/>
-              <button>내보내기</button>
-            </div>
-          </div>
+          <li>테스트 1</li>
         </ul>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import {onBeforeUnmount, onMounted, ref} from 'vue';
+import {useRoute} from 'vue-router';
+import {useAuthStore} from "@/stores/auth.js";
+import logo from "@/assets/icons/itta-bab_logo.svg";
+
+const chatMessages = ref([]); // 채팅 메시지를 저장할 ref
+const newMessage = ref(''); // 새 메시지 입력
+const route = useRoute();
+const username = "유근웅";
+const authStore = useAuthStore();
+
+let websocket;
+const isWebSocketOpen = ref(false); // 웹소켓 연결 상태
+
+// 웹소켓 연결
+const connectWebSocket = () => {
+  const token = authStore.accessToken;
+  const websocket = new WebSocket(`ws://localhost:8003/group/${route.params.id}/chat`);
+
+
+  websocket.onopen = () => {
+    console.log('웹소켓 연결 성공');
+    isWebSocketOpen.value = true; // 연결 상태 업데이트
+    websocket.send(`${username}: 님이 입장하셨습니다.`);
+  };
+
+  websocket.onmessage = (event) => {
+    console.log('수신한 메시지: ', event.data);
+    const data = event.data.split(':');
+    const sessionId = data[0];
+    const message = data.slice(1).join(':'); // ':' 포함 메시지 처리
+
+    chatMessages.value.push({
+      sessionId,
+      text: message,
+      isUser: sessionId === username // 작성자 여부 확인
+    });
+  };
+
+  websocket.onclose = (event) => {
+    console.log('웹소켓 연결 종료');
+    isWebSocketOpen.value = false; // 연결 상태 업데이트
+    if (event.wasClean) {
+      console.log(`정상적으로 연결이 종료되었습니다. 코드: ${event.code}, 이유: ${event.reason}`);
+    } else {
+      console.error(`비정상적인 연결 종료. 코드: ${event.code}`);
+    }
+  };
+
+  websocket.onerror = (error) => {
+    console.error('웹소켓 오류 발생:', error);
+    console.error('오류 세부정보:', {
+      message: error.message,
+      name: error.name,
+      type: error.type,
+      target: error.target,
+      currentTarget: error.currentTarget,
+      eventPhase: error.eventPhase,
+      timeStamp: error.timeStamp
+    });
+  };
+};
+
+// 메시지 전송 함수
+const send = () => {
+  if (newMessage.value.trim() !== '') {
+    if (isWebSocketOpen.value) { // 웹소켓이 OPEN 상태인지 확인
+      console.log(`전송할 메시지: ${username}:${newMessage.value}`);
+      websocket.send(`${username}:${newMessage.value}`);
+      newMessage.value = ''; // 입력 필드 초기화
+    } else {
+      console.warn('웹소켓이 아직 연결되지 않았습니다. 메시지를 전송할 수 없습니다.');
+    }
+  }
+};
+
+// 컴포넌트 마운트 시 웹소켓 연결
+onMounted(() => {
+  connectWebSocket();
+});
+
+// 컴포넌트 언마운트 시 웹소켓 연결 종료
+onBeforeUnmount(() => {
+  if (websocket) {
+    websocket.send(`${username}: 님이 방을 나가셨습니다.`);
+    websocket.close();
+  }
+});
+</script>
 
 <style scoped>
 /* 전체 배경 */
@@ -171,7 +215,7 @@ addSampleMessages(); // 예시 메시지 추가
 }
 
 /* 입력 영역 스타일 */
-.chat-input-area textarea {
+.chat-input-area input {
   min-width: 100px;
   margin-left: 2%;
   margin-right: 2%; /* 버튼과의 간격 */
@@ -179,7 +223,7 @@ addSampleMessages(); // 예시 메시지 추가
 
 /* 버튼 스타일 */
 .chat-input-area button {
-  /* 버튼 스타일 추가 */
+  padding: 5px 10px; /* 버튼 내부 여백 추가 */
 }
 
 /* 참여 인원 영역 */
@@ -234,7 +278,6 @@ addSampleMessages(); // 예시 메시지 추가
   padding: 5px 10px; /* 버튼 내부 여백 추가 */
 }
 
-/* etc */
 /* 경계선 */
 .hr {
   border-top: 1px solid gray; /* 경계선 스타일 추가 */

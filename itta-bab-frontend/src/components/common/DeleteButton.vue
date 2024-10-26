@@ -1,8 +1,5 @@
 <!-- DeleteButton.vue -->
 <script setup>
-const deleteData = () => {
-  alert("구현해야 합니다.");
-}
 </script>
 
 <template>
@@ -22,6 +19,7 @@ button {
   cursor: pointer; /* 커서 포인터로 변경 */
   width: 80px;
 }
+
 button:hover {
   background-color: #ff1a1a; /* 호버 시 배경색 변경 */
 }

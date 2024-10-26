@@ -1,17 +1,72 @@
+<script setup>
+import {useRouter} from "vue-router";
+import {ref} from "vue";
+import axios from "axios";
+
+const router = useRouter();
+const username = ref('');
+const loginId = ref('');
+const email = ref('');
+const pwd = ref('');
+
+const handleFindPwdClick = async () => {
+  try {
+
+    const response = await axios.get('http://localhost:8003/user/find-pwd', {
+      params: {
+        username: username.value,
+        loginId: loginId.value,
+        email: email.value
+      }
+    });
+
+    pwd.value = response.data;
+
+    if (response.status === 200) {
+      router.push({
+        path: '/find-pwd/result',
+        query: {
+          username: username.value
+        }
+      });
+    }
+
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 409) {
+        console.log('비밀번호 찾기 실패: 입력값이 틀립니다.');
+      } else {
+        console.error('비밀번호 찾기 실패:', error.response.data);
+      }
+    } else {
+      console.error('비밀번호 찾기 실패', error.message);
+    }
+  }
+};
+
+const goToFindId = () => {
+  router.push('/find-id');
+}
+
+const goToSignUp = () => {
+  router.push('/signup');
+}
+</script>
+
 <template>
   <form class="container">
     <div class="logo">
       <img src="/src/assets/icons/login-logo.svg" alt="Logo"/>
     </div>
     <div class="form">
-      <input type="text" id="id" placeholder="아이디"/>
-      <input type="password" id="passwd" placeholder="비밀번호"/>
-      <input type="email" id="email" placeholder="이메일"/>
-      <button>비밀번호 찾기</button>
+      <input type="text" v-model="username" placeholder="이름" required/>
+      <input type="text" v-model="loginId" placeholder="아이디" required/>
+      <input type="text" v-model="email" placeholder="이메일" required/>
+      <button type="button" @click="handleFindPwdClick" :disabled="!username || !loginId || !email">비밀번호 찾기</button>
     </div>
     <div class="service-link">
-      <div>아이디 찾기</div>
-      <div>회원 가입</div>
+      <div @click="goToFindId" class="custom-cursor">아이디 찾기</div>
+      <div @click="goToSignUp" class="custom-cursor">회원 가입</div>
     </div>
   </form>
 </template>
@@ -36,7 +91,7 @@
   align-items: center; /* 입력 필드를 가로 가운데 정렬 */
 }
 .form button {
-  margin-top: 40px;
+  margin-top: 10px;
   border-radius: 20px;
   background-color: var(--basic-yellow);
   width: 479px;
@@ -60,5 +115,8 @@
   gap: 40px;
   color: var(--gray-font);
   justify-content: center;
+}
+.custom-cursor {
+  cursor: pointer;
 }
 </style>

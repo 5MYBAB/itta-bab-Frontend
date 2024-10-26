@@ -27,7 +27,7 @@ const paginatedData = computed(() => {
 // 라우터에서 storeId 가져오기
 const route = useRoute();
 const storeId = route.params.storeId;
-const storeName = ref(route.params.storeName);
+const storeName = route.params.storeName;
 
 
 const router = useRouter(); // Vue Router 사용
@@ -73,7 +73,7 @@ function goToMenuUpdatePage() {
 
   router.push({
     name: 'MenuUpdate',
-    params: { storeId } // storeId, menuId 값을 전달
+    params: { storeId, menuId } // storeId, menuId 값을 전달
   });
 }
 
@@ -89,6 +89,12 @@ function goToPage(page) {
   }
 }
 
+function goToStoreMenuUpdate(storeId, menuId) {
+  router.push(`/store/menu/update/${storeId}/${menuId}`);
+}
+
+
+
 </script>
 
 
@@ -100,7 +106,6 @@ function goToPage(page) {
 
         <div class="submit-container">
           <input type="button" value="메뉴 등록" id="submit-button" @click="goToMenuRegisterPage">
-          <input type="button" value="메뉴 수정" id="submit-button" @click="goToMenuUpdatePage">
         </div>
 
     </div>
@@ -120,8 +125,20 @@ function goToPage(page) {
           <div class="data-item">
             <div class="item_name">{{ item.menuName }}</div>
             <div class="item_price">{{ item.menuPrice }}원</div>
+
+
+
           </div>
+
+
+          <input id="update"
+                 type="button" value="메뉴 수정"
+                 @click = "goToStoreMenuUpdate(storeId, item.menuId)"
+          >
+
+
         </div>
+
 
 
         <Page
@@ -265,6 +282,18 @@ function goToPage(page) {
 }
 .bottom-container button {
   justify-content: flex-end;
+}
+
+#update {
+  width: 120px;
+  height: 44px;
+  background-color: var(--basic-yellow);
+  border-radius: 52px;
+  border: none;
+  font-weight: 600;
+  text-align: center;
+  margin-right: 50px;
+  margin-top: 40px;
 }
 
 

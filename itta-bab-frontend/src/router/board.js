@@ -14,12 +14,15 @@ export default [
         component: PostCreate
     },
     {
-        path: '/board/post/comment',
+        path:'/board/post/:id',
+
         component: PostComment
-    }, {
+    },
+    {
         path: "/admin/menuCategory",
         component: MenuCategoryList
-    }, {
+    },
+    {
         path: "/admin/store",
         component: StoreList
     }

@@ -1,6 +1,53 @@
 <script setup>
 import '@/assets/css/resetcss.css';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import axios from "axios";
+import {computed, onMounted, ref} from "vue";
+import {useAuthStore} from "@/stores/auth.js";
+
+const authStore = useAuthStore();
+
+const inquiryList = ref([]);
+
+const fetchInquiryList = async () => {
+  try {
+    const response = await axios.get('http://localhost:8003/inquiry/user', {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`, // 필요한 경우 인증 토큰 추가
+      }
+    });
+
+    inquiryList.value = response.data; // 응답 데이터를 inquiryList에 저장
+  } catch (error) {
+    console.error('문의 목록을 불러오는 중 에러가 발생했습니다.', error.response ? error.response.data : error.message);
+  }
+};
+
+onMounted(() => {
+  fetchInquiryList();
+});
+
+// Pagination 관련 변수 및 함수
+const currentPage = ref(1);
+const itemsPerPage = 10;
+
+// 총 페이지 계산
+const totalPages = computed(() => Math.ceil(inquiryList.value.length / itemsPerPage));
+
+// 현재 페이지에 해당하는 데이터만 보여주기
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return inquiryList.value.slice(start, end);
+});
+
+// 페이지 이동 함수
+function goToPage(page) {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+}
+
 </script>
 
 <template>
@@ -10,56 +57,74 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
       <div>문의 목록</div>
     </div>
   </div>
-  <div class="list-container">
-    <div class="borderline"></div>
-<!-- 문의ver -->
-    <div class="list-content">
-      <div class="inquiry-content inquiry-title">1</div>
-      <div class="inquiry-content1">
-        <div class="inquiry-title">문의 제목 합니당</div>
-        <div class="inquiry-text">문의 합니당문의 합니당문의 합니당문의 합니당문의 합니당문의 합니당문의 합니당문의 합니당문의 합니당</div>
+  <div class="board-container">
+    <div v-for="(inquiry, index) in paginatedData" :key="inquiry.inquiryId" class="list-container">
+      <div class="list-content">
+        <div class="inquiry-content inquiry-title">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
+        <div class="inquiry-content1">
+          <div class="inquiry-title">{{ inquiry.inquiryContent }}</div>
+        </div>
+        <div class="inquiry-content date">{{ inquiry.createDate }}</div>
       </div>
-      <div class="inquiry-content date">2024-10-11</div>
-    </div>
-    <div class="line"></div>
-<!--  답변ver  -->
-    <div class="list-content">
-      <div class="inquiry-content inquiry-title">1</div>
-      <div class="inquiry-content1">
-        <div class="inquiry-title">문의 제목 합니당</div>
-        <div class="inquiry-text">문의 합니당문의 </div>
+      <div class="yellow" v-if="inquiry.inquiryReply">
+        <div class="box">
+          <div>
+            <font-awesome-icon :icon="['fas', 'arrow-turn-up']" rotation=90 />
+          </div>
+          <div class="inquiry-answer">{{ inquiry.inquiryReply }}</div>
+        </div>
       </div>
-      <div class="inquiry-content date">2024-10-11</div>
+      <div class="line"></div>
     </div>
-    <div class="yellow">
-      <div class="box">
-        <div><font-awesome-icon :icon="['fas', 'arrow-turn-up']" rotation=90 /></div>
-        <div class="inquiry-answer">dfsdjfsildjfslijflsdfdfsdjfsildjfslijflsdf</div>
-      </div>
+    <div class="page-named">
+      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">〈</button>
+      <span
+          v-for="page in totalPages"
+          :key="page"
+          @click="goToPage(page)"
+          :class="{ active: currentPage === page }"
+      >
+          {{ page }}
+        </span>
+      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">〉</button>
     </div>
-    <div class="line"></div>
   </div>
-
-
 </template>
 
 <style scoped>
-.borderline{
-  background-color: var(--gray-font);
-  height: 2px;
-  width: 80%;
+
+.page-named {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 20px;
 }
-.line{
+
+.page-named span {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid var(--gray-font);
+  background-color: var(--white);
+}
+
+.page-named .active {
+  font-weight: bold;
+  color: black;
+}
+
+.line {
   background-color: var(--gray-font);
   height: 1px;
   width: 80%;
 }
-.inquiry-answer{
+
+.inquiry-answer {
   padding: 0px 20px;
   word-wrap: break-word;
   width: 90%;
 }
-.box{
+
+.box {
   width: 70%;
   margin-left: 50px;
   background-color: var(--background-color);
@@ -68,54 +133,61 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   display: flex;
   margin-bottom: 15px;
 }
-.yellow{
-  width:100%;
+
+.yellow {
+  width: 100%;
   display: flex;
   justify-content: center;
 }
-.inquiry-content1{
+
+.inquiry-content1 {
   width: 600px;
 }
-.inquiry-title{
+
+.inquiry-title {
   word-wrap: break-word;
   font-weight: 600;
   margin-bottom: 10px;
 }
-.date{
+
+.date {
   font-size: 15px;
 }
-.inquiry-text{
-  word-wrap: break-word;
-}
-.inquiry-content{
+
+.inquiry-content {
   margin: 0px 15px;
   word-wrap: break-word;
   padding-bottom: 10px;
 }
-.list-content{
+
+.list-content {
   align-items: center;
   width: 80%;
   display: flex;
   justify-content: space-between;
   padding: 15px 0px;
 }
-.list-container{
+
+.list-container {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.display{
+
+.display {
   margin-top: 50px;
   display: flex;
   justify-content: center;
 }
-.title{
+
+.title {
   display: flex;
   align-items: center;
   margin-bottom: 30px;
 }
-.title div{
+
+.title div {
   font-size: 30px;
   font-weight: 600;
   margin-left: 10px;

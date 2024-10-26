@@ -1,16 +1,51 @@
-<script>
-import FullCalendar from '@fullcalendar/vue3'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import {BModal} from "bootstrap-vue-3";
-import {useAuthStore} from "@/stores/auth.js";
-import axios from "axios";
+<template>
+  <div class="container">
+    <FullCalendar ref="calendar" :options="calendarOptions">
+      <template v-slot:eventContent='arg'>
+        <b>{{ arg.event.title }}</b>
+      </template>
+    </FullCalendar>
 
-let authStore = null;
+    <!-- 일정 추가 모달 -->
+    <b-modal v-model="showModal" title="일정 추가하기">
+      <div class="modal-body">
+        일정이름 : <input type="text" v-model="newEvent.scheduleTitle"/><br/>
+        날짜 : <input type="date" v-model="newEvent.scheduleDate"/><br/>
+        설명 : <input type="text" v-model="newEvent.scheduleContent"/><br/>
+      </div>
+      <template #footer>
+        <b-button variant="secondary" @click="showModal = false">취소</b-button>
+        <b-button variant="primary" @click="handleAddClick">추가</b-button>
+      </template>
+    </b-modal>
+
+    <!-- 이벤트 수정 및 삭제 모달 -->
+    <b-modal v-model="showEventModal" title="일정 정보">
+      <div class="modal-body">
+        일정이름 : <input type="text" v-model="currentEventTitle"/><br/>
+        날짜 : <input type="date" v-model="currentEventDate"/><br/>
+        설명 : <input type="text" v-model="currentEventDescription"/><br/>
+      </div>
+      <template #footer>
+        <b-button variant="secondary" @click="showEventModal = false">취소</b-button>
+        <b-button variant="primary" @click="handleUpdateEvent">수정</b-button>
+        <b-button variant="danger" @click="handleDeleteEvent">삭제</b-button>
+      </template>
+    </b-modal>
+  </div>
+</template>
+
+<script>
+import FullCalendar from '@fullcalendar/vue3';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { BModal } from "bootstrap-vue-3";
+import { useAuthStore } from "@/stores/auth.js";
+import axios from "axios";
 
 export default {
   components: {
-    FullCalendar, // make the <FullCalendar> tag available
+    FullCalendar,
     BModal
   },
   data() {
@@ -27,83 +62,122 @@ export default {
         },
       },
       showModal: false,
+      showEventModal: false,
       newEvent: {
-        title: '',
-        start: '',
-        description: ''
+        scheduleTitle: '',
+        scheduleDate: '',
+        scheduleContent: ''
       },
-    }
+      currentEventId: null, // 현재 선택된 이벤트 ID
+      currentEventTitle: '', // 선택된 이벤트 제목
+      currentEventDate: '', // 선택된 이벤트 날짜
+      currentEventDescription: '' // 선택된 이벤트 설명
+    };
   },
   methods: {
-    handleDateClick: function (arg) {
+    handleDateClick(arg) {
       this.showModal = true;
-      this.newEvent.start = arg.dateStr;
+      this.newEvent.scheduleDate = arg.dateStr;
     },
-    handleEventClick: function (arg) {
-      alert(`Event: ${arg.event.title}\nDescription: ${arg.event.extendedProps.description}`);
+    async handleEventClick(arg) {
+      const event = arg.event;
+
+      this.currentEventId = event.extendedProps.scheduleId;
+      this.currentEventTitle = event.title;
+      this.currentEventDate = event.startStr;
+      this.currentEventDescription = event.extendedProps.description;
+
+      this.showEventModal = true;
     },
-    handleAddClick: function () {
+    async handleAddClick() {
       const calendar = this.$refs.calendar.getApi();
       if (confirm("추가하시겠습니까?")) {
         const eventData = {
-          title: this.newEvent.title,
-          start: this.newEvent.start,
-          description: this.newEvent.description
+          title: this.newEvent.scheduleTitle,
+          start: this.newEvent.scheduleDate,
+          extendedProps: {
+            description: this.newEvent.scheduleContent
+          }
         };
         if (eventData.title === "" || eventData.start === "") {
           alert('입력하지 않은 값이 있습니다.');
         } else {
           calendar.addEvent(eventData);
           this.showModal = false;
-          this.newEvent = {title: '', start: '', description: ''};
+          this.newEvent = { scheduleTitle: '', scheduleDate: '', scheduleContent: '' };
 
-          const saveEventDB = async () => {
-            const token = authStore.accessToken;
-            await axios.post('http://localhost:8003/schedule',
-                {
-                  scheduleTitle : eventData.title,
-                  scheduleContent : eventData.description,
-                  scheduleDate : eventData.start
-                },{
-                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                   }
-                }
-            )
-          }
-
-
-          saveEventDB();
+          const token = useAuthStore().accessToken;
+          await axios.post('http://localhost:8003/schedule', {
+            scheduleTitle: eventData.title,
+            scheduleContent: eventData.extendedProps.description,
+            scheduleDate: eventData.start
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          });
         }
       }
     },
-    getEventDB: async function () {
-      const token = authStore.accessToken;
+    async handleUpdateEvent() {
+      const token = useAuthStore().accessToken;
+
+      // DB에 업데이트 요청
+      await axios.put(`http://localhost:8003/schedule/${this.currentEventId}`, {
+        scheduleTitle: this.currentEventTitle,
+        scheduleContent: this.currentEventDescription,
+        scheduleDate: this.currentEventDate
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      // 이벤트 업데이트 후 모달 닫기
+      this.showEventModal = false;
+      window.location.reload();
+    },
+    async handleDeleteEvent() {
+      const token = useAuthStore().accessToken;
+
+      // DB에서 삭제 요청
+      await axios.delete(`http://localhost:8003/schedule/${this.currentEventId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      this.showEventModal = false; // 모달 닫기
+      this.currentEventId = null; // 선택된 이벤트 초기화
+    },
+    async getEventDB() {
+      const token = useAuthStore().accessToken;
       try {
         const response = await axios.get('http://localhost:8003/schedule', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
+
         const calendar = this.$refs.calendar.getApi();
-        const events = response.data;
+        const events = response.data; // 서버에서 가져온 일정 데이터
         console.log('Fetched events:', events);
 
-        let eventData = {
-          title: '',
-          start: '',
-          description: ''
-        }
-        for(let i = 0; i<events.length ;i++) {
-          eventData = {
-            title: events[i].scheduleTitle,
-            start: events[i].scheduleDate,
-            description: events[i].scheduleContent
+        // 일정 데이터를 FullCalendar에 추가
+        events.forEach(event => {
+          const eventData = {
+            id: event.scheduleId,
+            title: event.scheduleTitle,
+            start: event.scheduleDate, // LocalDate는 ISO 형식으로 변환됨
+            extendedProps: {
+              description: event.scheduleContent,
+              scheduleId: event.scheduleId // scheduleId를 extendedProps에 포함
+            }
           };
           calendar.addEvent(eventData);
-        }
-
+        });
 
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -111,41 +185,12 @@ export default {
     }
   },
   mounted() {
-    authStore = useAuthStore();
-    this.getEventDB();
+    this.getEventDB(); // 컴포넌트가 마운트될 때 일정 데이터 가져오기
   }
 }
 </script>
 
-<template>
-  <div class="container">
-    <FullCalendar ref="calendar" :options="calendarOptions">
-      <template v-slot:eventContent='arg'>
-        <b>{{ arg.event.title }}</b>
-      </template>
-    </FullCalendar>
-    <b-modal v-model="showModal" title="일정 추가하기">
-      <div class="modal-body">
-        일정이름 : <input type="text" v-model="newEvent.title"/><br/>
-        날짜 : <input type="date" v-model="newEvent.start"/><br/>
-        설명 : <input type="text" v-model="newEvent.description"/><br/>
-      </div>
-      <template #footer>
-        <b-button variant="secondary" @click="showModal = false">취소</b-button>
-        <b-button variant="primary" @click="handleAddClick">추가</b-button>
-      </template>
-    </b-modal>
-  </div>
-</template>
-
 <style scoped>
-.fc-event {
-  background-color: #42a5f5; /* 배경 색상 */
-  color: white; /* 글자 색상 */
-  padding: 5px; /* 패딩 추가하여 크기 증가 */
-  font-size: 1.2em; /* 글자 크기 증가 */
-}
-
 .container {
   background-color: #FFFFFF;
 }

@@ -1,5 +1,4 @@
 <script setup>
-import MenuList from "@/components/store/MenuList.vue";
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
 import { ref, computed, onMounted } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -205,7 +204,7 @@ function goToStoreMenu(storeId, storeName) {
               </div>
               <br>
               <p><font-awesome-icon :icon="['fas', 'location-dot']" />&nbsp;&nbsp;{{ storeLocation }}</p>
-              <p><font-awesome-icon :icon="['far', 'calendar-days']" />&nbsp;&nbsp;{{ storeWeek }}<br>&emsp;&ensp;{{ storeOpenTime }} ~ {{ storeEndTime }}</p>
+              <p v-if="storeWeek || storeOpenTime || storeEndTime"><font-awesome-icon :icon="['far', 'calendar-days']" />&nbsp;&nbsp;{{ storeWeek }}<br>&emsp;&ensp;{{ storeOpenTime.slice(0, -3) }} ~ {{ storeEndTime.slice(0, -3) }}</p>
               <p>{{ storeInfo }}</p>
             </div>
           </div>

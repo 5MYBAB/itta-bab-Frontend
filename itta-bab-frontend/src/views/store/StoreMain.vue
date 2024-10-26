@@ -85,9 +85,9 @@ const filter = (searchTerm) => {
 // filter를 제공
 provide("filter", filter);
 
-function goToStoreMenu(storeId, storeName) {
-  router.push({ name: 'MenuMain', params: { storeId, storeName } });
-}
+// function goToStoreMenu(storeId, storeName) {
+//   router.push({ name: 'MenuMain', params: { storeId, storeName } });
+// }
 
 function goToStoreDetail(storeId) {
   router.push({ name: 'StoreDetail', params: { storeId }});
@@ -114,7 +114,8 @@ function goToStoreDetail(storeId) {
                  :value="item.storeStatus"
                  :class="{'open-status': item.storeStatus === 'OPEN', 'closed-status': item.storeStatus === 'CLOSED'}"
                  id="submit-button"
-                 @click="goToStoreMenu(item.storeId, item.storeName)"
+                 tabindex="-1"
+                 style="pointer-events: none;"
           >
         </span>
           </div>
@@ -122,8 +123,9 @@ function goToStoreDetail(storeId) {
             <span class="location">{{ item.storeLocation }}</span>
           </div>
           <div class="store-open-info">
-            <span class="week">{{ item.storeWeek }}&nbsp;&nbsp;</span>
-            <span class="time">{{ item.storeOpenTime }} ~ {{ item.storeEndTime }}<br></span>
+            <span class="week" v-if="item.storeWeek">{{ item.storeWeek }}&nbsp;&nbsp;</span>
+            <span class="time" v-if="item.storeOpenTime">{{ item.storeOpenTime.slice(0, -3) }} ~</span>
+            <span class="time" v-if="item.storeEndTime">{{ item.storeEndTime.slice(0, -3) }}<br></span>
             <input id="update"
                    type="button" value="더보기"
                    @click = "goToStoreDetail(item.storeId)"

@@ -217,16 +217,36 @@
 
 ### 📗 관리자
 <details>
-<summary><strong>관리자 문의 답변</strong></summary>
+<summary><strong>부트캠프 등록</strong></summary>
 
-![](/images/inquiry/inquiryAnswerAdmin1.gif)
+![](/images/bootcamp/bootcampCreate.gif)
+</details>
+<details>
+<summary><strong>부트캠프 수정</strong></summary>
+
+![](/images/bootcamp/bootcampUpdate.gif)
+</details>
+<details>
+<summary><strong>훈련과정 등록</strong></summary>
+
+![](/images/bootcamp/courseCreate.gif)
+</details>
+<details>
+<summary><strong>훈련 과정 수정</strong></summary>
+
+![](/images/bootcamp/courseUpdate.gif)
+</details>
+<details>
+<summary><strong>훈련 기관 목록</strong></summary>
+
+![](/images/bootcamp/bootCamplist.gif)
 </details>
 
 ### 📗 좋아요
 <details>
-<summary><strong>좋아요</strong></summary>
+<summary><strong>좋아요 추가 및 삭제</strong></summary>
 
-![](/images/)
+![](/images/heart.gif)
 </details>
 
 ### 📗 문의
@@ -234,6 +254,11 @@
 <summary><strong>문의하기</strong></summary>
 
 ![](/images/inquiry/inquiryCreate.gif)
+</details>
+<details>
+<summary><strong>관리자 문의 답변</strong></summary>
+
+![](/images/inquiry/inquiryAnswerAdmin1.gif)
 </details>
 
 ### 📗 신고
@@ -246,6 +271,11 @@
 <summary><strong>신고하기(예외)</strong></summary>
 
 ![](/images/report/ReportSamePerson.gif)
+</details>
+<details>
+<summary><strong>관리자 신고 처리</strong></summary>
+
+![](/images/report/reportAdmin.gif)
 </details>
 
 ### 📗 일정
@@ -267,21 +297,96 @@
 ![](/images/schedule/scheduleDelete.gif)
 </details>
 
+### 📗 친구
+<details>
+<summary><strong>친구 수락</strong></summary>
+
+![](/images/friend/friendaccept.gif)
+</details>
+<details>
+<summary><strong>친구 신청</strong></summary>
+
+![](/images/friend/friendadd.gif)
+</details>
+<details>
+<summary><strong>친구 삭제</strong></summary>
+
+![](/images/friend/frienddelete.gif)
+</details>
+<details>
+<summary><strong>친구 목록, 친구 요청 목록</strong></summary>
+
+![](/images/friend/friendreject.gif)
+</details>
+
 ### 📕 모임
 <details>
-<summary><strong>모임</strong></summary>
+<summary><strong>모임 카테고리 등록</strong></summary>
 
-![](/images/)
+![](/images/group/gorup-category-register.gif)
+</details>
+<details>
+<summary><strong>모임 카테고리 삭제</strong></summary>
+
+![](/images/group/group-category-delete.gif)
+</details>
+<details>
+<summary><strong>모임 삭제</strong></summary>
+
+![](/images/group/group-detail.gif)
+</details>
+<details>
+<summary><strong>모임 참여</strong></summary>
+
+![](/images/group/group-join.gif)
+</details>
+<details>
+<summary><strong>모임 목록</strong></summary>
+
+![](/images/group/group-list.gif)
+</details>
+<details>
+<summary><strong>모임 등록</strong></summary>
+
+![](/images/group/group-register.gif)
+</details>
+<details>
+<summary><strong>참여한 모임 목록</strong></summary>
+
+![](/images/group/join-group.gif)
 </details>
 
 ### 📘 게시판
 <details>
-<summary><strong>게시판</strong></summary>
+<summary><strong>게시판 글 작성</strong></summary>
 
-![](/images/)
+![](/images/board/postCreate.gif)
+</details>
+<details>
+<summary><strong>게시판 페이징</strong></summary>
+
+![](/images/board/page.gif)
+</details><details>
+<summary><strong>게시판 정렬</strong></summary>
+
+![](/images/board/list.gif)
+</details><details>
+<summary><strong>게시판 댓글</strong></summary>
+
+![](/images/board/comment.gif)
+</details>
+<details>
+<summary><strong>게시판 대댓글</strong></summary>
+
+![](/images/board/subComment.gif)
 </details>
 
 ### 📙 가게
+<details>
+<summary><strong>가게 등록</strong></summary>
+
+![](/images/store/storeCreate.gif)
+</details>
 <details>
 <summary><strong>지도 API</strong></summary>
 
@@ -317,15 +422,17 @@
 
 ![](/images/store/reviewList.gif)
 </details>
+
+
 ## 🍀 팀 회고
 
 ---
 
 | 팀원  | 한마디                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 |-----|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 김민주 ||
-| 박설빈 ||
-| 신민철 ||
-| 이성민 ||
-| 임광택 ||
-| 최두혁 ||
+| 김민주 |백엔드와 프론트엔드 프로젝트를 진행하면서 웹 애플리케이션의 전반적인 흐름을 깊이 이해할 수 있었습니다. 화면을 구성할 때 필요한 데이터와 데이터 호출 방식에 대해 고민하며 진행했습니다. 처음으로 프론트엔드 프로젝트를 진행하며 초기 설정의 중요성을 배웠습니다. 처음 설정을 제대로 해놓지 않으면 유지 보수와 코드 확장성이 떨어질 수 있다는 점을 실감했습니다. Vue 프레임워크를 새롭게 배우며 이를 느꼈습니다. 코드가 다소 지저분해진 부분이 아쉽지만, 다음 프로젝트에서는 더 체계적이고 깔끔하게 코드를 구성할 수 있을 것 같습니다. 프론트엔드와 백엔드가 서로 어떻게 소통하고, API를 통해 데이터를 주고받아야 하는지 배울 수 있었습니다. 특히 데이터 전송이나 API 설계의 중요성을 다시 느꼈습니다. 이번 프로젝트에서 배운 점을 토대로 앞으로는 더 깔끔하고 효율적인 코드와 구조로 프로젝트를 진행하고 싶습니다.|
+| 박설빈 |처음해 본 프론트 프로젝트였습니다. 이 프로젝트를 통해 오히려 백엔드에 대한 이해가 더 깊어졌습니다. 백엔드에서 어떤 데이터를 보내야 할지에 대한 감을 잡을 수 있었습니다. 단순히 필요한 데이터에 대한 요구사항을 보고 구현하는 것과 달리 몸소 어떤 데이터가 필요할지를 스스로 고민하고 경험하면서 웹 개발에 대한 이해도를 높일 수 있었습니다. 다음 백엔드 프로젝트에서는 더욱 완성도 있는 결과물을 낼 수 있을 것이라는 자신감이 생겼습니다.|
+| 신민철 |이번 프론트 프로젝트를 진행하면서 폴더 구조와 모듈화의 중요성에 대해 깊이 느꼈습니다. Vue.js에 대해 이해 부족으로, 컴포넌트 간의 props와 emit으로 데이터 주고받기를 처리하기 어려워 모듈화를 하지 않은 하나의 부모 컴포넌트에서 스파게티 코드 상태로 진행하는 경우가 대부분이었는데, 좀 더 잘했으면 어땠을지 하는 아쉬움이 남습니다. 백엔드 프로젝트를 진행할때 API를 만들고 테스트하면서도 프론트에서 어떤 데이터가 필요할지 모호한 부분이 존재하였는데 그 부분을 고민해보고 경험하는 시간이 되었습니다. 최종 프로젝트 때에는 지금의 부족한 부분을 잘 보완하여 자립해 나가는 백엔드 개발자가 되고 싶습니다.|
+| 이성민 |이번 프론트엔드 프로젝트는 정말 도전이 많은 경험이었습니다. 특히 웹 기반 프로젝트를 처음부터 끝까지 책임지고 작업하면서, 생각보다 쉽지 않았던 부분들이 많았습니다. 프로젝트 초반에는 전체적인 구조를 어떻게 잡을지 고민이 많았고, 그 과정에서 여러 가지 어려운 점들을 마주하게 되었습니다. 컴포넌트 간 데이터 전달, 상태 관리, 그리고 화면 디자인 같은 부분들이 예상보다 시간이 많이 걸리고 복잡했습니다. 하지만 이런 문제들을 하나씩 해결해 나가면서, 정말 많은 것을 배울 수 있었습니다.|
+| 임광택 |이따밥 프로젝트를 통해 Vue.js와 웹소켓 통신에 대한 깊은 이해를 얻었습니다. Vue.js의 컴포넌트 기반 아키텍처를 활용하여 재사용성과 유지보수성을 높였고, Vuex를 통해 애플리케이션의 상태를 중앙에서 관리하여 사용자 경험을 개선했습니다. 또한, Vue Router를 사용하여 SPA 내에서 자연스러운 페이지 전환을 구현하였습니다. 웹소켓을 통해 실시간 데이터 통신을 구현하여 채팅 기능을 활성화하고, 이벤트 기반 통신 모델을 통해 사용자 인터페이스를 즉각적으로 업데이트할 수 있었습니다. 이 프로젝트는 저에게 이론적인 지식이 실제 개발에 어떻게 적용되는지를 체험하게 하였고, 문제 해결 능력과 협업의 중요성을 깨닫게 해주는 소중한 경험이었습니다.|
+| 최두혁 |이번 프론트 프로젝트를 진행하면서 웹 페이지의 일련의 생성 과정을 다 알게 되었습니다. 백엔드에서 보내는 api를 가지고 와서 뷰라는 프론트 틀을 통해 원하는 결과를 보여주는 작업이 고되지만 신기했습니다.페이지 내부에서 일어나야할 스크립트 구문 로직을 구성하는 것이 역시 제일 어려웠으며, 뷰의 기본 제공인 컴포넌트 재활용이 하나의 페이지의 코드 길이를 줄여주고 가독성을 높여주는 것이 얼마나 큰 기능인지 몸소 깨닫게 되었습니다. 완벽한 웹 페이지를 위해서는 백과 프론트의 유기적인 설계가 중요하다고 느꼈습니다. 좋은 경험이었습니다. 마지막으로 고생한 팀원들에게 감사함을 전달하고 싶습니다.|

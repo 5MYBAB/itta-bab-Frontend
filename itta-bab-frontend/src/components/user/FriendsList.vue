@@ -23,6 +23,21 @@ const fetchFriendList = async () => {
   }
 };
 
+const fetchFriendRequestList = async () => {
+  try {
+    const response = await axios.get('http://localhost:8003/friend/request', {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`, // 필요한 경우 인증 토큰 추가
+      }
+    });
+    friendList.value = response.data; // 응답 데이터를 inquiryList에 저장
+
+  } catch (error) {
+    console.error('친구 목록을 불러오는 중 에러가 발생했습니다.', error.response ? error.response.data : error.message);
+  }
+};
+
+
 onMounted(() => {
   fetchFriendList();
 });
@@ -69,13 +84,61 @@ const handleDeleteClick = async () => {
   }
 }
 
+const currentTitle = ref("친구 목록");
+const pastTitle = ref("친구 요청 목록");
+
+const toggleTitle = () => {
+  currentTitle.value = currentTitle.value === "친구 목록" ? "친구 요청 목록" : "친구 목록";
+  pastTitle.value = pastTitle.value === "친구 목록" ? "친구 요청 목록" : "친구 목록";
+
+  if (currentTitle.value === "친구 요청 목록") {
+    fetchFriendRequestList();
+  } else {
+    fetchFriendList();
+  }
+};
+
+const handleAcceptRequest = async (friend) => {
+  try {
+    const response = await axios.put(
+        'http://localhost:8003/friend/accept',
+        { fromUserId: friend.userId },
+        {
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`
+          }
+        }
+    );
+    fetchFriendRequestList();
+  } catch (error) {
+    console.error('친구 요청 수락 실패', error);
+  }
+};
+
+const handleRejectRequest = async (friend) => {
+  try {
+    const response = await axios.put(
+        'http://localhost:8003/friend/reject',
+        { fromUserId: friend.userId },
+        {
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`
+          }
+        }
+    );
+    fetchFriendRequestList();
+  } catch (error) {
+    console.error('친구 요청 거절 실패', error);
+  }
+};
 </script>
 
 <template>
   <div class="display">
     <div class="title">
       <font-awesome-icon :icon="['fas', 'user-group']" size="2x"/>
-      <div>친구 목록</div>
+      <div>{{ currentTitle }}</div>
+      <button @click="toggleTitle">{{ pastTitle }}</button>
     </div>
   </div>
   <div>
@@ -84,7 +147,11 @@ const handleDeleteClick = async () => {
         <div class="contents">
           <div class="text">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</div>
           <div class="text">{{ friend.username }}</div>
-          <div class="delete" @click="handleDeleteClick">삭제</div>
+          <div v-if="currentTitle === '친구 목록'" class="delete" @click="handleDeleteClick">삭제</div>
+          <div v-else class="action-buttons">
+            <button class="accept" @click="handleAcceptRequest(friend)">수락</button>
+            <button class="reject" @click="handleRejectRequest(friend)">거절</button>
+          </div>
         </div>
       </div>
     </div>
@@ -105,6 +172,37 @@ const handleDeleteClick = async () => {
 </template>
 
 <style scoped>
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.accept, .reject {
+  padding: 5px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.accept {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.reject {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.accept:hover {
+  background-color: #45a049;
+}
+
+.reject:hover {
+  background-color: #da190b;
+}
 
 .page-named {
   display: flex;

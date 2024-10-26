@@ -49,7 +49,6 @@ const fetchData = async () => {
   }
 };
 
-// 삭제 버튼 누르면 때 작동하는 함수
 function selectItem(groupId) {
   selectedItemId.value.groupId = groupId;
   console.log("신고 ID:", selectedItemId.value);
@@ -166,7 +165,7 @@ provide("filter", filter);
           <div class="data-item">{{ item.userCounting }}</div>
           <div class="data-item">{{ formatDate(item.endDate) }}</div>
           <div class="report-button-container">
-            <ReportButton @click.stop="selectItem(item.groupId)"/> <!-- 클릭 이벤트 추가 -->
+            <ReportButton @click.stop="selectItem(item.groupId)"/>
           </div>
         </div>
       </div>

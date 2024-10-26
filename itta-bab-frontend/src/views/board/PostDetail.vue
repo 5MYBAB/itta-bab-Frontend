@@ -22,7 +22,7 @@
         <div class="data-item">{{ item.likeCount }}</div>
         <div class="data-item">
           {{ formatDate(item.createdAt) }}
-          <button class="report-button" @click="reportPost(item)">신고</button>
+          <button class="report-button" @click.stop="reportPost(item)">신고</button>
         </div>
       </div>
       <PageNumAndWritingButton

@@ -134,6 +134,7 @@ onMounted(() => {
 });
 
 
+
 const isBookmarked = ref(false); // 북마크 상태 추가
 
 // 아이콘의 배경색을 동적으로 설정 (배경색만 변경)
@@ -141,9 +142,54 @@ const bookmarkStyle = computed(() => ({
   backgroundColor: isBookmarked.value ? 'black' : 'transparent', // 배경색만 변경
 }));
 
-const toggleBookmark = () => {
+// 가게 즐겨찾기 북마크
+const toggleBookmark = async () => {
   isBookmarked.value = !isBookmarked.value; // 클릭할 때마다 상태 변경
+
+  if (isBookmarked.value) {
+    // 북마크 추가
+    await addBookmark(storeId);
+  } else {
+    // 북마크 삭제
+    await removeBookmark(storeId);
+  }
+
 };
+
+// 즐겨찾기 추가 및 삭제
+async function addBookmark(storeId) {
+  try {
+    const token = authStore.accessToken;
+    await axios.post(`http://localhost:8003/store/favorite`, { "storeId" : storeId }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+    console.log("북마크 추가 완료");
+  } catch (error) {
+    console.error("북마크 추가 오류 발생:", error);
+    isBookmarked.value = true; // 오류 시 상태 복구
+  }
+}
+
+async function removeBookmark(storeId) {
+  try {
+
+    const token = authStore.accessToken;
+    await axios.delete(`http://localhost:8003/store/favorite/${storeId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+    console.log("북마크 삭제 완료");
+  } catch (error) {
+    console.error("북마크 삭제 오류 발생:", error);
+    isBookmarked.value = false; // 오류 시 상태 복구
+  }
+}
+
 
 // const toggleLike = (reviewId) => {
 //   const review = reviews.value.find((r) => r.id === reviewId);

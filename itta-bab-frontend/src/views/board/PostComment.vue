@@ -46,8 +46,8 @@
             <div class="reply-content">
               <div class="arrow"><font-awesome-icon :icon="['fas', 'arrow-turn-up']" rotation=90 /></div>
               <div style="display: flex;">
-                <p class="reply-author">{{ reply.author }}</p>
-                <p class="reply-text">{{ reply.commentContent }}</p>
+                <p class="reply-author"> {{  reply.author }}</p>
+                <p class="reply-text"> {{  reply.commentContent }}</p>
               </div>
               <div style="margin-right: 0px"><ReportButton  @click="reportComment(comment.postCommentId)"/></div>
             </div>
@@ -56,7 +56,7 @@
 
         <!-- New Comment Section -->
         <div class="new-comment">
-          <input type="text" placeholder="댓글을 작성하세요." v-model="newCommentText" @keydown.enter.prevent="addComment" />
+          <input type="text" placeholder="댓글을 작성하세요." v-model="newCommentText"  />
           <button @click="addComment">등록</button>
         </div>
       </div>
@@ -115,6 +115,34 @@ const fetchComments = async () => {
 onMounted(() => {
   fetchComments();
 });
+
+// 새 댓글 작성 함수
+const addComment = async () => {
+  if (newCommentText.value.trim()) {
+    try {
+      const response = await axios.post(
+          "http://localhost:8003/postComment",
+          {
+            postId: postId,
+            commentContent: newCommentText.value,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authStore.accessToken}`,
+            },
+          }
+      );
+
+      // 댓글 작성 후 댓글 리스트 갱신
+      fetchComments();
+
+      // 댓글 작성 완료 후 입력 필드 초기화
+      newCommentText.value = '';
+    } catch (error) {
+      console.error("댓글 추가 중 오류가 발생했습니다:", error.response ? error.response.data : error.message);
+    }
+  }
+};
 
 // 대댓글 추가
 const replyToComment = async (parentCommentId) => {

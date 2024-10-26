@@ -53,7 +53,6 @@ export default [
     },
     {
         path: '/delete-user-result',
-        name: 'DeleteUserResult',
         component: DeleteUserResult
     }
 ];

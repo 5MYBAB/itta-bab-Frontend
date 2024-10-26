@@ -1,12 +1,24 @@
 <script setup>
 import '@/assets/css/resetcss.css';
 import router from "@/router/index.js";
+import {onMounted, ref} from "vue";
+import {useRoute} from "vue-router";
+
+const username = ref('');
+
 const goToLogin = () => {
   router.push('/user/login');
 };
 const goToSignUp = () => {
   router.push('/user/signup')
 }
+
+onMounted(() => {
+  const route = useRoute();
+  username.value = route.query.username;
+  console.log(route.query.username)
+});
+
 </script>
 
 <template>
@@ -15,7 +27,7 @@ const goToSignUp = () => {
     <div class="white-box">
       <div class="title">itta-bab</div>
       <div class="form">
-        <div><span>임광택</span>님<br>회원탈퇴가 완료 되었습니다.</div>
+        <div><span>{{ username }}</span>님<br>회원탈퇴가 완료 되었습니다.</div>
       </div>
       <input type="button" value="로그인 하러 가기" @click="goToLogin">
       <div class="signup" @click="goToSignUp">회원가입</div>

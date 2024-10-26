@@ -76,7 +76,12 @@ const goToUpdate = () => {
 
 // 삭제 버튼 클릭 시 호출되는 함수
 const goToDelete = () => {
-  router.push('/delete-user'); // 회원정보 삭제 확인 페이지로 이동
+  router.push({
+    path: '/delete-user',
+    query: {
+      username: username.value,
+    }
+  }); // 회원정보 삭제 확인 페이지로 이동
 };
 
 const goToInquiry = () => {
@@ -148,7 +153,7 @@ function goToChatPage(groupId) {
         </div>
         <div class="list-line-button">
           <div class="user-info-update"><input type="button" value="수정" @click="goToUpdate"></div>
-          <div class="user-info-delete"><input type="button" value="삭제" @click="goToDelete"></div>
+          <div class="user-info-delete"><input type="button" value="탈퇴" @click="goToDelete"></div>
         </div>
       </div>
     </div>

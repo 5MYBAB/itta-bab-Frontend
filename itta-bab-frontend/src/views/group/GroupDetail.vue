@@ -18,6 +18,11 @@
       <p class="post-content">{{ groupPost }}</p>
     </div>
 
+    <!-- 신청 버튼 추가 -->
+    <div class="action-section">
+      <button class="apply-button" @click="applyForGroup">신청</button>
+    </div>
+
     <!-- 댓글 부분 -->
     <div class="post-detail">
       <div class="comments-section">
@@ -51,12 +56,12 @@
 
 <script setup>
 import PageTitleTop from "@/components/common/PageTitleTop.vue";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import router from "@/router/index.js";
 import axios from "axios";
-import {ref, onMounted} from "vue";
-import {useAuthStore} from "@/stores/auth.js";
-import {useRoute} from "vue-router";
+import { ref, onMounted } from "vue";
+import { useAuthStore } from "@/stores/auth.js";
+import { useRoute } from "vue-router";
 import ReportButton from "@/components/common/ReportButton.vue";
 
 const authStore = useAuthStore();
@@ -108,6 +113,26 @@ const fetchPostData = async () => {
     groupPost.value = postData.groupPost;
   } catch (error) {
     console.error("게시물 데이터를 가져오는 중 오류가 발생했습니다:", error.response ? error.response.data : error.message);
+  }
+};
+
+// 모임 신청 API 호출 함수
+const applyForGroup = async () => {
+  try {
+    const response = await axios.post(`http://localhost:8003/group/detail/${groupId}`, {}, {
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
+    });
+
+    if (response.status === 200) {
+      alert("모임에 성공적으로 신청되었습니다.");
+    } else {
+      alert("이미 신청한 모임입니다.");
+    }
+  } catch (error) {
+    console.error("모임 신청 중 오류가 발생했습니다:", error.response ? error.response.data : error.message);
+    alert("모임 신청에 실패했습니다.");
   }
 };
 
@@ -195,6 +220,20 @@ const reportComment = (index) => {
   background: none;
   border: none;
   cursor: pointer;
+}
+
+/* 신청 버튼 스타일 */
+.apply-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: var(--basic-yellow);
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.apply-button:hover {
+  background-color: #e0a800; /* 버튼 호버 시 색상 변경 */
 }
 
 .comment-container {

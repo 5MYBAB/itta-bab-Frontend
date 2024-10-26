@@ -4,7 +4,7 @@ import { ref, onMounted } from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import axios from 'axios';
 import {useAuthStore} from "@/stores/auth.js";
-import MenuUpdate from "@/views/store/MenuUpdate.vue";
+import PageTitleTop from "@/components/common/PageTitleTop.vue";
 
 // 인증 토큰 가져오기
 const authStore = useAuthStore();
@@ -76,6 +76,7 @@ async function updateMenu() {
 </script>
 
 <template>
+
   <div class="page-container">
     <div class="page-top-title">메뉴 수정</div>
   </div>
@@ -132,6 +133,7 @@ async function updateMenu() {
 *{
   background-color: var(--white);
 }
+
 .page-container{
   padding-top:130px;
   padding-bottom: 100px;

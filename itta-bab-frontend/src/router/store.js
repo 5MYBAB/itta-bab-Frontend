@@ -15,7 +15,8 @@ export default [
         component: StoreMain
     },
     {
-        path: '/store/detail',
+        path: '/store/detail/:storeId',
+        name: 'StoreDetail',
         component: StoreDetail
     },
     {

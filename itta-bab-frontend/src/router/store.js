@@ -46,7 +46,8 @@ export default [
 
     },
     {
-        path: '/store/review',
+        path: `/store/review/:storeId/:storeName`,
+        name: 'ReviewMain',
         component: ReviewMain
 
     }, {

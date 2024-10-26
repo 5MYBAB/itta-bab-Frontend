@@ -6,6 +6,7 @@ import { useRouter, useRoute } from 'vue-router';
 import {useAuthStore} from "@/stores/auth.js";
 import axios from "axios";
 import Page from "@/components/common/Page.vue";
+import store from "@/router/store.js";
 
 // 라우터 이동을 위한 설정
 const router = useRouter();
@@ -87,52 +88,51 @@ async function fetchMenuData() {
   }
 }
 
+// 리뷰 데이터 가져오기
+const jsonReviewData = ref([]);
+
+// 서버로부터 데이터를 가져오는 함수
+async function fetchStoreReviewList() {
+  try {
+    const token = authStore.accessToken;
+    const response = await axios.get(`http://localhost:8003/store/review/${storeId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+
+    jsonReviewData.value = await response.data;
+
+  } catch (error){
+    console.error('리뷰 데이터를 불러오는데 에러가 발생했습니다', error);
+  }
+}
+
+
+
+const reviewCurrentPage = ref(1);
+const reviewItemsPage = 3;
+const reviewTotalPages = computed(() => {
+  return Math.ceil(jsonReviewData.value.length / reviewItemsPage);
+});
+
+const reviewPaginatedData = computed(() => {
+  const start = (reviewCurrentPage.value - 1) * reviewItemsPage;
+  const end = start + reviewItemsPage;
+  return jsonReviewData.value.slice(start, end);
+});
+
+
+
 
 // 컴포넌트가 마운트되면 자동으로 데이터 조회
 onMounted(() => {
   fetchStoreList();
   fetchMenuData();
+  fetchStoreReviewList();
 });
 
-
-
-// 데이터 설정
-// const store = {
-//   imageUrl: 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAzMDZfMjA2%2FMDAxNzA5NjYyMzU3OTMw.S59QAzo4zrcqiDBw2PcRmyiLkQncKrjBnBC9FOQflpAg.4MsQTaJf59MVUq_Ha3YV6li5ew1aOa91cU8zojtygfsg.JPEG%2Foutput_1415662850.jpg&type=a340',
-//   name: '가게 이름',
-//   description: '가게가게가게가게가게가게가게가게가게가게 설명',
-//   location: '서울시 강남구',
-//   openingHours: '월-금 10:00 - 22:00',
-//   menus: [
-//     { id: 1, name: '김치찌개', price: 8000 },
-//     { id: 2, name: '된장찌개', price: 7000 },
-//     { id: 3, name: '비빔밥', price: 9000 },
-//   ],
-// };
-//
-// // 리뷰 데이터 설정
-// const reviews = ref([
-//   {
-//     id: 1,
-//     username: '익명1',
-//     date: '2024-10-15',
-//     text: '음식이 정말 맛있어요!',
-//     tags: ['맛있음', '친절함'],
-//     rating: 5,
-//     isLiked: false,
-//     userImageUrl: 'https://via.placeholder.com/50',
-//   },
-//   {
-//     id: 2,
-//     username: '익명2',
-//     date: '2024-10-16',
-//     text: '가격이 조금 비싸지만 만족스러웠습니다.',
-//     tags: ['가격 비쌈'],
-//     rating: 4,
-//     isLiked: true,
-//     userImageUrl: 'https://via.placeholder.com/50',
-//   },
-// ]);
 
 const isBookmarked = ref(false); // 북마크 상태 추가
 
@@ -158,6 +158,12 @@ function goToPage(page) {
   }
 }
 
+function goToReviewPage(page) {
+  if (page >= 1 && page <= reviewTotalPages.value) {
+    reviewCurrentPage.value = page;
+  }
+}
+
 function goToStoreUpdate(storeId) {
   router.push({ name: 'StoreUpdate', params: { storeId }});
 }
@@ -166,10 +172,10 @@ function goToStoreMenu(storeId, storeName) {
   router.push({ name: 'MenuMain', params: { storeId, storeName } });
 }
 
+function goToStoreReview(storeId, storeName) {
+  router.push({ name: 'ReviewMain', params: { storeId, storeName } });
+}
 
-// function goToStoreMenuUpdate(storeId, menuId) {
-//   router.push(`/store/menu/update/${storeId}/${menuId}`);
-// }
 
 </script>
 
@@ -211,7 +217,6 @@ function goToStoreMenu(storeId, storeName) {
           <div class="store-right">
 
             <!-- 가게 메뉴 -->
-            <!-- 가게 리스트 -->
             <div class="list-style">
               <div
                   v-for="item in paginatedData"
@@ -225,14 +230,7 @@ function goToStoreMenu(storeId, storeName) {
 
                 </div>
 
-<!--                <input id="update"-->
-<!--                       type="button" value="메뉴 수정"-->
-<!--                       @click = "goToStoreMenuUpdate(storeId, item.menuId)"-->
-<!--                >-->
-
               </div>
-
-
 
               <Page
                   :currentPage="currentPage"
@@ -240,7 +238,7 @@ function goToStoreMenu(storeId, storeName) {
                   @changePage="goToPage"
               />
             </div>
-            <!-- 가게 리스트 -->
+
             <div class="menu-list">
               <button class="more-btn"
                       @click="goToStoreMenu(storeId, storeName)"
@@ -251,50 +249,50 @@ function goToStoreMenu(storeId, storeName) {
     </div>
 
 
-    <!-- Reviews Section -->
-    <div class="review-section">
-      <div class="page-title">
-        <div class="section-title">리뷰</div>
-        <button class="edit-store-btn"><font-awesome-icon :icon="['far', 'pen-to-square']" />리뷰 추가</button>
-      </div>
-      <div class="review-container">
-        <div v-for="review in reviews" :key="review.id" class="review-item">
-          <div class="review-left">
-          <span :class="{'heart-icon': true, 'liked': review.isLiked}" @click="toggleLike(review.id)">
-            {{ review.isLiked ? '❤️' : '🤍' }}
-          </span>
-            <img :src="review.userImageUrl" alt="User Image" class="user-image" />
-          </div>
-          <div class="review-right">
-            <div class="review-header">
-              <p class="username">{{ review.username }}</p>
-              <p class="date">{{ review.date }}</p>
-            </div>
-            <p class="review-text">{{ review.text }}</p>
-            <div class="review-tags">
-              <span v-for="tag in review.tags" :key="tag" class="review-tag">{{ tag }}</span>
-            </div>
-            <div class="review-rating">
-            <span v-for="n in 5" :key="n" class="star">
-              {{ n <= review.rating ? '⭐' : '' }}
-            </span>
-            </div>
+    <!-- 리뷰 리스트 -->
+    <div class="page-title">
+      <div class="section-title">리뷰</div>
+    </div>
+
+
+    <div class="review-list">
+      <div v-for="review in reviewPaginatedData"
+           :key="review.storeId"
+           class="review-row"
+      >
+        <!--          <img :src="review.userImageUrl" alt="User Image" class="user-image" />-->
+        <div class="review-content">
+          <div class="review-text">{{ review.reviewContent }}</div>
+          <!--            <div class="review-tags">-->
+          <!--              <span v-for="tag in review.tags" :key="tag" class="review-tag">{{ tag }}</span>-->
+          <!--            </div>-->
+          <div class="review-info">
+              <span class="review-rating">평점:
+                <span v-for="n in 5" :key="n" class="star">{{ n <= review.rating ? '⭐' : '' }}</span>
+              </span>
+            <span class="review-date">작성일: {{ review.createDate }}</span>
+            <span class="review-date" v-if="review.updateDate"> 수정일: {{ review.updateDate }}</span>
           </div>
         </div>
-
-        <button class="more-btn">더보기 &gt;</button>
       </div>
+
+      <Page
+          :currentPage="reviewCurrentPage"
+          :totalPages="reviewTotalPages"
+          @changePage="goToReviewPage"
+      />
     </div>
+    <!-- 리뷰 리스트 -->
+
+
+    <button class="more-btn" @click="goToStoreReview(storeId, storeName)">더보기 &gt;</button>
+
+
   </div>
 </template>
 
 
 <style scoped>
-.review-container{
-  padding: 35px 57px;
-  background-color: var(--half-white);
-  border-radius: 20px;
-}
 body {
   font-family: 'Arial', sans-serif;
   background-color: var(--background-color);
@@ -304,6 +302,7 @@ body {
   justify-content: space-between;
   margin: 30px 20px 0px 70px;
   align-items: center;
+  margin-bottom: 20px;
 }
 .store-state{
   width: 73px;
@@ -411,68 +410,11 @@ body {
 }
 
 
-.review-section {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.review-item {
-  display: flex;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-bottom: 1px solid var(--unactive-button);
-  border-radius: 5px;
-}
-
-.review-left {
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
-}
-
-.heart-icon {
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.liked {
-  color: red;
-}
-
-.user-image {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-left: 10px;
-}
-
-.review-right {
-  flex-grow: 1;
-}
-
-.review-header {
-  display: flex;
-  justify-content: space-between;
-}
-
-.review-tags {
-  margin-top: 5px;
-}
-
-.review-tag {
-  background-color: #e0e0e0;
-  border-radius: 5px;
-  padding: 2px 5px;
-  margin-right: 5px;
-}
-
 .review-rating {
   margin-top: 10px;
 }
 
 
-
-.add-review-btn,
 .more-btn {
   width: 100%;
   height: 44px;
@@ -483,9 +425,6 @@ body {
   text-align: center;
 }
 
-.add-review-btn {
-  align-self: flex-end; /* 버튼을 오른쪽 끝으로 이동 */
-}
 
 .more-btn:hover {
   background-color: #e0b030;
@@ -536,15 +475,91 @@ body {
   justify-content: flex-end;
 }
 
-#update {
-  width: 120px;
-  height: 44px;
-  background-color: var(--basic-yellow);
-  border-radius: 52px;
-  border: none;
-  font-weight: 600;
-  text-align: center;
-  margin-right: 50px;
+
+
+.page-named span {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid var(--white);
+  background-color: var(--white);
 }
+
+.page-named .active {
+  font-weight: bold;
+  color: black;
+}
+
+
+.bottom-container button{
+  justify-content: flex-end; /* 글쓰기 버튼을 오른쪽 끝 정렬 */
+}
+
+/* 리뷰 리스트 */
+.review-list {
+  padding: 20px;
+  background-color: var(--half-white);
+  border-radius: 20px;
+}
+
+.review-row {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+}
+
+.user-image {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
+
+.review-content {
+  flex: 1;
+}
+
+.review-text {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.review-tags {
+  margin-bottom: 5px;
+}
+
+.review-tag {
+  background-color: #f1f1f1;
+  padding: 2px 6px;
+  margin-right: 5px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.review-info {
+  font-size: 12px;
+  color: #888;
+}
+
+.review-rating {
+  margin-right: 10px;
+}
+
+.review-date {
+  color: #888;
+}
+
+.page-named span {
+  cursor: pointer;
+  padding: 5px 13px;
+  border: 1px solid var(--white);
+  background-color: var(--white);
+}
+
+.page-named .active {
+  font-weight: bold;
+  color: black;
+}
+
 
 </style>

@@ -245,9 +245,21 @@
 
 ### 📗 일정
 <details>
-<summary><strong>일정</strong></summary>
+<summary><strong>일정 등록</strong></summary>
 
-![](/images/)
+![](/images/schedule/scheduleAdd.gif)
+</details>
+
+<details>
+<summary><strong>일정 수정</strong></summary>
+
+![](/images/schedule/scheduleUpdate.gif)
+</details>
+
+<details>
+<summary><strong>일정 삭제</strong></summary>
+
+![](/images/schedule/scheduleDelete.gif)
 </details>
 
 ### 📕 모임

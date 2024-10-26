@@ -209,6 +209,11 @@
 
 ![](/images/mypage/updateuser.gif)
 </details>
+<details>
+<summary><strong>회원정보 삭제</strong></summary>
+
+![](/images/mypage/deleteuser.gif)
+</details>
 
 ### 📗 좋아요
 <details>

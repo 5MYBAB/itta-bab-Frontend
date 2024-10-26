@@ -32,11 +32,16 @@ const submitReport = async (event) => {
     reportContent.value = '';
   } catch (error) {
     if (error.response) {
-      console.error("신고 제출 오류:", error.response.data); // 서버에서 반환된 에러 메시지
+      if (error.response.status === 400) {
+        alert("본인의 게시물은 신고할 수 없습니다.");
+      } else {
+        console.error("신고 제출 오류:", error.response.data);
+        alert("신고 제출에 실패했습니다. 다시 시도해 주세요.");
+      }
     } else {
-      console.error("신고 제출 오류:", error.message); // 네트워크 오류 등
+      console.error("신고 제출 오류:", error.message);
+      alert("신고 제출에 실패했습니다. 다시 시도해 주세요.");
     }
-    alert("신고 제출에 실패했습니다. 다시 시도해 주세요.");
   }
 
 };

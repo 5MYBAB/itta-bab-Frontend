@@ -1,43 +1,21 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import ReportsList from "@/components/user/ReportsList.vue";
+import Inquiry from "@/views/inquiry/Inquiry.vue";
+import InquiryAdminResponse from "@/components/admin/InquiryAdminResponse.vue";
+import InquiryList from "@/components/admin/InquiryList.vue";
+import WrittenPostsList from "@/components/user/WrittenPostsList.vue";
+import ReportList from "@/components/admin/ReportList.vue";
 
-const router = useRouter();  // Vue Router 사용
+// Vue Router 사용
+const router = useRouter();
 
-const institutions = ref([
-  { name: '플레이데이터 동작캠퍼스', address: '서울 동작구 보라매로 87' },
-  { name: '플레이데이터 서초캠퍼스', address: '서울 서초구 효령로 335' },
-]);
+const selectedMenu = ref('');  // 선택된 메뉴 항목을 저장하는 상태 변수
 
-const searchQuery = ref('');
-const currentPage = ref(1);
-const itemsPerPage = 10;
-
-// 필터링된 데이터를 페이지별로 나눠서 반환
-const paginatedInstitutions = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  return filteredInstitutions.value.slice(start, end);
-});
-
-// 필터링된 데이터 (검색 필터 적용)
-const filteredInstitutions = computed(() => {
-  return institutions.value.filter(item => item.name.includes(searchQuery.value));
-});
-
-// 전체 페이지 수 계산
-const totalPages = computed(() => {
-  return Math.ceil(filteredInstitutions.value.length / itemsPerPage);
-});
-
-// 페이지 변경 핸들러
-const changePage = (page) => {
-  currentPage.value = page;
-};
-
-// 훈련 기관 등록 페이지로 이동하는 함수
-const goToInstitutionRegistration = () => {
-  router.push('/training-institution');  // 등록 버튼을 클릭 시 이동할 경로
+// 메뉴 클릭 핸들러
+const selectMenu = (menuName) => {
+  selectedMenu.value = menuName;  // 선택된 메뉴 이름 업데이트
 };
 </script>
 
@@ -46,51 +24,121 @@ const goToInstitutionRegistration = () => {
     <div class="main-content">
       <aside class="sidebar">
         <ul>
-          <li><a href="#" @click.prevent="router.push('/bootcamp')">부트캠프 관리</a>
+          <li>
+            <div class="menu-button" :class="{ 'active': selectedMenu === 'bootcamp' }" @click="(selectMenu('bootcamp'))">
+              부트캠프 관리
+            </div>
             <ul>
-              <li><a href="#" @click.prevent="router.push('/training-institution')">훈련기관 조회</a></li>
+              <li>
+                <div class="menu-button" :class="{ 'active': selectedMenu === 'training-institution' }" @click="(selectMenu('training-institution'))">
+                  훈련기관 조회
+                </div>
+              </li>
             </ul>
           </li>
-          <li><a href="#" @click.prevent="router.push('/user-management')">회원 관리</a>
+          <li>
+            <div class="menu-button" :class="{ 'active': selectedMenu === 'user-management' }" @click="(selectMenu('user-management'))">
+              회원 관리
+            </div>
             <ul>
-              <li><a href="#" @click.prevent="router.push('/user-info')">회원 정보 조회</a></li>
+              <li>
+                <div class="menu-button" :class="{ 'active': selectedMenu === 'user-info' }" @click="(selectMenu('user-info'))">
+                  회원 정보 조회
+                </div>
+              </li>
             </ul>
           </li>
-          <li><a href="#" @click.prevent="router.push('/store-management')">가게 관리</a>
+          <li>
+            <div class="menu-button" :class="{ 'active': selectedMenu === 'store-management' }" @click="(selectMenu('store-management'))">
+              가게 관리
+            </div>
             <ul>
-              <li><a href="#" @click.prevent="router.push('/store-list')">가게 목록 조회</a></li>
+              <li>
+                <div class="menu-button" :class="{ 'active': selectedMenu === 'store-list' }" @click="(selectMenu('store-list'))">
+                  가게 목록 조회
+                </div>
+              </li>
             </ul>
           </li>
-          <li><a href="#" @click.prevent="router.push('/menu-management')">메뉴 관리</a>
+          <li>
+            <div class="menu-button" :class="{ 'active': selectedMenu === 'menu-management' }" @click="(selectMenu('menu-management'))">
+              메뉴 관리
+            </div>
             <ul>
-              <li><a href="#" @click.prevent="router.push('/menu-list')">메뉴 조회</a></li>
-              <li><a href="#" @click.prevent="router.push('/menu-category')">메뉴 카테고리 조회</a></li>
+              <li>
+                <div class="menu-button" :class="{ 'active': selectedMenu === 'menu-list' }" @click="(selectMenu('menu-list'))">
+                  메뉴 조회
+                </div>
+              </li>
+              <li>
+                <div class="menu-button" :class="{ 'active': selectedMenu === 'menu-category' }" @click="(selectMenu('menu-category'))">
+                  메뉴 카테고리 조회
+                </div>
+              </li>
             </ul>
           </li>
-          <li><a href="#" @click.prevent="router.push('/menu-management')">신고 관리</a>
+          <li>
+            <div class="menu-button" :class="{ 'active': selectedMenu === 'report-management' }" @click="(selectMenu('report-management'))">
+              신고 관리
+            </div>
             <ul>
-              <li><a href="#" @click.prevent="router.push('/menu-list')">신고 목록 조회</a></li>
+              <li>
+                <div class="menu-button" :class="{ 'active': selectedMenu === 'reports' }" @click="(selectMenu('reports'))">
+                  신고 목록 조회
+                </div>
+              </li>
             </ul>
           </li>
-          <li><a href="#" @click.prevent="router.push('/menu-management')">정지 관리</a>
+          <li>
+            <div class="menu-button" :class="{ 'active': selectedMenu === 'suspension-management' }" @click="(selectMenu('suspension-management'))">
+              정지 관리
+            </div>
             <ul>
-              <li><a href="#" @click.prevent="router.push('/menu-list')">정지된 회원 조회</a></li>
+              <li>
+                <div class="menu-button" :class="{ 'active': selectedMenu === 'suspended-users' }" @click="(selectMenu('suspended-users'))">
+                  정지된 회원 조회
+                </div>
+              </li>
             </ul>
           </li>
-          <li><a>문의 관리</a>
+          <li>
+            <div class="menu-button" :class="{ 'active': selectedMenu === 'inquiry-management' }" @click="selectMenu('inquiry-management')">
+              문의 관리
+            </div>
             <ul>
-              <li><a href="#" @click.prevent="router.push('/inquiry/admin')">문의 조회</a></li> <!--여기 링크를 이렇게 만들게 아니고 userTap처럼 만들어야됨-->
+              <li>
+                <div class="menu-button" :class="{ 'active': selectedMenu === 'inquiry' }" @click="(selectMenu('inquiry'))">
+                  문의 조회
+                </div>
+              </li>
             </ul>
           </li>
-          <li><a href="#" @click.prevent="router.push('/menu-management')">모임 관리</a>
+          <li>
+            <div class="menu-button" :class="{ 'active': selectedMenu === 'meeting-management' }" @click="(selectMenu('meeting-management'))">
+              모임 관리
+            </div>
             <ul>
-              <li><a href="#" @click.prevent="router.push('/menu-list')">모임 관리</a></li>
-              <li><a href="#" @click.prevent="router.push('/menu-list')">모임 카테고리 관리</a></li>
+              <li>
+                <div class="menu-button" :class="{ 'active': selectedMenu === 'meeting' }" @click="(selectMenu('meeting'))">
+                  모임 관리
+                </div>
+              </li>
+              <li>
+                <div class="menu-button" :class="{ 'active': selectedMenu === 'meeting-category' }" @click="(selectMenu('meeting-category'))">
+                  모임 카테고리 관리
+                </div>
+              </li>
             </ul>
           </li>
-
         </ul>
       </aside>
+
+      <!-- 선택된 메뉴에 따른 컴포넌트 렌더링 -->
+      <div class="menu-content">
+        <ReportList v-if="selectedMenu === 'reports'" />
+        <InquiryList v-else-if="selectedMenu === 'inquiry'" />
+
+      </div>
     </div>
   </div>
 </template>
@@ -138,87 +186,22 @@ const goToInstitutionRegistration = () => {
   font-weight: 400;
 }
 
-/* 콘텐츠 스타일 */
-.content {
-  flex: 1;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.content-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.search-bar {
-  display: flex;
-  align-items: center;
-}
-
-.search-bar input {
+/* 메뉴 버튼 스타일 */
+.menu-button {
+  cursor: pointer;
   padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  width: 250px;
-  margin-right: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
 }
 
-.register-btn {
-  background-color: #ffe074;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
+.menu-button.active {
+  background-color: #ffcc00;  /* 선택된 메뉴의 배경 색상 */
+  color: white;  /* 선택된 메뉴의 텍스트 색상 */
 }
 
-.institution-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  border-radius: 15px;
-  overflow: hidden;
-}
-
-.institution-table th,
-.institution-table td {
-  padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.institution-table th {
-  background-color: #ffe074;
-}
-
-.edit-btn,
-.delete-btn {
-  background-color: #ffe074;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 10px;
-  margin-left: 5px;
-  cursor: pointer;
-}
-
-.pagination {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.pagination span {
-  padding: 10px 15px;
-  margin: 0 5px;
-  background-color: #ffe074;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.pagination .active {
-  background-color: #ffcc00;
+/* 콘텐츠 스타일 */
+.menu-content {
+  width: 1035px;
+  background-color: var(--background-color);
 }
 </style>

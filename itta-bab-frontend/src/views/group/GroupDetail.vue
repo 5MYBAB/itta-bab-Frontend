@@ -111,9 +111,13 @@ const reportData = ref({
 
 function reporting(groupId) {
   reportData.value.targetId = groupId;
-  alert("신고버튼 누름")
-  console.log("신고하였습니다.");
-  console.log(reportData.value);
+  router.push({
+    name: 'ReportCreate',
+    query: {
+      target: reportData.value.target,
+      targetId: reportData.value.targetId
+    }
+  });
 }
 
 // DateTime 형식 변경 함수

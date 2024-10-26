@@ -30,9 +30,10 @@
 ### 목차
 
 - [1. 프로젝트 소개](#-프로젝트-소개)
-- [2. 기능 명세서](#-기능명세서)
-- [3. 테스트 결과 보고서](#-테스트-결과-보고서)
-- [4. 팀 회고](#-팀-회고)
+- [2. 화면 설계서](#-화면-설계서)
+- [3. 기능 명세서](#-기능-명세서)
+- [4. 테스트 결과 보고서](#-테스트-결과-보고서)
+- [5. 팀 회고](#-팀-회고)
 
 
 <hr>
@@ -100,9 +101,16 @@
 </details>
 <hr>
 
-## 📝 기능명세서
+## 🏷️ 화면 설계서
 
-[![📝 기능명세서 상세보기](/images/list.png)](https://docs.google.com/spreadsheets/d/1LzQABzEnEMkKeeP6o334z52HFMVH8R5BJJ9wbEo9lyI/edit?gid=0#gid=0)
+[![🏷️ 화면 설계서 상세보기](/images/figma.png)](https://www.figma.com/design/hLawLTl9M0Qj1gXaqXdFFg/%EC%9D%B4%EB%94%B0%EB%B0%A5?node-id=0-1&t=tSZSM4NyRxEFFHzG-1)
+
+
+<hr>
+
+## 📝 기능 명세서
+
+[![📝 기능 명세서 상세보기](/images/list.png)](https://docs.google.com/spreadsheets/d/1LzQABzEnEMkKeeP6o334z52HFMVH8R5BJJ9wbEo9lyI/edit?gid=0#gid=0)
 
 <hr>
 
@@ -110,496 +118,66 @@
 
 ### 📗 회원
 <details>
-<summary><strong>부트캠프(관리자)</strong></summary>
-
-<details>
-<summary><strong>부트캠프 등록</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>부트캠프 수정</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>부트캠프 삭제</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>부트캠프 조회</strong></summary>
-
-![](/images/)
-</details>
-
-</details>
-
-
-
-<details>
-<summary><strong>훈련과정</strong></summary>
-
-<details>
-<summary><strong>훈련과정 등록</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>훈련과정 수정</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>훈련과정 삭제</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>특정 훈련기관에 속한 훈련과정</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>훈련과정 전체 리스트</strong></summary>
-
-![](/images/)
-</details>
-</details>
-
-
-
-<details>
 <summary><strong>회원</strong></summary>
 
-<details>
-<summary><strong>회원 가입</strong></summary>
-
 ![](/images/)
 </details>
-<details>
-<summary><strong>회원 수정</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>회원 탈퇴</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>특정 회원 조회(관리자)</strong></summary>
-
-![](/images/)
-</details>
-</details>
-
-
-
-<details>
-<summary><strong>알림</strong></summary>
-
-<details>
-<summary><strong>알림 등록</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>알림 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>알림 읽음 처리</strong></summary>
-
-![](/images/)
-</details>
-</details>
-
-
-
-<details>
-<summary><strong>친구</strong></summary>
-
-<details>
-<summary><strong>친구 신청</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>친구 거절</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>친구 요청 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>친구 목록 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>친구 삭제</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>친구 요청 승인</strong></summary>
-
-![](/images/)
-</details>
-</details>
-
 
 ### 📗 좋아요
 <details>
-<summary><strong>좋아요 등록</strong></summary>
-
-![](/images/)
-</details>
-
-<details>
-<summary><strong>좋아요 개수</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>좋아요 삭제</strong></summary>
+<summary><strong>좋아요</strong></summary>
 
 ![](/images/)
 </details>
 
 ### 📗 사진
 <details>
-<summary><strong>사진 등록</strong></summary>
+<summary><strong>사진</strong></summary>
 
 ![](/images/)
 </details>
 
 ### 📗 문의
 <details>
-<summary><strong>문의 등록</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>문의 리스트</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>문의 처리(관리자)</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>문의 리스트(관리자)</strong></summary>
+<summary><strong>문의</strong></summary>
 
 ![](/images/)
 </details>
 
 ### 📗 신고
 <details>
-<summary><strong>신고 등록</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>신고 처리(관리자)</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>신고 리스트(관리자)</strong></summary>
+<summary><strong>신고</strong></summary>
 
 ![](/images/)
 </details>
 
 ### 📗 일정
 <details>
-<summary><strong>일정 등록</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>일정 수정</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>일정 리스트</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>일정 삭제</strong></summary>
+<summary><strong>일정</strong></summary>
 
 ![](/images/)
 </details>
 
-### 📕 그룹
+### 📕 모임
 <details>
-<summary><strong>채팅 전송</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>모임 댓글 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>모임 상세 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>모임 삭제(작성자, 관리자)</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>전체 모임 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>모임 참여</strong></summary>
+<summary><strong>모임</strong></summary>
 
 ![](/images/)
 </details>
 
 ### 📘 게시판
 <details>
-<summary><strong>게시판 댓글 삭제</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>게시판 댓글 수정</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>게시판 댓글 등록</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>게시판 삭제</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>게시판 리스트(댓글 많은 순)</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>게시판 리스트(좋아요 오름차순)</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>게시판 리스트(좋아요 내림차순)</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>게시판 리스트(최신순)</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>게시판 수정</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>게시판 등록</strong></summary>
+<summary><strong>게시판</strong></summary>
 
 ![](/images/)
 </details>
 
 ### 📙 가게
 <details>
-<summary><strong>카테고리</strong></summary>
-
-<details>
-<summary><strong>카테고리 수정</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>카테고리 등록</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>카테고리 전체 조회</strong></summary>
-
-![](/images/)
-</details>
-</details>
-
-
-
-<details>
 <summary><strong>가게</strong></summary>
 
-<details>
-<summary><strong>가게 삭제(관리자)</strong></summary>
-
 ![](/images/)
 </details>
-<details>
-<summary><strong>가게 수정</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>가게 전체 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>가게 인기 많은 순 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>가게 상세 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>가게 등록</strong></summary>
-
-![](/images/)
-</details>
-</details>
-
-
-
-<details>
-<summary><strong>메뉴</strong></summary>
-
-<details>
-<summary><strong>메뉴 삭제(관리자)</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>메뉴 수정</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>메뉴 인기순 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>메뉴 등록</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>메뉴 상세 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>메뉴 전체 리스트</strong></summary>
-
-![](/images/)
-</details>
-
-</details>
-
-
-
-<details>
-<summary><strong>주문 메뉴</strong></summary>
-
-<details>
-<summary><strong>주문 메뉴 삭제(관리자)</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>주문 메뉴 전체 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>주문 메뉴 등록</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>특정 가게 주문 메뉴 조회</strong></summary>
-
-![](/images/)
-</details>
-
-
-</details>
-
-
-
-<details>
-<summary><strong>리뷰</strong></summary>
-
-
-<details>
-<summary><strong>리뷰 수정</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>리뷰 작성</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>리뷰 전체 리스트</strong></summary>
-
-![](/images/)
-</details>
-
-</details>
-
-
-<details>
-<summary><strong>즐겨찾기</strong></summary>
-
-<details>
-<summary><strong>즐겨찾기 상세 조회</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>즐겨찾기 삭제</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>즐겨찾기 등록</strong></summary>
-
-![](/images/)
-</details>
-<details>
-<summary><strong>즐겨찾기 조회</strong></summary>
-
-![](/images/)
-</details>
-
-</details>
-
 
 ## 🍀 회고
 
